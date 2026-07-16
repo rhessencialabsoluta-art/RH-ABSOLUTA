@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!-- saved from url=(0064)https://recursoshumanosequilibryum-gif.github.io/rh-equilibryum/ -->
+<!-- Sistema de RH -->
 <html lang="pt-BR" data-kantu="1"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<!-- Equilibryum RH v3.3 - 20260615_1520 -->
+<!-- Sistema de RH -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sistema de RH</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1043,11 +1043,55 @@ input#client-id-inp:focus{border-color:var(--green);outline:none;}
 
     <!-- Grid de documentos -->
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
-      <div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--gray-400);">
-        <div style="font-size:40px;margin-bottom:10px;">📄</div>
-        <div style="font-size:14px;font-weight:600;">Nenhum documento configurado</div>
-        <div style="font-size:12.5px;margin-top:4px;">Os modelos de documentos deste módulo foram removidos. Novos modelos podem ser adicionados sob medida.</div>
+
+      <!-- Termo de Responsabilidade e Confidencialidade -->
+      <div class="trein-card" style="border-left:4px solid var(--green);">
+        <div class="tc-header">
+          <div>
+            <div class="tc-title">📄 Termo de Responsabilidade</div>
+            <div class="tc-meta">Confidencialidade e proteção de dados (LGPD)</div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--gray-600);margin:8px 0;">Termo de responsabilidade e confidencialidade assinado pelo(a) colaborador(a), com dados preenchidos automaticamente.</p>
+        <button class="btn btn-primary btn-sm" onclick="gerarTermoResponsabilidadeConf()">📄 Gerar Documento</button>
       </div>
+
+      <!-- Termo de Autorização de Uso de Imagem e Voz -->
+      <div class="trein-card" style="border-left:4px solid #6a1b9a;">
+        <div class="tc-header">
+          <div>
+            <div class="tc-title">🖼️ Autorização de Imagem e Voz</div>
+            <div class="tc-meta">Uso de imagem, voz e nome do(a) colaborador(a)</div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--gray-600);margin:8px 0;">Autorização para uso da imagem, voz e nome em materiais institucionais, redes sociais e comunicações da empresa.</p>
+        <button class="btn btn-primary btn-sm" style="background:#6a1b9a;" onclick="gerarTermoAutorizacaoImagemVozNovo()">🖼️ Gerar Documento</button>
+      </div>
+
+      <!-- Termo de Adesão - Política de Saúde e Vacinação -->
+      <div class="trein-card" style="border-left:4px solid #1565c0;">
+        <div class="tc-header">
+          <div>
+            <div class="tc-title">💉 Termo de Adesão – Saúde e Vacinação</div>
+            <div class="tc-meta">Lei nº 15.377/2026</div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--gray-600);margin:8px 0;">Termo de ciência e adesão à Política Corporativa de Promoção à Saúde e Vacinação.</p>
+        <button class="btn btn-primary btn-sm" style="background:#1565c0;" onclick="gerarTermoAdesaoSaude()">💉 Gerar Documento</button>
+      </div>
+
+      <!-- Ficha de Presença -->
+      <div class="trein-card" style="border-left:4px solid var(--accent);">
+        <div class="tc-header">
+          <div>
+            <div class="tc-title">📝 Ficha de Presença</div>
+            <div class="tc-meta">Lista de presença em branco para impressão</div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--gray-600);margin:8px 0;">Gera uma ficha de presença numerada (até 31 participantes) pronta para impressão, com o nome do(a) responsável preenchido.</p>
+        <button class="btn btn-primary btn-sm" style="background:var(--accent);" onclick="gerarFichaPresenca()">📝 Gerar Documento</button>
+      </div>
+
     </div>
 
     <div class="alert alert-info" style="margin-top:20px;">
@@ -1112,7 +1156,7 @@ input#client-id-inp:focus{border-color:var(--green);outline:none;}
         <div style="flex-shrink:0;text-align:center;">
           <div id="func-foto-preview" style="width:90px;height:90px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff;font-weight:700;overflow:hidden;border:3px solid var(--green);">
             <span id="func-foto-inicial">👤</span>
-            <img id="func-foto-img" style="display:none;width:100%;height:100%;object-fit:cover;" src="https://recursoshumanosequilibryum-gif.github.io/rh-equilibryum/">
+            <img id="func-foto-img" style="display:none;width:100%;height:100%;object-fit:cover;" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
           </div>
           <label style="display:inline-block;margin-top:8px;padding:5px 10px;background:var(--green-pale);border:1.5px solid var(--green);border-radius:6px;cursor:pointer;font-size:12px;color:var(--green-dark);">
             📷 Alterar foto
@@ -1202,7 +1246,7 @@ input#client-id-inp:focus{border-color:var(--green);outline:none;}
     </div>
     <div id="ft3" style="display:none">
       <div id="drive-docs-info" class="alert alert-success" style="margin-bottom:10px;">
-        📁 Documentos salvos no Drive em: <strong>RH Equilibryum / [Nome do Funcionário]</strong>
+        📁 Documentos salvos no Drive em: <strong>RH Absoluta / [Nome do Funcionário]</strong>
       </div>
       <div class="alert alert-warning" id="drive-docs-warn" style="display:none;">
         ⚠️ Drive não conectado — arquivos serão salvos localmente.
@@ -1352,7 +1396,7 @@ input#client-id-inp:focus{border-color:var(--green);outline:none;}
   <div class="modal"><div class="modal-header"><span class="modal-title">Usuário do Sistema</span><button class="modal-close" onclick="closeModal(&#39;modal-usr&#39;)">×</button></div>
     <div class="form-grid">
       <div class="form-group form-full"><label>Nome *</label><input id="un" type="text" placeholder="Nome completo"></div>
-      <div class="form-group"><label>E-mail *</label><input id="uem" type="email" placeholder="email@equilibryum.com"></div>
+      <div class="form-group"><label>E-mail *</label><input id="uem" type="email" placeholder="email@absoluta.com"></div>
       <div class="form-group"><label>Senha</label><input id="ups" type="password" placeholder="Senha de acesso"></div>
       <div class="form-group"><label>Perfil</label><select id="uper"><option>Administrador</option><option>RH</option><option>Gestor</option><option>Visualizador</option></select></div>
       <div class="form-group"><label>Status</label><select id="ust"><option>Ativo</option><option>Inativo</option></select></div>
@@ -1935,7 +1979,7 @@ input#client-id-inp:focus{border-color:var(--green);outline:none;}
       <div class="form-group"><label>Data de Geração</label><input type="date" id="fexp-data"></div>
     </div>
     <div class="alert alert-success" style="margin-top:14px">
-      📄 O formulário será gerado em DOCX com os dados do funcionário e o link de avaliação da Equilibryum.
+      📄 O formulário será gerado em DOCX com os dados do funcionário e o link de avaliação.
       <br>Se o Drive estiver conectado, será salvo automaticamente na pasta do funcionário.
     </div>
     <div class="modal-footer">
@@ -1948,7 +1992,7 @@ input#client-id-inp:focus{border-color:var(--green);outline:none;}
 <!-- LIGHTBOX FOTOS -->
 <div id="lightbox">
   <button id="lightbox-close" onclick="lbClose()">×</button>
-  <img id="lightbox-img" src="https://recursoshumanosequilibryum-gif.github.io/rh-equilibryum/" alt="">
+  <img id="lightbox-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
   <div id="lightbox-caption"></div>
   <div id="lightbox-nav">
     <button onclick="lbPrev()">← Anterior</button>
@@ -2504,7 +2548,7 @@ function copyToken() {
 
 function shareTokenWha() {
   const t = document.getElementById('wizard-token-txt').value;
-  const link = 'https://recursoshumanosequilibryum-gif.github.io/rh-equilibryum/';
+  const link = window.location.href;
   const msg = 'Ola! Segue o token de acesso ao Sistema de RH: ' + t + ' Link: ' + link + ' Cole o token quando o sistema pedir.';
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
@@ -2697,7 +2741,7 @@ async function findOrCreateFolder(name, parentId) {
 
 async function ensureRHFolder() {
   try {
-    rhFolderId = await findOrCreateFolder('RH Equilibryum - Copia', null);
+    rhFolderId = await findOrCreateFolder('RH Absoluta', null);
     toast("Pasta do sistema pronta no Drive ☁️");
   } catch(e) {
     console.error('Folder error:', e);
@@ -3731,7 +3775,7 @@ function renderViewDocs(funcId) {
         folderLink.textContent = '📂 Abrir Pasta Completa no Drive';
         var folderInfo = document.createElement('span');
         folderInfo.style.cssText = 'font-size:11px;color:var(--gray-500);margin-left:10px;';
-        folderInfo.textContent = 'RH Equilibryum / ' + f.n;
+        folderInfo.textContent = 'RH Absoluta / ' + f.n;
         driveEl.appendChild(folderLink);
         driveEl.appendChild(folderInfo);
       }
@@ -4715,7 +4759,7 @@ function openAvd(fid, dias) {
 
   body.innerHTML =
     '<div style="text-align:center;margin-bottom:16px;">' +
-      '<strong style="font-size:14pt;color:#0b6b70;">EQUILIBRYUM</strong>' +
+      '<strong style="font-size:14pt;color:#0b6b70;">ABSOLUTA</strong>' +
       '<br><span style="font-size:10pt;color:#555;">Especialidades Médicas &amp; Terapêuticas</span>' +
       '<br><strong style="font-size:12pt;">Avaliação de Período de Experiência – ' + dias + ' dias</strong>' +
     '</div>' +
@@ -4751,17 +4795,17 @@ function openAvd(fid, dias) {
         (f.ges||'Gestor Responsável') + '<br><small style="color:#666;">Gestor / Supervisor</small>' +
       '</div>' +
       '<div style="flex:1;border-top:1.5px solid #333;text-align:center;padding-top:6px;font-size:11pt;">' +
-        'MÔNICA SANTOS<br><small style="color:#666;">Coordenadora RH – Equilibryum</small>' +
+        '[Responsável RH]<br><small style="color:#666;">Coordenadora RH</small>' +
       '</div>' +
     '</div>' +
     '<p style="text-align:center;margin-top:14px;font-size:10px;color:#aaa;">Gerado em ' +
-      new Date().toLocaleDateString('pt-BR') + ' | Sistema RH Equilibryum</p>';
+      new Date().toLocaleDateString('pt-BR') + ' | Sistema de RH</p>';
 
   openModal('modal-avd');
 }
 function avdWha() {
   if (!_avdFunc) return;
-  const msg = `Olá ${_avdFunc.ges||'Gestor'}! A avaliação de período de experiência do(a) funcionário(a) ${_avdFunc.n} está disponível para análise. Por favor, realize a avaliação e retorne ao RH. Sistema RH Equilibryum.`;
+  const msg = `Olá ${_avdFunc.ges||'Gestor'}! A avaliação de período de experiência do(a) funcionário(a) ${_avdFunc.n} está disponível para análise. Por favor, realize a avaliação e retorne ao RH. Sistema de RH.`;
   wha(_avdFunc.geswha || '', msg);
 }
 
@@ -4912,7 +4956,7 @@ function printRel() {
       '</tr>';
   }).join('');
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
-    '<title>Relatório de Funcionários – Equilibryum</title>' +
+    '<title>Relatório de Funcionários</title>' +
     '<style>body{font-family:Arial,sans-serif;margin:20px;color:#1c2e2d;}' +
     'h1{color:#0b6b70;font-size:16pt;margin-bottom:4px;}' +
     '.subtitle{font-size:10pt;color:#4e6b5e;margin-bottom:16px;}' +
@@ -4922,7 +4966,7 @@ function printRel() {
     '.footer{margin-top:20px;font-size:9px;color:#999;text-align:center;}' +
     '@media print{@page{margin:1.5cm;size:A4 landscape;}}' +
     '</style></head><body>' +
-    '<h1>EQUILIBRYUM – Relatório de Funcionários</h1>' +
+    '<h1>Relatório de Funcionários</h1>' +
     '<div class="subtitle">' +
     'Empresa: <strong>' + empNome + '</strong> &nbsp;|&nbsp; ' +
     'Departamento: <strong>' + depNome + '</strong> &nbsp;|&nbsp; ' +
@@ -4934,7 +4978,7 @@ function printRel() {
     '<th>#</th><th>Nome</th><th>CPF</th><th>Cargo</th><th>Departamento</th>' +
     '<th>Empresa</th><th>Admissão</th><th>Tipo</th><th>Status</th>' +
     '</tr></thead><tbody>' + rows + '</tbody></table>' +
-    '<div class="footer">Sistema RH Equilibryum – Documento gerado em ' +
+    '<div class="footer">Sistema de RH – Documento gerado em ' +
     new Date().toLocaleString("pt-BR") + '</div>' +
     '</body></html>';
   var win = window.open('', '_blank', 'width=1000,height=700');
@@ -6166,7 +6210,7 @@ function rdBday() {
       whaBtn.innerHTML = '&#127881; Parabenizar';
       whaBtn.dataset.tel = f.tel;
       whaBtn.onclick = function() {
-        wha(this.dataset.tel, 'Parabéns pelo seu aniversário! 🎉 Toda a equipe Equilibryum deseja a você muito saúde e felicidades!');
+        wha(this.dataset.tel, 'Parabéns pelo seu aniversário! 🎉 Toda a equipe ABSOLUTA deseja a você muito saúde e felicidades!');
       };
       card.appendChild(whaBtn);
     }
@@ -6241,10 +6285,10 @@ function gerarTemplateAniversariantes(mes) {
     '<div class="pg">' +
       '<div class="hdr">' + logoHtml +
         '<div class="title">&#127873; Parabéns, Aniversariantes!</div>' +
-        '<div class="sub">' + MESES[mes-1] + ' ' + ano + ' &nbsp;|&nbsp; Com carinho, família Equilibryum &#128149;</div>' +
+        '<div class="sub">' + MESES[mes-1] + ' ' + ano + ' &nbsp;|&nbsp; Com carinho, família ABSOLUTA &#128149;</div>' +
       '</div>' +
       '<div class="grid">' + cards + '</div>' +
-      '<div class="ftr">Sistema RH Equilibryum &nbsp;&#183;&nbsp; ' + new Date().toLocaleDateString('pt-BR') + '</div>' +
+      '<div class="ftr">Sistema de RH &nbsp;&#183;&nbsp; ' + new Date().toLocaleDateString('pt-BR') + '</div>' +
     '</div>' +
   '</body></html>';
 
@@ -6307,7 +6351,7 @@ function fmtDataExtenso(d) {
 function gerarGuiaExame(empresa) {
   var f = getDocFunc(); if (!f) return;
   var hoje = td();
-  var isEq = empresa === 'equilibryum';
+  var isEq = empresa === 'absoluta';
   var tipoExame = isEq ? (document.getElementById('doc-exm-tipo-eq')||{}).value : (document.getElementById('doc-exm-tipo-lg')||{}).value;
   var tipos = ['ADMISSIONAL','DEMISSIONAL','PERIÓDICO','MUDANÇA FUNÇÃO','RETORNO AO TRABALHO'];
   var unidade = isEq ? ((document.getElementById('doc-unidade-eq')||{}).value||'TATUAPÉ') : '';
@@ -6318,8 +6362,8 @@ function gerarGuiaExame(empresa) {
     return '<td style="border:1px solid #333;padding:5px 8px;text-align:center;width:20px;background:'+(sel?'#0b6b70':'#fff')+';color:'+(sel?'#fff':'#000')+';">'+(sel?'X':'')+'</td><td style="border:1px solid #333;padding:5px 10px;">'+t+'</td>';
   }
 
-  var nomeEmp = isEq ? 'Equilibryum Reabilitação e Consultoria em Saúde' : 'LONGHI SERVICOS DE TERCEIRIZACAO A EMPRESAS LTDA';
-  var cnpjEmp = isEq ? '05.441.897/0001-02' : '54.188.772/0001-28';
+  var nomeEmp = isEq ? 'ABSOLUTA ASSESSORIA EMPRESARIAL' : 'LONGHI SERVICOS DE TERCEIRIZACAO A EMPRESAS LTDA';
+  var cnpjEmp = isEq ? '33.420.655/0001-78' : '54.188.772/0001-28';
   var assinante = isEq ? 'MÔNICA DOS SANTOS' : 'MONICA SANTOS';
   var cargo_assinante = isEq ? '' : 'Coord. De Recursos Humanos';
 
@@ -6370,17 +6414,17 @@ function gerarGuiaExame(empresa) {
 function gerarContaSalario(empresa) {
   var f = getDocFunc(); if (!f) return;
   var hoje = td();
-  var isEq = empresa === 'equilibryum';
+  var isEq = empresa === 'absoluta';
   var salario = isEq ?
     ((document.getElementById('doc-sal-eq')||{}).value || f.sal || '') :
     ((document.getElementById('doc-sal-lg')||{}).value || f.sal || '');
 
-  var nomeEmp  = isEq ? 'EQUILIBRYUM E REABILITAÇÃO E CONSULTORIA EM SAÚDE SC LTDA' : 'LONGHI SERVIÇOS DE TERCEIRIZAÇÃO A EMPRESAS LTDA';
-  var cnpjEmp  = isEq ? '05.441.897/0001-02' : '54.188.772/0001-28';
+  var nomeEmp  = isEq ? 'ABSOLUTA ASSESSORIA EMPRESARIAL' : 'LONGHI SERVIÇOS DE TERCEIRIZAÇÃO A EMPRESAS LTDA';
+  var cnpjEmp  = isEq ? '33.420.655/0001-78' : '54.188.772/0001-28';
   var convenio = isEq ? '100501182' : '240501669';
   var rodape   = isEq ?
-    'Equilibryum Reabilitação e Consultoria em Saúde SC Ltda<br>Rua Dr Costa Júnior, 365 – Perdizes – São Paulo – SP – Cep.: 05002-000<br>Telefones: (11) 2574-4554 e 3791-0252' :
-    'Equilibryum Reabilitação e Consultoria em Saúde SC Ltda<br>Rua Dr Germaine Burchard, 324 – Perdizes – São Paulo – SP – Cep.: 05002-061<br>Telefones: (11) 98803-5369 e (11) 963332165';
+    'ABSOLUTA ASSESSORIA EMPRESARIAL<br>Rua Dr. Nilton Silva, 364 – Vila Santa Teresa – São Paulo – SP – CEP 03564-020' :
+    'ABSOLUTA ASSESSORIA EMPRESARIAL<br>Rua Dr. Nilton Silva, 364 – Vila Santa Teresa – São Paulo – SP – CEP 03564-020';
 
   var docHTML = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Carta Conta Salário – '+f.n+'</title>' +
     '<style>body{font-family:Arial,sans-serif;margin:2.5cm;font-size:11pt;color:#000;line-height:1.7;}' +
@@ -6406,7 +6450,7 @@ function gerarContaSalario(empresa) {
     '<p><em><strong>Salário:</strong> R$ '+salario+'</em></p>' +
     '<p><em>Favor providenciar para o mesmo a abertura da conta salário, desde que ele esteja de posse de todos os documentos necessários descritos abaixo. Na ausência de um dos documentos favor solicitar ao funcionário que providencie e retorne posteriormente para abertura, não fornecendo neste momento o número da conta salário.</em></p>' +
     '<p><em><strong>Obs.:</strong> O fornecimento do número da conta ao funcionário poderá ocorrer se a conta estiver liberada para recebimento dos créditos relativos ao salário ou demais pertinentes à função exercida na empresa.</em></p>' +
-    '<p style="margin-top:30px;" class="assinatura">MÔNICA SANTOS<br>'+nomeEmp+'<br>CNPJ N.° '+cnpjEmp+'</p>' +
+    '<p style="margin-top:30px;" class="assinatura">[Responsável RH]<br>'+nomeEmp+'<br>CNPJ N.° '+cnpjEmp+'</p>' +
     '<hr style="margin:24px 0;">' +
     '<p><strong>Observações para o funcionário:</strong></p>' +
     '<p><em>Para efetuar a abertura da conta salário, o funcionário deverá <strong>comparecer pessoalmente</strong> na agência e apresentar juntamente com esta carta o seu CPF, um documento de identificação e comprovante de endereço.</em></p>' +
@@ -6610,7 +6654,7 @@ async function _abrirDocFinal(docHTML, filename, f, sigMonica, sigBruno) {
   var finalHTML = docHTML;
 
   // Detect company
-  var docEmpresa = 'equilibryum';
+  var docEmpresa = 'absoluta';
   if (finalHTML.indexOf('LONGHI') > 0 || finalHTML.indexOf('Longhi') > 0) docEmpresa = 'longhi';
 
   // Build signature block — compact, same-page guaranteed
@@ -6678,8 +6722,8 @@ function gerarReciboEPI() {
     '@media print{@page{margin:1.5cm;}}</style></head><body>' +
     '<h1>Recibo de EPIs – Equipamento de Proteção Individual</h1>' +
     '<div class="header-meta">Código: <strong>11 FORM</strong> &nbsp;|&nbsp; Revisão: 02/03/2026 &nbsp;|&nbsp; Status: <strong>Vigente</strong> &nbsp;|&nbsp; Versão: 02<br>' +
-    'Setor: <strong>Departamento Pessoal</strong> &nbsp;|&nbsp; Revisor: <strong>MÔNICA SANTOS</strong></div>' +
-    '<p>Recebi da <strong>Equilibryum Reabilitação e Consultoria em Saúde S/S Ltda</strong> os Equipamentos de Proteção Individual (E.P.I.), abaixo discriminados, destinados à minha proteção pessoal e estou ciente da necessidade do uso para minha segurança e que a lei determina o uso obrigatório nos locais de riscos de acidentes.</p>' +
+    'Setor: <strong>Departamento Pessoal</strong> &nbsp;|&nbsp; Revisor: <strong>[Responsável RH]</strong></div>' +
+    '<p>Recebi da <strong>ABSOLUTA ASSESSORIA EMPRESARIAL</strong> os Equipamentos de Proteção Individual (E.P.I.), abaixo discriminados, destinados à minha proteção pessoal e estou ciente da necessidade do uso para minha segurança e que a lei determina o uso obrigatório nos locais de riscos de acidentes.</p>' +
     '<p><strong>Comprometo-me</strong> a fazer uso constante e adequado conforme orientação da Segurança do Trabalho e Encarregados, responsabilizando-me pela guarda e conservação, inclusive pelos extravios dos equipamentos de segurança mim confiados.</p>' +
     '<p><strong>OBRIGAÇÃO LEGAL DO EMPREGADO – NR 6</strong><br>' +
     'Item 6.7.1. – Determina o uso obrigatório dos E.P.I´s, Portaria 3.214/78:<br>' +
@@ -6743,20 +6787,20 @@ function gerarReciboUniforme() {
     '</tr>' +
     '<tr>' +
       '<td>Setor: Departamento Pessoal</td>' +
-      '<td>Autor: Nayane Renata</td>' +
-      '<td>Revisor: Ricardo Hodish</td>' +
+      '<td>Autor: [Responsável]</td>' +
+      '<td>Revisor: [Responsável]</td>' +
       '<td>Versão: 01</td>' +
     '</tr>' +
   '</table>' +
 
-  '<h1>EQUILIBRYUM – REABILITAÇÃO E CONSULTORIA EM SAÚDE LTDA.</h1>' +
+  '<h1>ABSOLUTA ASSESSORIA EMPRESARIAL</h1>' +
   '<h2>TERMO DE RECEBIMENTO, RESPONSABILIDADE E DEVOLUÇÃO DE UNIFORME</h2>' +
 
   '<div class="campo"><strong>Nome do(a) Colaborador(a):</strong> '+f.n+'</div>' +
   '<div class="campo" style="margin-bottom:7px;"><strong>Cargo:</strong> '+(f.car||'')+'</div>' +
 
   '<div class="secao">1. Recebimento</div>' +
-  '<p>Declaro que recebi da <strong>EQUILIBRYUM – REABILITAÇÃO E CONSULTORIA EM SAÚDE LTDA.</strong>, sem qualquer custo inicial, os uniformes abaixo relacionados, destinados exclusivamente ao desempenho de minhas atividades profissionais.</p>' +
+  '<p>Declaro que recebi da <strong>ABSOLUTA ASSESSORIA EMPRESARIAL</strong>, sem qualquer custo inicial, os uniformes abaixo relacionados, destinados exclusivamente ao desempenho de minhas atividades profissionais.</p>' +
   '<p>Comprometo-me a utilizá-los apenas durante a jornada de trabalho, preservando sua boa conservação, higiene e apresentação, conforme as normas internas da empresa.</p>' +
 
   '<div class="secao">Relação dos Uniformes Entregues</div>' +
@@ -6813,15 +6857,15 @@ function gerarReciboEquipamentos() {
     '@media print{@page{margin:1.5cm;}}</style></head><body>' +
     '<h1>RECIBO DE EQUIPAMENTO E FERRAMENTAS</h1>' +
     '<div class="header-meta">Código: <strong>04 FORM</strong> &nbsp;|&nbsp; Criação: 04/03/2026 &nbsp;|&nbsp; Status: <strong>APROVADO</strong><br>' +
-    'Setor: <strong>RH</strong> &nbsp;|&nbsp; Autor: MÔNICA SANTOS &nbsp;|&nbsp; Versão: 00</div>' +
+    'Setor: <strong>RH</strong> &nbsp;|&nbsp; Autor: [Responsável RH] &nbsp;|&nbsp; Versão: 00</div>' +
     '<p>Eu, <strong>'+f.n+'</strong>, inscrito no CPF n° <strong>'+f.cpf+'</strong>, função <strong>'+(f.car||'')+'</strong>, '+
     'telefone de contato <strong>'+(f.tel||'')+'</strong>, venho para os devidos fins DECLARAR que a empresa '+
-    '<strong>EQUILIBRYUM REABILITAÇÃO E CONSULTORIA EM SAUDE</strong>, inscrita no CNPJ n° 05.441.897/0001-02 '+
+    '<strong>ABSOLUTA ASSESSORIA EMPRESARIAL</strong>, inscrita no CNPJ n° 33.420.655/0001-78 '+
     'na qualidade de minha empregadora, está entregando nesta data, a título de empréstimo, o(s) equipamento(s) '+
     'abaixo discriminado(s) em perfeito estado de conservação e funcionamento, me comprometendo a mantê-lo(s) '+
     'nestas mesmas características, ficando ciente que:</p>' +
     '<p>I – Assumo <strong>TOTAL</strong> responsabilidade civil, criminal, administrativo e ambiental pelo uso e direção do respectivo equipamento, '+
-    'havendo eventuais avarias e/ou despesas com multas e acidentes, estas serão ressarcidas à <strong>EQUILIBRYUM</strong>, '+
+    'havendo eventuais avarias e/ou despesas com multas e acidentes, estas serão ressarcidas à <strong>ABSOLUTA</strong>, '+
     'incluindo taxas administrativas e honorários advocatícios, salvo se culpa exclusiva de terceiros, '+
     'autorizando desde já, os respectivos descontos em folha de pagamento ou rescisão contratual.</p>' +
     '<p><strong>Relação de equipamentos:</strong></p>' +
@@ -6875,14 +6919,14 @@ function gerarTermoResponsabilidade() {
     '@media print{@page{margin:1.5cm;}}</style></head><body>' +
     '<h1>TERMO DE RESPONSABILIDADE PELA GUARDA E USO DE EQUIPAMENTO DE TRABALHO, SENHA E INFORMAÇÕES CONFIDENCIAIS</h1>' +
     '<div class="header-meta">Código: <strong>adm 05 FORM</strong> &nbsp;|&nbsp; Criação: 21/06/2017 &nbsp;|&nbsp; Revisão: 03/03/2026 &nbsp;|&nbsp; Status: <strong>APROVADO</strong> &nbsp;|&nbsp; Versão: 03<br>' +
-    'Setor: <strong>INSTITUIÇÃO</strong> &nbsp;|&nbsp; Autor: ELAINE MARUCCI &nbsp;|&nbsp; Revisor: <strong>MÔNICA SANTOS</strong></div>' +
-    '<p>Eu, <strong>'+f.n+'</strong>, CPF: <strong>'+f.cpf+'</strong>, declaro que recebi da <strong>EQUILIBRYUM REABILITAÇÃO E CONSULTORIA EM SAÚDE</strong>, CNPJ nº. 05.441.897/0001-02, a título de empréstimo, para meu uso exclusivo durante as atividades laborais, o(s) equipamento(s) e/ou senhas, ou informações confidenciais especificadas neste termo de responsabilidade, comprometendo-me a manter os equipamentos em perfeito estado de conservação, e/ou manter sigilo sobre senhas recebidas ficando ciente de que:</p>' +
+    'Setor: <strong>INSTITUIÇÃO</strong> &nbsp;|&nbsp; Autor: [Responsável] &nbsp;|&nbsp; Revisor: <strong>[Responsável RH]</strong></div>' +
+    '<p>Eu, <strong>'+f.n+'</strong>, CPF: <strong>'+f.cpf+'</strong>, declaro que recebi da <strong>ABSOLUTA ASSESSORIA EMPRESARIAL</strong>, CNPJ nº. 33.420.655/0001-78, a título de empréstimo, para meu uso exclusivo durante as atividades laborais, o(s) equipamento(s) e/ou senhas, ou informações confidenciais especificadas neste termo de responsabilidade, comprometendo-me a manter os equipamentos em perfeito estado de conservação, e/ou manter sigilo sobre senhas recebidas ficando ciente de que:</p>' +
     '<p><strong>Em sendo equipamentos:</strong></p>' +
     '<ul>' +
     '<li>Se o equipamento for danificado ou inutilizado por emprego inadequado, mau uso, negligência ou extravio, a empresa me fornecerá novo equipamento e cobrará o valor de um equipamento da mesma marca ou equivalente ao da praça;</li>' +
     '<li>Em caso de furto ou roubo, deverá ser apresentado B.O. ao DP/RH e assim a empresa me fornecerá novo equipamento sem cobrança ao colaborador;</li>' +
     '<li>Em caso de parada de funcionamento, após análise técnica, identificado que o dano não foi originado por mau uso, a empresa me fornecerá novo equipamento sem cobrança;</li>' +
-    '<li>Em caso de dano, inutilização ou extravio, devo comunicar imediatamente ao DP/RH via e-mail: dp@equilibryum.com.br copiando o gestor imediato;</li>' +
+    '<li>Em caso de dano, inutilização ou extravio, devo comunicar imediatamente ao DP/RH via e-mail: rh@absoluta.com.br copiando o gestor imediato;</li>' +
     '<li>No caso de rescisão do contrato de trabalho, devolverei o equipamento completo e em perfeito estado no dia do encerramento do contrato;</li>' +
     '<li>Estando os equipamentos em minha posse, estarei sujeito a inspeções sem prévio aviso.</li>' +
     '</ul>' +
@@ -6907,7 +6951,7 @@ function gerarTermoResponsabilidade() {
     '<p>As condições foi:<br>' +
     'Equipamento 1: ( &nbsp;) em perfeito estado &nbsp; ( &nbsp;) apresentando defeito &nbsp; ( &nbsp;) faltando peças ou acessórios</p>' +
     '<div class="assin">RH – Responsável pelo recebimento</div>' +
-    '<div class="footer">3675-6289 / 4304-6289 &nbsp;|&nbsp; www.equilibryum.com.br &nbsp;|&nbsp; equilibryum@equilibryum.com.br</div>' +
+    '<div class="footer">3675-6289 / 4304-6289 &nbsp;|&nbsp; www.absoluta.com.br &nbsp;|&nbsp; contato@absoluta.com.br</div>' +
     '</body></html>';
 
   abrirEImprimirDoc(doc, 'Termo_Responsabilidade_'+f.n.replace(/\s+/g,'_'), f);
@@ -6926,10 +6970,10 @@ function gerarReciboRegulamento() {
     '@media print{@page{margin:2cm;}}</style></head><body>' +
     '<h1>REGULAMENTO INTERNO – Recibo de Entrega</h1>' +
     '<div class="header-meta">Código: <strong>RH 81</strong> &nbsp;|&nbsp; Status: <strong>APROVADO</strong> &nbsp;|&nbsp; Criação: 20/07/2017 &nbsp;|&nbsp; Revisão: 03/03/2026<br>' +
-    'Setor: <strong>RH</strong> &nbsp;|&nbsp; Autor: IVANILDA JESUS &nbsp;|&nbsp; Revisor: <strong>MÔNICA SANTOS</strong> &nbsp;|&nbsp; Versão: 05</div>' +
+    'Setor: <strong>RH</strong> &nbsp;|&nbsp; Autor: [Responsável] &nbsp;|&nbsp; Revisor: <strong>[Responsável RH]</strong> &nbsp;|&nbsp; Versão: 05</div>' +
     '<p>Eu, <strong>'+f.n+'</strong>,</p>' +
     '<p>inscrito no CPF: <strong>'+f.cpf+'</strong>, declaro que recebi o Regulamento Interno da</p>' +
-    '<p>Clínica Equilibryum na data <strong>'+fd(hoje)+'</strong>.</p>' +
+    '<p>A empresa na data <strong>'+fd(hoje)+'</strong>.</p>' +
     '<div style="margin-top:60px;">' +
     '<div class="assin">'+f.n+'<br>Assinatura do colaborador</div>' +
     '</div>' +
@@ -7273,13 +7317,13 @@ async function imprimirRelCampanhas() {
     '@media print{@page{margin:1.5cm;size:A4;}body{margin:0;}}' +
     '</style></head><body>' +
     '<h1>📋 Relatório de Campanhas'+(anoF?' – '+anoF:'')+'</h1>' +
-    '<div class="subtitle">Gerado em '+new Date().toLocaleDateString('pt-BR')+' | Sistema RH Equilibryum</div>' +
+    '<div class="subtitle">Gerado em '+new Date().toLocaleDateString('pt-BR')+' | Sistema de RH</div>' +
     '<div class="resumo">' +
     '<span class="resumo-pill">Total: '+total+' campanha(s)</span>' +
     (totalFotos?'<span class="resumo-pill">📷 '+totalFotos+' foto(s)</span>':'') +
     '</div>' +
     rows +
-    '<div class="footer">Equilibryum – Sistema de RH | Gerado em '+new Date().toLocaleString('pt-BR')+'</div>' +
+    '<div class="footer">Sistema de RH | Gerado em '+new Date().toLocaleString('pt-BR')+'</div>' +
     '</body></html>';
 
   var win = window.open('','_blank','width=960,height=750');
@@ -7349,10 +7393,10 @@ function imprimirAcompCampanhas() {
     '@media print{@page{margin:1cm;size:A4 landscape;}body{margin:0;}}'+
     '</style></head><body>'+
     '<h1>&#128202; Acompanhamento de Campanhas'+(anoF?' – '+anoF:'')+'</h1>'+
-    '<div class="subtitle">Gerado em '+new Date().toLocaleDateString('pt-BR')+' | Sistema RH Equilibryum</div>'+
+    '<div class="subtitle">Gerado em '+new Date().toLocaleDateString('pt-BR')+' | Sistema de RH</div>'+
     '<table><thead>'+thead+'</thead><tbody>'+anosRows+'</tbody></table>'+
     legenda+
-    '<div class="footer">Equilibryum – Sistema de RH | Gerado em '+new Date().toLocaleString('pt-BR')+'</div>'+
+    '<div class="footer">Sistema de RH | Gerado em '+new Date().toLocaleString('pt-BR')+'</div>'+
     '</body></html>';
 
   var win = window.open('','_blank','width=1100,height=750');
@@ -7555,7 +7599,7 @@ async function imprimirRelTreinamentos() {
     '@media print{@page{margin:1.5cm;size:A4;}body{margin:0;}}'+
     '</style></head><body>'+
     '<h1>🎓 Relatório de Treinamentos'+(anoF?' – '+anoF:'')+'</h1>'+
-    '<div class="subtitle">Gerado em '+new Date().toLocaleDateString('pt-BR')+' | Sistema RH Equilibryum</div>'+
+    '<div class="subtitle">Gerado em '+new Date().toLocaleDateString('pt-BR')+' | Sistema de RH</div>'+
     '<div class="resumo">'+
     '<span class="pill">Total: '+total+'</span>'+
     '<span class="pill">Concluídos: '+conc+'</span>'+
@@ -7563,7 +7607,7 @@ async function imprimirRelTreinamentos() {
     (totalFotos?'<span class="pill blue">📷 '+totalFotos+' foto(s)</span>':'')+
     '</div>'+
     rows+
-    '<div class="footer">Equilibryum – Sistema de RH | Gerado em '+new Date().toLocaleString('pt-BR')+'</div>'+
+    '<div class="footer">Sistema de RH | Gerado em '+new Date().toLocaleString('pt-BR')+'</div>'+
     '</body></html>';
 
   var win=window.open('','_blank','width=960,height=750');
@@ -7634,10 +7678,10 @@ function imprimirAcompTreinamentos() {
     '@media print{@page{margin:1cm;size:A4 landscape;}body{margin:0;}}'+
     '</style></head><body>'+
     '<h1>🎓 Acompanhamento de Treinamentos'+(anoF?' – '+anoF:'')+'</h1>'+
-    '<div class="subtitle">Gerado em '+new Date().toLocaleDateString('pt-BR')+' | Sistema RH Equilibryum</div>'+
+    '<div class="subtitle">Gerado em '+new Date().toLocaleDateString('pt-BR')+' | Sistema de RH</div>'+
     '<table><thead>'+thead+'</thead><tbody>'+tbody+'</tbody></table>'+
     legenda+
-    '<div class="footer">Equilibryum – Sistema de RH | Gerado em '+new Date().toLocaleString('pt-BR')+'</div>'+
+    '<div class="footer">Sistema de RH | Gerado em '+new Date().toLocaleString('pt-BR')+'</div>'+
     '</body></html>';
 
   var win=window.open('','_blank','width=1100,height=750');
@@ -8098,7 +8142,7 @@ async function gerarFlashXLSX() {
 // ============================================================
 // IMPORTAÇÃO EM MASSA DE BENEFÍCIOS DAS PLANILHAS
 // ============================================================
-var PLANILHA_BENEF_DATA = [{"cpf": "581.424.628-69", "nome": "AGATHA CRISTINA FERREIRA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "424.148.348-89", "nome": "AGATHA CRISTINE DE OLIVEIRA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 10.6, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "574.503.998-14", "nome": "ANNE SOPHIE MODESTO PINTO", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "235.569.968-20", "nome": "ALINE RODRIGUES DOS SANTOS", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 25.9, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "567.906.578-94", "nome": "BRENNO DIEGO FERREIRA DA SILVA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "468.476.818-02", "nome": "BRENO VALENTIM DA SILVA SANTOS", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "423.308.688-20", "nome": "BRUNA TENUTA BARBOSA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "454.329.098-47", "nome": "CAMILA EVANGELISTA TRINDADE", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 24.1, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "440.245.438-73", "nome": "CAMILA DE FIGUEIREDO BARBOSA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "574.862.748-50", "nome": "CAMILA GOMES CARDOSO", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "716.092.061-93", "nome": "CAMILA PEREIRA DA SILVA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "454.611.568-78", "nome": "CARLA LOPES DA PAZ", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "370.136.218-11", "nome": "CRISTIANE ALVES DE LIRA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "494.260.008-10", "nome": "DANIELLE BOTELHO RADU", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "394.692.978-81", "nome": "DEBORA DE SOUZA LABIAPARI", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "513.565.818-11", "nome": "EMANUELLE VICTORIA BARBOSA MARQUES", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "538.387.788-63", "nome": "ENZO VALENTIM FRANDINI LIMA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "107.598.257-00", "nome": "ESTER RAMOS SOUZA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": 24.8, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "479.497.128-13", "nome": "FABIA BORGES DA SILVA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "601.223.448-12", "nome": "FABRICIO RAPHAEL BORGES RIBEIRO", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 10.8, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "403.072.868-51", "nome": "FERNANDA BISPO BORBA AUGUSTO", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "548.952.678-57", "nome": "GABRIELA CAMPACCI DERENZO", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": null, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "460.573.708-13", "nome": "GABRIELLY VICTORIA CERQUEIRA DA SILVA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "595.409.148-09", "nome": "GEOVANNA ROCHA PEREIRA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "041.514.323-37", "nome": "Gilvandro Benvindo Pereira de Carvalho", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": null, "vr_dia": null, "va": null, "comb": 300.0, "assim": null, "bonus": null, "odonto": 300.0, "med": null, "trienio": null}, {"cpf": "557.802.998-11", "nome": "GUILHERME DA SILVA ARCANJO", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "456.492.208-40", "nome": "ISABELLY FERNANDES DE ALMEIDA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "320.032.138-56", "nome": "IVANETE SANTOS REBOUCAS FERNADES", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "504.179.388-37", "nome": "JAQUELINE KELLY COSTA SILVA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "509.568.408-09", "nome": "JHONATA RODRIGUES GUIMARAES DOS SANTOS", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "525.432.918-14", "nome": "JOÃO VICTOR PARLADORI GOMES", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 10.8, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "050.585.554-25", "nome": "JOSE SEBASTIAO DE SANTANA FILHO", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "567.368.128-36", "nome": "JULIA ALVES DA SILVA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "417.330.188-08", "nome": "KAUANE SILVA RODRIGUES", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "478.491.808-60", "nome": "LARISSA CARDOZO DIAS", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 10.6, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "492.766.868-19", "nome": "LAURA LAOPOLDINO MENDES", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 10.6, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "509.693.878-65", "nome": "LETICIA FERREIRA DE OLIVEIRA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "392.522.768-74", "nome": "LEONARDO DE MELO NASCIMENTO", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "482.355.338-12", "nome": "LILIAN VITORIA CANDIDO NAVAS", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "404.517.168-17", "nome": "MARCELA RIBEIRO MARTINS", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "504.343.358-27", "nome": "LEONARDO TOLENTINO DE SOUZA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": null, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "443.777.288-14", "nome": "MARCELO FRANCISCO DE SOUZA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "584.680.258-36", "nome": "MARIA CLARA CADETE DOS SANTOS", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 24.1, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "479.075.498-76", "nome": "MARIA FERNANDA MAGDALENA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 10.6, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "140.778.118-99", "nome": "MARISA ROSA DA SILVA SANTOS", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": null, "vr_dia": 24.8, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "527.686.678-38", "nome": "NICOLE SOUZA SILVA BATISTA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "569.599.428-45", "nome": "NICOLI ROCHA DE ALMEIRA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "544.226.788-09", "nome": "PAMELA RIBEIRO DA SILVA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "444.197.508-20", "nome": "PATRICIA SOUZA DO CARMO", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 22.8, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "116.478.538-93", "nome": "Paula Andrea Rodrigues Marques", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": null, "vr_dia": null, "va": null, "comb": 300.0, "assim": null, "bonus": null, "odonto": 300.0, "med": null, "trienio": null}, {"cpf": "545.375.498-23", "nome": "PHELIPY FIRMINO AUGUSTO", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 10.6, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "523.278.578-80", "nome": "RAFAEL PEREIRA DOS SANTOS", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "466.510.998-25", "nome": "RAQUEL MELQUIADES DA SILVA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "265.882.838-14", "nome": "SANDRA DO NASCIMENTO", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "256.298.208-85", "nome": "SIDNEI BATISTA PEREIRA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": null, "vr_dia": 24.8, "va": null, "comb": 400.0, "assim": null, "bonus": null, "odonto": 400.0, "med": null, "trienio": null}, {"cpf": "483.960.788-58", "nome": "TALITA DE CASSIA CARVALHO", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 10.6, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "335.706.038-81", "nome": "THAIS MONTEIRO DA SILVA BARBOSA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "426.824.028-44", "nome": "WILLIAN DE ALMEIDA ROCHA", "cargo": "", "cnpj": "05.441.897/0001-02", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": null, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "385.098.018-94", "nome": "AILTON SOARES BATISTA", "cargo": "SUPERVISOR ADMINISTRATIVO", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": 10.8, "vr_dia": 24.8, "va": 520.8, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "182.844.888-50", "nome": "ALEX ZAPAROLLI DE AGUSTINI", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "396.775.298-46", "nome": "ANDRE TOMAZELLI", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "325.932.158-60", "nome": "ANGELITA MARIA DA SILVA", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "486.930.998-09", "nome": "APARECIDO HENRIQUE DE MACEDO", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "359.216.428-78", "nome": "ARIETE DOS SANTOS TOMAZ", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "470.439.398-44", "nome": "BRUNA GOMES TAVARES", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": 22.6, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "478.575.318-80", "nome": "BRUNA STEFANY ARAUJO PEREIRA SABINO", "cargo": "AGENTE DE ATENDIMENTO", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": 10.6, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "410.647.028-48", "nome": "BRUNO NATHAN DA SILVA", "cargo": "ANALISTA DE RH", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": 24.8, "va": 520.8, "comb": null, "assim": null, "bonus": 150.0, "odonto": null, "med": null, "trienio": null}, {"cpf": "154.460.558-70", "nome": "CARLA RODRIGUES", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "302.252.558-39", "nome": "DANIELA DOS SANTOS", "cargo": "AGENTE DE ATENDIMENTO", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": 10.6, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": 180.54, "odonto": null, "med": null, "trienio": null}, {"cpf": "175.974.098-50", "nome": "ELTON DA SILVA MATOS", "cargo": "COORDENADOR DE ATENDIMENTO", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": 18.76, "vr_dia": 24.8, "va": 520.8, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "083.132.135-07", "nome": "ERICA FERNANDA SANTOS DE SOUZA", "cargo": "AUXILIAR DE LIMPEZA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": 18.76, "vr_dia": 24.8, "va": 570.4, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "287.305.898-60", "nome": "FABIANI MIAMOTO NIYAMA", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "361.119.348-80", "nome": "FLAVIA MARTINS MIRANDA", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "163.797.024-23", "nome": "GEICE KELLY DA SILVA FERREIRA RAMOS", "cargo": "AGENTE DE ATENDIMENTO", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": 174.1, "comb": null, "assim": 204.48, "bonus": 150.45, "odonto": null, "med": null, "trienio": null}, {"cpf": "454.716.808-39", "nome": "GEOVANA SILVA SOUSA", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "713.628.502-09", "nome": "GIELI COSTA DOS SANTOS", "cargo": "AUXILIAR DE LIMPEZA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": 18.76, "vr_dia": 24.8, "va": 620.0, "comb": null, "assim": 180.43, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "332.084.208-03", "nome": "GISLAM LUTTI SILVA BATISTA", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": 27.6, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "098.394.064-93", "nome": "GUSTAVO COLLIN LANA", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": 24.54, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "290.479.908-70", "nome": "GUSTAVO HIROSHI KANNO", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "503.395.778-35", "nome": "HADASSA AMARO VIANA", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "038.733.105-03", "nome": "ISMAEL MAIQUE CHAGAS SILVA", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "378.138.068-83", "nome": "JANAINA DOS REIS DA SILVA", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "457.052.418-44", "nome": "JANAINA SOARES DA SILVA MORAES", "cargo": "AUXILIAR DE LIMPEZA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": 18.76, "vr_dia": 24.8, "va": 620.0, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "377.712.558-09", "nome": "JHAY FELIPE DE ALBUQUERQUE", "cargo": "GERENTE ADMINISTRATIVO", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": 24.8, "va": 520.8, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "316.802.338-82", "nome": "KELLY FERREIRA DOS SANTOS SILVA", "cargo": "AGENTE DE ATENDIMENTO", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "482.522.918-21", "nome": "KETELYN RODRIGUES FERREIRA DA SILVA", "cargo": "AGENTE DE ATENDIMENTO", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": 174.1, "comb": null, "assim": 4.35, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "365.550.128-54", "nome": "LEILANE FRANCA FERREIRA", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "433.556.068-04", "nome": "LETICIA AKAMINE MARCHEZONI", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "491.094.418-40", "nome": "LETICIA GARCIA RAMOS", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "118.857.718-27", "nome": "LUCIDALVA NUNES CERQUEIRA DA SILVA", "cargo": "AUXILIAR DE LIMPEZA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": 18.76, "vr_dia": 24.8, "va": 620.0, "comb": null, "assim": 180.43, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "111.620.448-70", "nome": "MARIA REGINA RODRIGUES", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "421.032.088-97", "nome": "MATHEUS ALVES DE MATOS", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "358.719.988-44", "nome": "MEIRIANE CRISTINA FRAZÃO SILVA", "cargo": "AGENTE DE ATENDIMENTO", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": 24.24, "vr_dia": null, "va": 174.1, "comb": null, "assim": 180.43, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "415.481.768-00", "nome": "MELISSA RIBEIRO DANTAS", "cargo": "AGENTE DE ATENDIMENTO", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": 18.76, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "363.327.818-40", "nome": "MIRIAN SANTANA MEDEIROS", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "336.366.068-59", "nome": "MONICA DOS SANTOS SILVA", "cargo": "COORDENADORA RH", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": 24.8, "va": 520.8, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "325.295.938-09", "nome": "PRISCILA GOMES DE MACEDO", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": 10.6, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "428.906.748-43", "nome": "RAFAEL CUKIERMAN", "cargo": "COORDENADOR DE MARKETING", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": 24.8, "va": 520.8, "comb": null, "assim": null, "bonus": 1000.0, "odonto": null, "med": null, "trienio": null}, {"cpf": "344.586.748-89", "nome": "RAFAEL ELIAS RODRIGUES", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "076.498.825-51", "nome": "RAIANE SENA DOS SANTOS", "cargo": "AUXILIAR DE LIMPEZA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": 18.76, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "297.849.458-19", "nome": "ROBERTA GONÇALVES JULIETTE VALDO ALELUIA", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "408.242.378-89", "nome": "SABRINE DE SOUSA LIMA", "cargo": "FISIOTERAPEUTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt_dia": null, "vr_dia": null, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "482.173.285-87", "nome": "SELMA BORGES DOS SANTOS", "cargo": "AUXILIAR DE LIMPEZA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": 18.76, "vr_dia": 24.8, "va": 570.4, "comb": null, "assim": 180.43, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "326.536.758-46", "nome": "SIMONE SANTOS CAIRES", "cargo": "AUXILIAR DE LIMPEZA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": 18.76, "vr_dia": 24.8, "va": 620.0, "comb": null, "assim": 180.43, "bonus": null, "odonto": null, "med": null, "trienio": null}, {"cpf": "481.897.028-07", "nome": "THAYLA ANGEL DA SILVA CAVALCANTE", "cargo": "AGENTE DE ATENDIMENTO", "cnpj": "54.188.772/0001-28", "escala": "56", "vt_dia": 18.76, "vr_dia": 24.8, "va": 174.1, "comb": null, "assim": null, "bonus": null, "odonto": null, "med": null, "trienio": null}];
+var PLANILHA_BENEF_DATA = [];
 
 function importarBenefPlanilhas() {
   var total = PLANILHA_BENEF_DATA.length;
@@ -8218,7 +8262,7 @@ function importarBenefPlanilhas() {
 // ============================================================
 // IMPORTAÇÃO MASSIVA DE BENEFÍCIOS DAS PLANILHAS
 // ============================================================
-var BENEF_PLANILHAS = [{"nome":"AGATHA CRISTINA FERREIRA","cpf":"581.424.628-69","cargo":"ESTGIÁRIO(A) RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":120.0,"bonus":120.0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"AGATHA CRISTINE DE OLIVEIRA","cpf":"424.148.348-89","cargo":"ESTAGIÁRIO(A) CALL CENTER","escala":"55","vt":10.6,"vr":0,"va":0,"comb":0,"assim":120.0,"bonus":120.0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES CENTRAL","vtEAc":"ÔNIBUS"},{"nome":"ANNE SOPHIE MODESTO PINTO","cpf":"574.503.998-14","cargo":"ESTGIÁRIO(A) RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"ALINE RODRIGUES DOS SANTOS","cpf":"235.569.968-20","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":25.9,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"OUTROS MUNICIPIOS"},{"nome":"BRENNO DIEGO FERREIRA DA SILVA","cpf":"567.906.578-94","cargo":"ESTGIÁRIO(A) RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"VILA","vtEAc":"INTEGRAÇÃO"},{"nome":"BRENO VALENTIM DA SILVA SANTOS","cpf":"468.476.818-02","cargo":"ESTGIÁRIO(A) RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":120.0,"bonus":120.0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"BRUNA TENUTA BARBOSA","cpf":"423.308.688-20","cargo":"ESTGIÁRIO(A) RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":120.0,"bonus":120.0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"VILA","vtEAc":"INTEGRAÇÃO"},{"nome":"CAMILA EVANGELISTA TRINDADE","cpf":"454.329.098-47","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"55","vt":24.1,"vr":0,"va":0,"comb":0,"assim":143.46,"bonus":143.46,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"OUTROS MUNICIPIOS"},{"nome":"CAMILA DE FIGUEIREDO BARBOSA","cpf":"440.245.438-73","cargo":"AUXILIAR ADMINISTRATIVO(A)","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"CAMILA GOMES CARDOSO","cpf":"574.862.748-50","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"VILA","vtEAc":"INTEGRAÇÃO"},{"nome":"CAMILA PEREIRA DA SILVA","cpf":"716.092.061-93","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":18.76,"vr":0,"va":0,"comb":0,"assim":191.28,"bonus":191.28,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"CARLA LOPES DA PAZ","cpf":"454.611.568-78","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"CRISTIANE ALVES DE LIRA","cpf":"370.136.218-11","cargo":"LÍDER RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"DANIELLE BOTELHO RADU","cpf":"494.260.008-10","cargo":"LÍDER RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"VILA","vtEAc":"INTEGRAÇÃO"},{"nome":"DEBORA DE SOUZA LABIAPARI","cpf":"394.692.978-81","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":18.76,"vr":0,"va":0,"comb":0,"assim":143.46,"bonus":143.46,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"VILA","vtEAc":"INTEGRAÇÃO"},{"nome":"EMANUELLE VICTORIA BARBOSA MARQUES","cpf":"513.565.818-11","cargo":"ESTGIÁRIO(A) RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"ÔNIBUS"},{"nome":"ENZO VALENTIM FRANDINI LIMA","cpf":"538.387.788-63","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"ESTER RAMOS SOUZA","cpf":"107.598.257-00","cargo":"AUXILIAR DE LIMPEZA","escala":"56","vt":18.76,"vr":24.8,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"FABIA BORGES DA SILVA","cpf":"479.497.128-13","cargo":"AUXILIAR ADMINISTRATIVO(A)","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"FABRICIO RAPHAEL BORGES RIBEIRO","cpf":"601.223.448-12","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":10.8,"vr":0,"va":0,"comb":0,"assim":117.23,"bonus":117.23,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"METRÔ"},{"nome":"FERNANDA BISPO BORBA AUGUSTO","cpf":"403.072.868-51","cargo":"LÍDER RECEPÇÃO","escala":"56","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"GABRIELA CAMPACCI DERENZO","cpf":"548.952.678-57","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":0,"vr":0,"va":0,"comb":0,"assim":143.46,"bonus":143.46,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"VILA","vtEAc":"CANCELADO"},{"nome":"GABRIELLY VICTORIA CERQUEIRA DA SILVA","cpf":"460.573.708-13","cargo":"ESTAGIÁRIO(A) CALL CENTER","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":120.0,"bonus":120.0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES CENTRAL","vtEAc":"INTEGRAÇÃO"},{"nome":"GEOVANNA ROCHA PEREIRA","cpf":"595.409.148-09","cargo":"ESTAGIÁRIO(A) CALL CENTER","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES CENTRAL","vtEAc":"INTEGRAÇÃO"},{"nome":"Gilvandro Benvindo Pereira de Carvalho","cpf":"041.514.323-37","cargo":"COORDENADOR PSICOLOGIA","escala":"55","vt":0,"vr":0,"va":0,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TODAS","vtEAc":"AUXILIO COMBUSTÍVEL"},{"nome":"GUILHERME DA SILVA ARCANJO","cpf":"557.802.998-11","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":18.76,"vr":0,"va":0,"comb":0,"assim":191.28,"bonus":191.28,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"ISABELLY FERNANDES DE ALMEIDA","cpf":"456.492.208-40","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"IVANETE SANTOS REBOUCAS FERNADES","cpf":"320.032.138-56","cargo":"LÍDER RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"JAQUELINE KELLY COSTA SILVA","cpf":"504.179.388-37","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"JHONATA RODRIGUES GUIMARAES DOS SANTOS","cpf":"509.568.408-09","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"VILA","vtEAc":"INTEGRAÇÃO"},{"nome":"JOSE SEBASTIAO DE SANTANA FILHO","cpf":"050.585.554-25","cargo":"OFICIAL DE MANUTENÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TODAS","vtEAc":"INTEGRAÇÃO"},{"nome":"JULIA ALVES DA SILVA","cpf":"567.368.128-36","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"VILA","vtEAc":"INTEGRAÇÃO"},{"nome":"KAUANE SILVA RODRIGUES","cpf":"417.330.188-08","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"LARISSA CARDOZO DIAS","cpf":"478.491.808-60","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":10.6,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"ÔNIBUS"},{"nome":"LAURA LAOPOLDINO MENDES","cpf":"492.766.868-19","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":10.6,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"ÔNIBUS"},{"nome":"LETICIA FERREIRA DE OLIVEIRA","cpf":"509.693.878-65","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":143.46,"bonus":143.46,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"LEONARDO DE MELO NASCIMENTO","cpf":"392.522.768-74","cargo":"ANALISTA FATURAMENTO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"LILIAN VITORIA CANDIDO NAVAS","cpf":"482.355.338-12","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":18.76,"vr":0,"va":0,"comb":0,"assim":117.23,"bonus":117.23,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"MARCELA RIBEIRO MARTINS","cpf":"404.517.168-17","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":18.76,"vr":0,"va":0,"comb":0,"assim":156.31,"bonus":156.31,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"LEONARDO TOLENTINO DE SOUZA","cpf":"504.343.358-27","cargo":"AUXILIAR ADMINISTRATIVO(A)","escala":"55","vt":0,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"VILA","vtEAc":"OUTROS MUNICIPIOS"},{"nome":"MARCELO FRANCISCO DE SOUZA","cpf":"443.777.288-14","cargo":"AUXILIAR ADMINISTRATIVO(A)","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"TREM"},{"nome":"MARIA CLARA CADETE DOS SANTOS","cpf":"584.680.258-36","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":24.1,"vr":0,"va":0,"comb":0,"assim":156.31,"bonus":156.31,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"OUTROS MUNICIPIOS"},{"nome":"MARIA FERNANDA MAGDALENA","cpf":"479.075.498-76","cargo":"ESTGIÁRIO(A) RECEPÇÃO","escala":"55","vt":10.6,"vr":0,"va":0,"comb":0,"assim":120.0,"bonus":120.0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"ÔNIBUS"},{"nome":"MARISA ROSA DA SILVA SANTOS","cpf":"140.778.118-99","cargo":"ENCARREGADA LIMPEZA","escala":"55","vt":0,"vr":24.8,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TODAS","vtEAc":"OUTROS MUNICIPIOS"},{"nome":"NICOLE SOUZA SILVA BATISTA","cpf":"527.686.678-38","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"NICOLI ROCHA DE ALMEIRA","cpf":"569.599.428-45","cargo":"ESTGIÁRIO(A) RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"PAMELA RIBEIRO DA SILVA","cpf":"544.226.788-09","cargo":"ESTAGIÁRIO(A) CALL CENTER","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":153.34,"bonus":153.34,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES CENTRAL","vtEAc":"INTEGRAÇÃO"},{"nome":"PATRICIA SOUZA DO CARMO","cpf":"444.197.508-20","cargo":"LÍDER RECEPÇÃO","escala":"56","vt":22.8,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"OUTROS MUNICIPIOS"},{"nome":"Paula Andrea Rodrigues Marques","cpf":"116.478.538-93","cargo":"ASSISTENTE DE CREDENCIAMENTO","escala":"55","vt":0,"vr":0,"va":0,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TODAS","vtEAc":"AUXILIO COMBUSTÍVEL"},{"nome":"PHELIPY FIRMINO AUGUSTO","cpf":"545.375.498-23","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"55","vt":10.6,"vr":0,"va":0,"comb":0,"assim":0,"bonus":95.63,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"ÔNIBUS"},{"nome":"RAFAEL PEREIRA DOS SANTOS","cpf":"523.278.578-80","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"VILA","vtEAc":"INTEGRAÇÃO"},{"nome":"RAQUEL MELQUIADES DA SILVA","cpf":"466.510.998-25","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"56","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"SANDRA DO NASCIMENTO","cpf":"265.882.838-14","cargo":"ANALISTA FATURAMENTO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"SIDNEI BATISTA PEREIRA","cpf":"256.298.208-85","cargo":"GERENTE ADMINISTRATIVO","escala":"55","vt":0,"vr":24.8,"va":0,"comb":400.0,"assim":0,"bonus":0,"odonto":400.0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"AUXILIO COMBUSTÍVEL"},{"nome":"TALITA DE CASSIA CARVALHO","cpf":"483.960.788-58","cargo":"AUXILIAR ADMINISTRATIVO(A)","escala":"55","vt":10.6,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"PERDIZES","vtEAc":"ÔNIBUS"},{"nome":"THAIS MONTEIRO DA SILVA BARBOSA","cpf":"335.706.038-81","cargo":"AUXILIAR DE FATURAMENTO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"VILA","vtEAc":"INTEGRAÇÃO"},{"nome":"WILLIAN DE ALMEIDA ROCHA","cpf":"426.824.028-44","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"55","vt":18.76,"vr":0,"va":0,"comb":0,"assim":200.84,"bonus":200.84,"odonto":0,"med":0,"trienio":0,"cnpj":"05.441.897/0001-02","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"AILTON SOARES BATISTA","cpf":"385.098.018-94","cargo":"SUPERVISOR ADMINISTRATIVO","escala":"55","vt":10.8,"vr":24.8,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"VILA","vtEAc":"TREM"},{"nome":"ALEX ZAPAROLLI DE AGUSTINI","cpf":"182.844.888-50","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"ANDRE TOMAZELLI","cpf":"396.775.298-46","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"VILA","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"ANGELITA MARIA DA SILVA","cpf":"325.932.158-60","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"APARECIDO HENRIQUE DE MACEDO","cpf":"486.930.998-09","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"VILA","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"ARIETE DOS SANTOS TOMAZ","cpf":"359.216.428-78","cargo":"FISIOTERAPEUTA","escala":"55","vt":18.76,"vr":0,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"BRUNA GOMES TAVARES","cpf":"470.439.398-44","cargo":"FISIOTERAPEUTA","escala":"55","vt":22.6,"vr":0,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"OUTRO MUNICÍPIO"},{"nome":"BRUNA STEFANY ARAUJO PEREIRA SABINO","cpf":"478.575.318-80","cargo":"AGENTE DE ATENDIMENTO","escala":"55","vt":10.6,"vr":0,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"ÔNIBUS"},{"nome":"BRUNO NATHAN DA SILVA","cpf":"410.647.028-48","cargo":"ANALISTA DE RH","escala":"55","vt":0,"vr":24.8,"va":174.1,"comb":300.0,"assim":0,"bonus":150.0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TODAS","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"CARLA RODRIGUES","cpf":"154.460.558-70","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TATUAPÉ","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"DANIELA DOS SANTOS","cpf":"302.252.558-39","cargo":"AGENTE DE ATENDIMENTO","escala":"56","vt":10.6,"vr":0,"va":174.1,"comb":0,"assim":0,"bonus":180.54,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"ÔNIBUS"},{"nome":"ELTON DA SILVA MATOS","cpf":"175.974.098-50","cargo":"COORDENADOR DE ATENDIMENTO","escala":"55","vt":18.76,"vr":24.8,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"ERICA FERNANDA SANTOS DE SOUZA","cpf":"083.132.135-07","cargo":"AUXILIAR DE LIMPEZA","escala":"56","vt":18.76,"vr":24.8,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"VILA","vtEAc":"INTEGRAÇÃO"},{"nome":"FABIANI MIAMOTO NIYAMA","cpf":"287.305.898-60","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"FLAVIA MARTINS MIRANDA","cpf":"361.119.348-80","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"VILA","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"GEICE KELLY DA SILVA FERREIRA RAMOS","cpf":"163.797.024-23","cargo":"AGENTE DE ATENDIMENTO","escala":"55","vt":18.76,"vr":0,"va":174.1,"comb":0,"assim":204.48,"bonus":204.48,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"GEOVANA SILVA SOUSA","cpf":"454.716.808-39","cargo":"FISIOTERAPEUTA","escala":"55","vt":18.76,"vr":0,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"GIELI COSTA DOS SANTOS","cpf":"713.628.502-09","cargo":"AUXILIAR DE LIMPEZA","escala":"56","vt":18.76,"vr":24.8,"va":174.1,"comb":0,"assim":180.43,"bonus":180.43,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"GISLAM LUTTI SILVA BATISTA","cpf":"332.084.208-03","cargo":"FISIOTERAPEUTA","escala":"55","vt":27.6,"vr":0,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TATUAPÉ","vtEAc":"OUTRO MUNICÍPIO"},{"nome":"GUSTAVO COLLIN LANA","cpf":"098.394.064-93","cargo":"FISIOTERAPEUTA","escala":"55","vt":24.54,"vr":0,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TATUAPÉ","vtEAc":"OUTRO MUNICÍPIO"},{"nome":"GUSTAVO HIROSHI KANNO","cpf":"290.479.908-70","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"HADASSA AMARO VIANA","cpf":"503.395.778-35","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TODAS","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"ISMAEL MAIQUE CHAGAS SILVA","cpf":"038.733.105-03","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"VILA","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"JANAINA DOS REIS DA SILVA","cpf":"378.138.068-83","cargo":"FISIOTERAPEUTA","escala":"56","vt":0,"vr":0,"va":174.1,"comb":100.0,"assim":0,"bonus":0,"odonto":100.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"VILA","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"JANAINA SOARES DA SILVA MORAES","cpf":"457.052.418-44","cargo":"AUXILIAR DE LIMPEZA","escala":"56","vt":18.76,"vr":24.8,"va":0,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"JHAY FELIPE DE ALBUQUERQUE","cpf":"377.712.558-09","cargo":"GERENTE ADMINISTRATIVO","escala":"55","vt":0,"vr":24.8,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"JOAO VICTOR PARLADORI GOMES","cpf":"525.432.918-14","cargo":"ASSISTENTE DE ATENDIMENTO - RECEPÇÃO","escala":"55","vt":10.8,"vr":0,"va":174.1,"comb":0,"assim":150.45,"bonus":150.45,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TATUAPÉ","vtEAc":"-"},{"nome":"KELLY FERREIRA DOS SANTOS SILVA","cpf":"316.802.338-82","cargo":"AGENTE DE ATENDIMENTO","escala":"55","vt":0,"vr":0,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"HOME","vtEAc":"HOME OFFICE"},{"nome":"KETELYN RODRIGUES FERREIRA DA SILVA","cpf":"482.522.918-21","cargo":"AGENTE DE ATENDIMENTO","escala":"55","vt":18.76,"vr":0,"va":174.1,"comb":0,"assim":4.35,"bonus":4.35,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"LEILANE FRANCA FERREIRA","cpf":"365.550.128-54","cargo":"FISIOTERAPEUTA","escala":"55","vt":18.76,"vr":0,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"LETICIA AKAMINE MARCHEZONI","cpf":"433.556.068-04","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"VILA","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"LETICIA GARCIA RAMOS","cpf":"491.094.418-40","cargo":"FISIOTERAPEUTA","escala":"56","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"VILA","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"LUCIDALVA NUNES CERQUEIRA DA SILVA","cpf":"118.857.718-27","cargo":"AUXILIAR DE LIMPEZA","escala":"56","vt":18.76,"vr":24.8,"va":174.1,"comb":0,"assim":180.43,"bonus":180.43,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"VILA","vtEAc":"INTEGRAÇÃO"},{"nome":"MARIA REGINA RODRIGUES","cpf":"111.620.448-70","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"MATHEUS ALVES DE MATOS","cpf":"421.032.088-97","cargo":"FISIOTERAPEUTA","escala":"55","vt":18.76,"vr":0,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"MEIRIANE CRISTINA FRAZÃO SILVA","cpf":"358.719.988-44","cargo":"AGENTE DE ATENDIMENTO","escala":"56","vt":24.24,"vr":0,"va":174.1,"comb":0,"assim":180.43,"bonus":180.43,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"OUTRO MUNICÍPIO"},{"nome":"MELISSA RIBEIRO DANTAS","cpf":"415.481.768-00","cargo":"AGENTE DE ATENDIMENTO","escala":"55","vt":18.76,"vr":0,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"MIRIAN SANTANA MEDEIROS","cpf":"363.327.818-40","cargo":"FISIOTERAPEUTA","escala":"56","vt":0,"vr":0,"va":174.1,"comb":100.0,"assim":0,"bonus":0,"odonto":100.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"VILA","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"MONICA DOS SANTOS SILVA","cpf":"336.366.068-59","cargo":"COORDENADORA RH","escala":"55","vt":0,"vr":24.8,"va":174.1,"comb":550.0,"assim":0,"bonus":0,"odonto":550.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TODAS","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"PRISCILA GOMES DE MACEDO","cpf":"325.295.938-09","cargo":"FISIOTERAPEUTA","escala":"56","vt":10.6,"vr":0,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TATUAPÉ","vtEAc":"ÔNIBUS"},{"nome":"RAFAEL CUKIERMAN","cpf":"428.906.748-43","cargo":"COORDENADOR DE MARKETING","escala":"55","vt":0,"vr":24.8,"va":174.1,"comb":300.0,"assim":0,"bonus":1000.0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TODAS","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"RAFAEL ELIAS RODRIGUES","cpf":"344.586.748-89","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"VILA","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"RAIANE SENA DOS SANTOS","cpf":"076.498.825-51","cargo":"AUXILIAR DE LIMPEZA","escala":"56","vt":18.76,"vr":0,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"ROBERTA GONÇALVES JULIETTE VALDO ALELUIA","cpf":"297.849.458-19","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TATUAPÉ","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"SABRINE DE SOUSA LIMA","cpf":"408.242.378-89","cargo":"FISIOTERAPEUTA","escala":"55","vt":0,"vr":0,"va":174.1,"comb":300.0,"assim":0,"bonus":0,"odonto":300.0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"AUXÍLIO COMBUSTÍVEL"},{"nome":"SELMA BORGES DOS SANTOS","cpf":"482.173.285-87","cargo":"AUXILIAR DE LIMPEZA","escala":"56","vt":18.76,"vr":24.8,"va":174.1,"comb":0,"assim":180.43,"bonus":180.43,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"},{"nome":"SIMONE SANTOS CAIRES","cpf":"326.536.758-46","cargo":"AUXILIAR DE LIMPEZA","escala":"56","vt":18.76,"vr":24.8,"va":174.1,"comb":0,"assim":180.43,"bonus":180.43,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"TATUAPÉ","vtEAc":"INTEGRAÇÃO"},{"nome":"THAYLA ANGEL DA SILVA CAVALCANTE","cpf":"481.897.028-07","cargo":"AGENTE DE ATENDIMENTO","escala":"56","vt":18.76,"vr":24.8,"va":174.1,"comb":0,"assim":0,"bonus":0,"odonto":0,"med":0,"trienio":0,"cnpj":"54.188.772/0001-28","unidade":"PERDIZES","vtEAc":"INTEGRAÇÃO"}];
+var BENEF_PLANILHAS = [];
 
 function importarBeneficiosPlanilhas() {
   var funcs = DB.g('funcionarios');
@@ -8323,7 +8367,7 @@ function importarBeneficiosPlanilhas() {
 // ============================================================
 // IMPORTAÇÃO MASSIVA DE BENEFÍCIOS DAS PLANILHAS
 // ============================================================
-var BENEF_IMPORT_DATA = {"581.424.628-69": {"nome": "AGATHA CRISTINA FERREIRA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 120.0}, "424.148.348-89": {"nome": "AGATHA CRISTINE DE OLIVEIRA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 10.6, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 120.0}, "574.503.998-14": {"nome": "ANNE SOPHIE MODESTO PINTO", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "235.569.968-20": {"nome": "ALINE RODRIGUES DOS SANTOS", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 25.9, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "567.906.578-94": {"nome": "BRENNO DIEGO FERREIRA DA SILVA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "468.476.818-02": {"nome": "BRENO VALENTIM DA SILVA SANTOS", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 120.0}, "423.308.688-20": {"nome": "BRUNA TENUTA BARBOSA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 120.0}, "454.329.098-47": {"nome": "CAMILA EVANGELISTA TRINDADE", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 24.1, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 143.46}, "440.245.438-73": {"nome": "CAMILA DE FIGUEIREDO BARBOSA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "574.862.748-50": {"nome": "CAMILA GOMES CARDOSO", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "716.092.061-93": {"nome": "CAMILA PEREIRA DA SILVA", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 191.28}, "454.611.568-78": {"nome": "CARLA LOPES DA PAZ", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "370.136.218-11": {"nome": "CRISTIANE ALVES DE LIRA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "494.260.008-10": {"nome": "DANIELLE BOTELHO RADU", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "394.692.978-81": {"nome": "DEBORA DE SOUZA LABIAPARI", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 143.46}, "513.565.818-11": {"nome": "EMANUELLE VICTORIA BARBOSA MARQUES", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "538.387.788-63": {"nome": "ENZO VALENTIM FRANDINI LIMA", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "107.598.257-00": {"nome": "ESTER RAMOS SOUZA", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 24.8, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "479.497.128-13": {"nome": "FABIA BORGES DA SILVA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "601.223.448-12": {"nome": "FABRICIO RAPHAEL BORGES RIBEIRO", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 10.8, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 117.23}, "403.072.868-51": {"nome": "FERNANDA BISPO BORBA AUGUSTO", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "548.952.678-57": {"nome": "GABRIELA CAMPACCI DERENZO", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 0.0, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 143.46}, "460.573.708-13": {"nome": "GABRIELLY VICTORIA CERQUEIRA DA SILVA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 120.0}, "595.409.148-09": {"nome": "GEOVANNA ROCHA PEREIRA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "041.514.323-37": {"nome": "Gilvandro Benvindo Pereira de Carvalho", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 0.0, "comb": 300.0, "assim": 0.0, "bonus": 0.0}, "557.802.998-11": {"nome": "GUILHERME DA SILVA ARCANJO", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 191.28}, "456.492.208-40": {"nome": "ISABELLY FERNANDES DE ALMEIDA", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "320.032.138-56": {"nome": "IVANETE SANTOS REBOUCAS FERNADES", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "504.179.388-37": {"nome": "JAQUELINE KELLY COSTA SILVA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "509.568.408-09": {"nome": "JHONATA RODRIGUES GUIMARAES DOS SANTOS", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "525.432.918-14": {"nome": "JOÃO VICTOR PARLADORI GOMES", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 10.8, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 150.45}, "050.585.554-25": {"nome": "JOSE SEBASTIAO DE SANTANA FILHO", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "567.368.128-36": {"nome": "JULIA ALVES DA SILVA", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "417.330.188-08": {"nome": "KAUANE SILVA RODRIGUES", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "478.491.808-60": {"nome": "LARISSA CARDOZO DIAS", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 10.6, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "492.766.868-19": {"nome": "LAURA LAOPOLDINO MENDES", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 10.6, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "509.693.878-65": {"nome": "LETICIA FERREIRA DE OLIVEIRA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 143.46}, "392.522.768-74": {"nome": "LEONARDO DE MELO NASCIMENTO", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "482.355.338-12": {"nome": "LILIAN VITORIA CANDIDO NAVAS", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 117.23}, "404.517.168-17": {"nome": "MARCELA RIBEIRO MARTINS", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 156.31}, "504.343.358-27": {"nome": "LEONARDO TOLENTINO DE SOUZA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "443.777.288-14": {"nome": "MARCELO FRANCISCO DE SOUZA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "584.680.258-36": {"nome": "MARIA CLARA CADETE DOS SANTOS", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 24.1, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 156.31}, "479.075.498-76": {"nome": "MARIA FERNANDA MAGDALENA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 10.6, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 120.0}, "140.778.118-99": {"nome": "MARISA ROSA DA SILVA SANTOS", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 0.0, "vr": 24.8, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "527.686.678-38": {"nome": "NICOLE SOUZA SILVA BATISTA", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "569.599.428-45": {"nome": "NICOLI ROCHA DE ALMEIRA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "544.226.788-09": {"nome": "PAMELA RIBEIRO DA SILVA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 153.34}, "444.197.508-20": {"nome": "PATRICIA SOUZA DO CARMO", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 22.8, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "116.478.538-93": {"nome": "Paula Andrea Rodrigues Marques", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 0.0, "comb": 300.0, "assim": 0.0, "bonus": 0.0}, "545.375.498-23": {"nome": "PHELIPY FIRMINO AUGUSTO", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 10.6, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 95.63}, "523.278.578-80": {"nome": "RAFAEL PEREIRA DOS SANTOS", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "466.510.998-25": {"nome": "RAQUEL MELQUIADES DA SILVA", "cnpj": "05.441.897/0001-02", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "265.882.838-14": {"nome": "SANDRA DO NASCIMENTO", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "256.298.208-85": {"nome": "SIDNEI BATISTA PEREIRA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 0.0, "vr": 24.8, "va": 0.0, "comb": 400.0, "assim": 0.0, "bonus": 0.0}, "483.960.788-58": {"nome": "TALITA DE CASSIA CARVALHO", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 10.6, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "335.706.038-81": {"nome": "THAIS MONTEIRO DA SILVA BARBOSA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "426.824.028-44": {"nome": "WILLIAN DE ALMEIDA ROCHA", "cnpj": "05.441.897/0001-02", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 0.0, "comb": 0.0, "assim": 0.0, "bonus": 200.84}, "385.098.018-94": {"nome": "AILTON SOARES BATISTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 10.8, "vr": 24.8, "va": 520.8, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "182.844.888-50": {"nome": "ALEX ZAPAROLLI DE AGUSTINI", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "396.775.298-46": {"nome": "ANDRE TOMAZELLI", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "325.932.158-60": {"nome": "ANGELITA MARIA DA SILVA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "486.930.998-09": {"nome": "APARECIDO HENRIQUE DE MACEDO", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "359.216.428-78": {"nome": "ARIETE DOS SANTOS TOMAZ", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "470.439.398-44": {"nome": "BRUNA GOMES TAVARES", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 22.6, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "478.575.318-80": {"nome": "BRUNA STEFANY ARAUJO PEREIRA SABINO", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 10.6, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "410.647.028-48": {"nome": "BRUNO NATHAN DA SILVA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 24.8, "va": 520.8, "comb": 0.0, "assim": 0.0, "bonus": 150.0}, "154.460.558-70": {"nome": "CARLA RODRIGUES", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "302.252.558-39": {"nome": "DANIELA DOS SANTOS", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 10.6, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 180.54}, "175.974.098-50": {"nome": "ELTON DA SILVA MATOS", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 18.76, "vr": 24.8, "va": 520.8, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "083.132.135-07": {"nome": "ERICA FERNANDA SANTOS DE SOUZA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 18.76, "vr": 24.8, "va": 570.4, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "287.305.898-60": {"nome": "FABIANI MIAMOTO NIYAMA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "361.119.348-80": {"nome": "FLAVIA MARTINS MIRANDA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "163.797.024-23": {"nome": "GEICE KELLY DA SILVA FERREIRA RAMOS", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 204.48, "bonus": 150.45}, "454.716.808-39": {"nome": "GEOVANA SILVA SOUSA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "713.628.502-09": {"nome": "GIELI COSTA DOS SANTOS", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 18.76, "vr": 24.8, "va": 620.0, "comb": 0.0, "assim": 180.43, "bonus": 0.0}, "332.084.208-03": {"nome": "GISLAM LUTTI SILVA BATISTA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 27.6, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "098.394.064-93": {"nome": "GUSTAVO COLLIN LANA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 24.54, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "290.479.908-70": {"nome": "GUSTAVO HIROSHI KANNO", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "503.395.778-35": {"nome": "HADASSA AMARO VIANA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "038.733.105-03": {"nome": "ISMAEL MAIQUE CHAGAS SILVA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "378.138.068-83": {"nome": "JANAINA DOS REIS DA SILVA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "457.052.418-44": {"nome": "JANAINA SOARES DA SILVA MORAES", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 18.76, "vr": 24.8, "va": 620.0, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "377.712.558-09": {"nome": "JHAY FELIPE DE ALBUQUERQUE", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 24.8, "va": 520.8, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "316.802.338-82": {"nome": "KELLY FERREIRA DOS SANTOS SILVA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "482.522.918-21": {"nome": "KETELYN RODRIGUES FERREIRA DA SILVA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 4.35, "bonus": 0.0}, "365.550.128-54": {"nome": "LEILANE FRANCA FERREIRA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "433.556.068-04": {"nome": "LETICIA AKAMINE MARCHEZONI", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "491.094.418-40": {"nome": "LETICIA GARCIA RAMOS", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "118.857.718-27": {"nome": "LUCIDALVA NUNES CERQUEIRA DA SILVA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 18.76, "vr": 24.8, "va": 620.0, "comb": 0.0, "assim": 180.43, "bonus": 0.0}, "111.620.448-70": {"nome": "MARIA REGINA RODRIGUES", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "421.032.088-97": {"nome": "MATHEUS ALVES DE MATOS", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "358.719.988-44": {"nome": "MEIRIANE CRISTINA FRAZÃO SILVA", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 24.24, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 180.43, "bonus": 0.0}, "415.481.768-00": {"nome": "MELISSA RIBEIRO DANTAS", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 18.76, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "363.327.818-40": {"nome": "MIRIAN SANTANA MEDEIROS", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "336.366.068-59": {"nome": "MONICA DOS SANTOS SILVA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 24.8, "va": 520.8, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "325.295.938-09": {"nome": "PRISCILA GOMES DE MACEDO", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 10.6, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "428.906.748-43": {"nome": "RAFAEL CUKIERMAN", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 24.8, "va": 520.8, "comb": 0.0, "assim": 0.0, "bonus": 1000.0}, "344.586.748-89": {"nome": "RAFAEL ELIAS RODRIGUES", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "076.498.825-51": {"nome": "RAIANE SENA DOS SANTOS", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 18.76, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "297.849.458-19": {"nome": "ROBERTA GONÇALVES JULIETTE VALDO ALELUIA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "408.242.378-89": {"nome": "SABRINE DE SOUSA LIMA", "cnpj": "54.188.772/0001-28", "escala": "55", "vt": 0.0, "vr": 0.0, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}, "482.173.285-87": {"nome": "SELMA BORGES DOS SANTOS", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 18.76, "vr": 24.8, "va": 570.4, "comb": 0.0, "assim": 180.43, "bonus": 0.0}, "326.536.758-46": {"nome": "SIMONE SANTOS CAIRES", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 18.76, "vr": 24.8, "va": 620.0, "comb": 0.0, "assim": 180.43, "bonus": 0.0}, "481.897.028-07": {"nome": "THAYLA ANGEL DA SILVA CAVALCANTE", "cnpj": "54.188.772/0001-28", "escala": "56", "vt": 18.76, "vr": 24.8, "va": 174.1, "comb": 0.0, "assim": 0.0, "bonus": 0.0}};
+var BENEF_IMPORT_DATA = {};
 
 async function importarBeneficiosPlanilhas() {
   var data = BENEF_IMPORT_DATA;
@@ -9190,10 +9234,10 @@ function clearSavedSignature() {
 }
 
 function gerarAssinaturaEmpresa(empresa, sigMonicaParam, sigBrunoParam) {
-  var isEq    = !empresa || empresa === 'equilibryum';
-  var nomeEmp = isEq ? 'Equilibryum Reabilitação e Consultoria em Saúde SC Ltda'
+  var isEq    = !empresa || empresa === 'absoluta';
+  var nomeEmp = isEq ? 'ABSOLUTA ASSESSORIA EMPRESARIAL'
                      : 'Longhi Serviços de Terceirização a Empresas Ltda';
-  var cnpjEmp = isEq ? 'CNPJ: 05.441.897/0001-02' : 'CNPJ: 54.188.772/0001-28';
+  var cnpjEmp = isEq ? 'CNPJ: 33.420.655/0001-78' : 'CNPJ: 54.188.772/0001-28';
   var endEmp  = isEq ? 'Rua Dr Costa Júnior, 365 – Perdizes – SP'
                      : 'Rua Dr Germaine Burchard, 324 – Perdizes – SP';
 
@@ -9222,7 +9266,7 @@ function gerarAssinaturaEmpresa(empresa, sigMonicaParam, sigBrunoParam) {
         '<div style="text-align:center;min-width:170px;">' +
           sigMonHtml +
           '<div style="border-top:1.5px solid #222;padding-top:4px;">' +
-            '<strong style="font-size:9pt;color:#1a5c3a;">MÔNICA SANTOS</strong><br>' +
+            '<strong style="font-size:9pt;color:#1a5c3a;">[Responsável RH]</strong><br>' +
             '<span style="font-size:8pt;color:#555;">Coordenadora de Recursos Humanos</span>' +
           '</div>' +
         '</div>' +
@@ -9231,7 +9275,7 @@ function gerarAssinaturaEmpresa(empresa, sigMonicaParam, sigBrunoParam) {
         '<div style="text-align:center;min-width:170px;">' +
           sigBruHtml +
           '<div style="border-top:1.5px solid #222;padding-top:4px;">' +
-            '<strong style="font-size:9pt;color:#1a5c3a;">BRUNO NATHAN DA SILVA</strong><br>' +
+            '<strong style="font-size:9pt;color:#1a5c3a;">[Responsável RH]</strong><br>' +
             '<span style="font-size:8pt;color:#555;">Analista de RH</span>' +
           '</div>' +
         '</div>' +
@@ -9814,8 +9858,8 @@ function gerarRequisicaoUniforme() {
   var dataFmt = data ? data.split('-').reverse().join('/') : '';
   var valFmt  = val  ? val.split('-').reverse().join('/')  : '';
 
-  var cnpjStr = emp ? (emp.cnpj||'05.441.897/0001-02') : '05.441.897/0001-02';
-  var razaoStr = emp ? emp.razao : 'EQUILIBRYUM REAB CONSULT EM SAUDE S S LT';
+  var cnpjStr = emp ? (emp.cnpj||'33.420.655/0001-78') : '33.420.655/0001-78';
+  var razaoStr = emp ? emp.razao : 'ABSOLUTA ASSESSORIA EMPRESARIAL';
 
   var tamanhosStr = '';
   if (f.tamCamisa)  tamanhosStr += 'Camisa: '+f.tamCamisa+'  ';
@@ -9856,7 +9900,7 @@ function gerarRequisicaoUniforme() {
     '</style></head><body>' +
 
     '<div class="topRow">' +
-      '<div class="logoBox">' + (LOGO_EMP_B64 ? '<img src="'+LOGO_EMP_B64+'">' : '<strong>EQUILIBRYUM</strong>') + '</div>' +
+      '<div class="logoBox">' + (LOGO_EMP_B64 ? '<img src="'+LOGO_EMP_B64+'">' : '<strong>ABSOLUTA</strong>') + '</div>' +
       '<div class="infoBox">' +
         '<div class="infoRow"><div class="infoLabel">RAZÃO SOCIAL</div><div class="infoVal">' + razaoStr + '</div></div>' +
         '<div class="infoRow"><div class="infoLabel">CNPJ</div><div class="infoVal">' + cnpjStr + '</div></div>' +
@@ -10094,7 +10138,7 @@ function gerarFormExp() {
 
   var logoHtml = LOGO_EMP_B64
     ? '<img src="' + LOGO_EMP_B64 + '" style="max-height:50px;max-width:160px;object-fit:contain;">'
-    : '<strong>EQUILIBRYUM</strong>';
+    : '<strong>ABSOLUTA</strong>';
 
   var doc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
     '<title>Avaliação de Experiência – ' + f.n + '</title>' +
@@ -10120,7 +10164,7 @@ function gerarFormExp() {
         '<div style="font-size:11pt;color:#555;">' + dias + ' dias &nbsp;|&nbsp; Data: ' + dataFmt + '</div>' +
       '</div>' +
       '<div style="font-size:9pt;color:#777;text-align:right;">' +
-        (emp ? emp.razao : 'Equilibryum') + '<br>' +
+        (emp ? emp.razao : 'ABSOLUTA') + '<br>' +
         (emp ? (emp.cnpj||'') : '') +
       '</div>' +
     '</div>' +
@@ -10186,21 +10230,21 @@ function gerarFormExp() {
       '<div class="sig">' +
         sigHtml +
         '<div class="sig-line">' +
-          '<strong>MÔNICA SANTOS</strong><br>' +
+          '<strong>[Responsável RH]</strong><br>' +
           '<small style="color:#666;">Coordenadora de RH</small>' +
         '</div>' +
       '</div>' +
       '<div class="sig">' +
         '<div style="height:36px;"></div>' +
         '<div class="sig-line">' +
-          '<strong>BRUNO NATHAN DA SILVA</strong><br>' +
+          '<strong>[Responsável RH]</strong><br>' +
           '<small style="color:#666;">Analista de RH</small>' +
         '</div>' +
       '</div>' +
     '</div>' +
 
     '<p style="text-align:center;font-size:8.5pt;color:#aaa;margin-top:16px;border-top:1px solid #eee;padding-top:8px;">' +
-      'Documento gerado em ' + new Date().toLocaleString('pt-BR') + ' | Sistema RH Equilibryum' +
+      'Documento gerado em ' + new Date().toLocaleString('pt-BR') + ' | Sistema de RH' +
     '</p>' +
 
     '</body></html>';
@@ -10423,7 +10467,7 @@ function gerarTemplatePJ() {
 
   var logoHtml = LOGO_EMP_B64
     ? '<img src="' + LOGO_EMP_B64 + '" style="max-height:52px;max-width:170px;object-fit:contain;display:block;margin:0 auto 10px;">'
-    : '<div style="font-size:15pt;font-weight:700;color:#1a5c3a;margin-bottom:10px;">EQUILIBRYUM</div>';
+    : '<div style="font-size:15pt;font-weight:700;color:#1a5c3a;margin-bottom:10px;">ABSOLUTA</div>';
 
   // Cards: sem foto, apenas dados — grade responsiva que cabe em 1 página
   var cards = lista.map(function(p) {
@@ -10473,7 +10517,7 @@ function gerarTemplatePJ() {
         '<div class="sub">PJ / Prestadores de Serviço &nbsp;|&nbsp; ' + lista.length + ' aniversariante(s)</div>' +
       '</div>' +
       '<div class="grid">' + cards + '</div>' +
-      '<div class="ftr">Sistema RH Equilibryum &nbsp;&#183;&nbsp; ' + new Date().toLocaleDateString('pt-BR') + '</div>' +
+      '<div class="ftr">Sistema de RH &nbsp;&#183;&nbsp; ' + new Date().toLocaleDateString('pt-BR') + '</div>' +
     '</div>' +
   '</body></html>';
 
@@ -10611,10 +10655,10 @@ function _gerarListaPresencaObj(t) {
 
   var logoHtml = LOGO_EMP_B64
     ? '<img src="' + LOGO_EMP_B64 + '" style="max-height:55px;max-width:180px;object-fit:contain;">'
-    : '<div style="font-size:14pt;font-weight:700;color:#1a5c3a;">EQUILIBRYUM</div>';
+    : '<div style="font-size:14pt;font-weight:700;color:#1a5c3a;">ABSOLUTA</div>';
 
   var emps   = DB.g('empresas');
-  var empNome = emps.length ? emps[0].razao || emps[0].nome || 'EQUILIBRYUM' : 'EQUILIBRYUM';
+  var empNome = emps.length ? emps[0].razao || emps[0].nome || 'ABSOLUTA' : 'ABSOLUTA';
   var empCnpj = emps.length ? emps[0].cnpj || '' : '';
 
   var doc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
@@ -10662,10 +10706,10 @@ function _gerarListaPresencaObj(t) {
     '</table>' +
     '<div class="footer">' +
       '<div class="sig-box"><div style="height:42px;"></div><div class="sig-name">MONICA SANTOS</div><div style="font-size:9.5pt;color:#555;">Coordenadora de RH</div></div>' +
-      '<div class="sig-box"><div style="height:42px;"></div><div class="sig-name">BRUNO NATHAN DA SILVA</div><div style="font-size:9.5pt;color:#555;">Analista de RH</div></div>' +
+      '<div class="sig-box"><div style="height:42px;"></div><div class="sig-name">[Responsável RH]</div><div style="font-size:9.5pt;color:#555;">Analista de RH</div></div>' +
       '<div class="sig-box"><div style="height:42px;"></div><div class="sig-name">' + (t.inst||'INSTRUTOR') + '</div><div style="font-size:9.5pt;color:#555;">Instrutor / Responsavel</div></div>' +
     '</div>' +
-    '<div style="margin-top:20px;text-align:center;font-size:8.5pt;color:#aaa;">Sistema RH Equilibryum - ' + new Date().toLocaleDateString('pt-BR') + '</div>' +
+    '<div style="margin-top:20px;text-align:center;font-size:8.5pt;color:#aaa;">Sistema de RH - ' + new Date().toLocaleDateString('pt-BR') + '</div>' +
   '</body></html>';
 
   var w = window.open('', '_blank');
@@ -10911,7 +10955,7 @@ function gerarMsgWhatsAppCron(id) {
 function _abrirMsgWhatsApp(c) {
   var dataFmt = c.data ? c.data.split('-').reverse().join('/') : '';
   var emps    = DB.g('empresas');
-  var empNome = emps.length ? (emps[0].razao||emps[0].nome||'EQUILIBRYUM') : 'EQUILIBRYUM';
+  var empNome = emps.length ? (emps[0].razao||emps[0].nome||'ABSOLUTA') : 'ABSOLUTA';
   var linhas  = [];
   linhas.push('🔔 *CONVOCAÇÃO DE TREINAMENTO*');
   linhas.push('🏥 *' + empNome + '*');
@@ -10925,7 +10969,7 @@ function _abrirMsgWhatsApp(c) {
   if (c.parts) { linhas.push(''); linhas.push('👥 *Participantes:* ' + c.parts); }
   if (c.obs)   { linhas.push(''); linhas.push('📋 *Observações:*\n' + c.obs); }
   linhas.push('');
-  linhas.push('_Sistema RH Equilibryum_');
+  linhas.push('_Sistema de RH_');
 
   var msg = linhas.join('\n');
 
@@ -10967,7 +11011,7 @@ function gerarCracha(fid) {
 
   var logoHtml = LOGO_EMP_B64
     ? '<img src="' + LOGO_EMP_B64 + '" style="max-height:32px;max-width:120px;object-fit:contain;display:block;margin:0 auto;">'
-    : '<div style="font-size:8pt;font-weight:700;color:#2d6a4f;letter-spacing:.5px;text-align:center;">EQUILIBRYUM</div>';
+    : '<div style="font-size:8pt;font-weight:700;color:#2d6a4f;letter-spacing:.5px;text-align:center;">ABSOLUTA</div>';
 
   // Foto: retangular com cantos levemente arredondados, igual ao modelo
   var fotoHtml = foto
@@ -12348,13 +12392,301 @@ function gerarUsoImagem() {
   abrirEImprimirDoc(doc, 'Autorizacao_Uso_Imagem_'+f.n.replace(/\s+/g,'_'), f);
 }
 
+// ── Dados fixos da empresa para os novos modelos de documento ──
+var EMP_NOME_PADRAO   = 'ABSOLUTA ASSESSORIA EMPRESARIAL';
+var EMP_CNPJ_PADRAO   = '33.420.655/0001-78';
+var EMP_ENDERECO_PADRAO = 'Rua Dr. Nilton Silva, 364, Vila Santa Teresa, São Paulo/SP, CEP 03564-020';
+
+function _abrirDocSimples(docHTML, filename) {
+  var w = window.open('', '_blank');
+  if (w) { w.document.write(docHTML); w.document.close(); setTimeout(function(){ w.print(); }, 700); }
+}
+
+// ── Termo de Responsabilidade e Confidencialidade ──────────
+function gerarTermoResponsabilidadeConf() {
+  var f = getDocFunc(); if (!f) return;
+  var logoHtml = LOGO_EMP_B64
+    ? '<img src="'+LOGO_EMP_B64+'" style="max-height:55px;max-width:180px;object-fit:contain;">'
+    : '<strong style="font-size:14px;">'+EMP_NOME_PADRAO+'</strong>';
+  var hoje = new Date();
+  var dataExt = fmtDataExtenso(td());
+
+  var doc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
+    '<title>Termo de Responsabilidade e Confidencialidade – '+f.n+'</title>' +
+    '<style>' +
+      '*{box-sizing:border-box;margin:0;padding:0;}' +
+      'body{font-family:Arial,sans-serif;font-size:10pt;color:#000;padding:1.5cm 2cm;}' +
+      'h1{font-size:12pt;font-weight:700;text-align:center;text-transform:uppercase;letter-spacing:.5px;margin-bottom:20px;padding-bottom:8px;border-bottom:2px solid #000;}' +
+      'h2{font-size:10.5pt;font-weight:700;margin:16px 0 6px;}' +
+      'p{font-size:10pt;line-height:1.7;margin-bottom:10px;text-align:justify;}' +
+      '.campo{font-weight:700;border-bottom:1px solid #000;padding:0 2px;}' +
+      '.ass-box{text-align:center;margin-top:50px;}' +
+      '.ass-linha{border-top:1px solid #000;width:320px;margin:0 auto 6px;}' +
+      '@media print{body{padding:1cm 1.5cm;}@page{size:A4;margin:0;}}' +
+    '</style></head><body>' +
+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">' +
+      '<div>'+logoHtml+'</div>' +
+      '<div style="text-align:right;font-size:9pt;color:#555;">'+EMP_NOME_PADRAO+'<br>CNPJ: '+EMP_CNPJ_PADRAO+'</div>' +
+    '</div>' +
+
+    '<h1>Termo de Responsabilidade e Confidencialidade</h1>' +
+
+    '<p>Pelo presente instrumento particular, eu, <strong class="campo">'+f.n+'</strong>, ' +
+    'portador(a) do RG nº <strong class="campo">'+(f.rg||'____________________')+'</strong>, ' +
+    'CPF nº <strong class="campo">'+(f.cpf||'___.___.___-__')+'</strong>, ' +
+    'residente e domiciliado(a) à <strong class="campo">'+(f.end||'____________________')+'</strong>, ' +
+    'e-mail <strong class="campo">'+(f.email||'____________________')+'</strong>, ' +
+    'na qualidade de colaborador(a) da empresa <strong>'+EMP_NOME_PADRAO+'</strong>, inscrita no CNPJ nº ' +
+    '<strong>'+EMP_CNPJ_PADRAO+'</strong>, com sede na '+EMP_ENDERECO_PADRAO+', exercendo a função de ' +
+    '<strong class="campo">'+(f.car||'____________________')+'</strong>, declaro estar ciente das responsabilidades ' +
+    'inerentes às minhas atribuições profissionais, comprometendo-me a atuar com ética, sigilo, boa-fé, ' +
+    'profissionalismo e observância às normas internas da empresa.</p>' +
+
+    '<h2>Cláusula 1 – Confidencialidade e Proteção de Dados</h2>' +
+    '<p>O(A) colaborador(a) compromete-se a manter absoluto sigilo sobre todas as informações, documentos, ' +
+    'dados cadastrais, estratégias comerciais, informações financeiras, dados pessoais de clientes, parceiros ' +
+    'e demais informações confidenciais às quais tiver acesso em razão de suas atividades profissionais, ' +
+    'inclusive após o encerramento do vínculo empregatício ou contratual.</p>' +
+    '<p>O tratamento de dados deverá observar integralmente a Lei nº 13.709/2018 (Lei Geral de Proteção de ' +
+    'Dados – LGPD), sendo vedada qualquer utilização indevida, compartilhamento não autorizado ou ' +
+    'armazenamento inadequado de informações.</p>' +
+
+    '<h2>Cláusula 2 – Uso Adequado das Informações</h2>' +
+    '<p>O(A) colaborador(a) declara que utilizará as informações acessadas exclusivamente para fins ' +
+    'relacionados ao exercício de suas funções profissionais, abstendo-se de utilizá-las em benefício ' +
+    'próprio ou de terceiros, bem como de reproduzir, divulgar ou compartilhar conteúdos internos sem ' +
+    'autorização expressa da empresa.</p>' +
+
+    '<h2>Cláusula 3 – Responsabilização</h2>' +
+    '<p>O(A) colaborador(a) declara estar ciente de que eventual utilização indevida, vazamento de ' +
+    'informações, conduta dolosa, fraude, negligência grave ou violação das obrigações previstas neste ' +
+    'termo poderá ensejar a adoção das medidas administrativas, cíveis e criminais cabíveis, nos termos ' +
+    'da legislação vigente.</p>' +
+    '<p>Fica assegurado o direito de apuração interna e, se necessário, judicial, para eventual ' +
+    'ressarcimento de danos comprovadamente causados à empresa, clientes, parceiros comerciais ou ' +
+    'terceiros.</p>' +
+
+    '<h2>Cláusula 4 – Parceiros e Prestadores de Serviço</h2>' +
+    '<p>As obrigações de confidencialidade previstas neste instrumento estendem-se às informações ' +
+    'compartilhadas com empresas parceiras, fornecedores, prestadores de serviço e terceiros vinculados ' +
+    'às operações da empresa, incluindo plataformas tecnológicas, escritórios contábeis, consultorias e ' +
+    'assessorias jurídicas.</p>' +
+
+    '<h2>Cláusula 5 – Disposições Gerais</h2>' +
+    '<p>Este termo possui caráter complementar às normas internas da empresa, políticas de segurança da ' +
+    'informação e legislação aplicável, não substituindo obrigações previstas em contrato de trabalho, ' +
+    'regulamentos internos ou demais instrumentos jurídicos.</p>' +
+    '<p>O(A) colaborador(a) declara ter lido integralmente o presente documento, compreendendo seu ' +
+    'conteúdo e concordando com suas disposições de forma livre e consciente.</p>' +
+
+    '<p style="text-align:center;margin-top:20px;">São Paulo, '+dataExt+'.</p>' +
+
+    '<div class="ass-box">' +
+      '<div class="ass-linha"></div>' +
+      'Assinatura do(a) Colaborador(a)' +
+    '</div>' +
+
+  '</body></html>';
+
+  _abrirDocSimples(doc, 'Termo_Responsabilidade_Confidencialidade_'+f.n.replace(/\s+/g,'_'));
+}
+
+// ── Termo de Autorização de Uso de Imagem e Voz (modelo FOR02) ──
+function gerarTermoAutorizacaoImagemVozNovo() {
+  var f = getDocFunc(); if (!f) return;
+  var logoHtml = LOGO_EMP_B64
+    ? '<img src="'+LOGO_EMP_B64+'" style="max-height:55px;max-width:180px;object-fit:contain;">'
+    : '<strong style="font-size:14px;">'+EMP_NOME_PADRAO+'</strong>';
+  var dataExt = fmtDataExtenso(td());
+
+  var doc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
+    '<title>Termo de Autorização de Uso de Imagem e Voz – '+f.n+'</title>' +
+    '<style>' +
+      '*{box-sizing:border-box;margin:0;padding:0;}' +
+      'body{font-family:Arial,sans-serif;font-size:10pt;color:#000;padding:1.5cm 2cm;}' +
+      'h1{font-size:12pt;font-weight:700;text-align:center;text-transform:uppercase;letter-spacing:.5px;margin-bottom:20px;padding-bottom:8px;border-bottom:2px solid #000;}' +
+      'p{font-size:10pt;line-height:1.8;margin-bottom:12px;text-align:justify;}' +
+      'ul{margin:0 0 12px 22px;font-size:10pt;line-height:1.7;}' +
+      '.campo{font-weight:700;border-bottom:1px solid #000;padding:0 2px;}' +
+      '.assinaturas{margin-top:40px;display:flex;justify-content:space-between;gap:30px;}' +
+      '.ass-box{text-align:center;flex:1;}' +
+      '.ass-linha{border-top:1px solid #000;margin-bottom:5px;}' +
+      '@media print{body{padding:1cm 1.5cm;}@page{size:A4;margin:0;}}' +
+    '</style></head><body>' +
+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">' +
+      '<div>'+logoHtml+'</div>' +
+      '<div style="text-align:right;font-size:9pt;color:#555;">'+EMP_NOME_PADRAO+'<br>CNPJ: '+EMP_CNPJ_PADRAO+'</div>' +
+    '</div>' +
+
+    '<h1>Termo de Autorização de Uso de Imagem e Voz</h1>' +
+
+    '<p>Pelo presente instrumento particular, eu, <strong class="campo">'+f.n+'</strong>, ' +
+    'CPF nº <strong class="campo">'+(f.cpf||'___.___.___-__')+'</strong>, autorizo, de forma livre, ' +
+    'expressa, informada e gratuita, a empresa <strong>'+EMP_NOME_PADRAO+'</strong>, inscrita no CNPJ nº ' +
+    '<strong>'+EMP_CNPJ_PADRAO+'</strong>, a utilizar minha imagem, voz e nome em fotografias, vídeos, ' +
+    'gravações e demais materiais produzidos em ambiente corporativo, institucional, comercial ou ' +
+    'promocional.</p>' +
+
+    '<p>A presente autorização poderá ser utilizada nos seguintes meios de comunicação:</p>' +
+    '<ul>' +
+      '<li>Redes sociais e plataformas digitais;</li>' +
+      '<li>Websites institucionais;</li>' +
+      '<li>Materiais publicitários e promocionais impressos ou digitais;</li>' +
+      '<li>Apresentações corporativas internas e externas;</li>' +
+      '<li>Campanhas institucionais e ações de marketing.</li>' +
+    '</ul>' +
+
+    '<p>A utilização da imagem e voz ocorrerá exclusivamente para fins institucionais, comerciais ' +
+    'legítimos e promocionais relacionados às atividades da empresa, sendo vedada qualquer utilização ' +
+    'que exponha o(a) colaborador(a) a situação vexatória, ofensiva ou que viole seus direitos de ' +
+    'personalidade.</p>' +
+
+    '<p>A presente autorização é concedida por prazo indeterminado, podendo ser revogada mediante ' +
+    'solicitação formal e escrita do(a) titular da imagem, respeitados os materiais já produzidos e ' +
+    'campanhas em andamento.</p>' +
+
+    '<p>A empresa compromete-se a realizar o tratamento das imagens e dados pessoais em conformidade ' +
+    'com a Lei nº 13.709/2018 (Lei Geral de Proteção de Dados – LGPD) e demais legislações aplicáveis.</p>' +
+
+    '<p>Por estarem de acordo, firmam o presente instrumento.</p>' +
+
+    '<p style="text-align:center;margin-top:16px;">São Paulo, '+dataExt+'.</p>' +
+
+    '<div class="assinaturas">' +
+      '<div class="ass-box">' +
+        '<div class="ass-linha"></div>' +
+        '<strong>'+f.n+'</strong><br>' +
+        '<span style="font-size:9pt;">Colaborador(a)</span>' +
+      '</div>' +
+      '<div class="ass-box">' +
+        '<div class="ass-linha"></div>' +
+        '<strong>'+EMP_NOME_PADRAO+'</strong><br>' +
+        '<span style="font-size:9pt;">CNPJ: '+EMP_CNPJ_PADRAO+'</span>' +
+      '</div>' +
+    '</div>' +
+
+  '</body></html>';
+
+  _abrirDocSimples(doc, 'Termo_Autorizacao_Imagem_Voz_'+f.n.replace(/\s+/g,'_'));
+}
+
+// ── Termo de Ciência e Adesão – Política de Saúde e Vacinação ──
+function gerarTermoAdesaoSaude() {
+  var f = getDocFunc(); if (!f) return;
+  var logoHtml = LOGO_EMP_B64
+    ? '<img src="'+LOGO_EMP_B64+'" style="max-height:55px;max-width:180px;object-fit:contain;">'
+    : '<strong style="font-size:14px;">'+EMP_NOME_PADRAO+'</strong>';
+  var dataExt = fmtDataExtenso(td());
+
+  var doc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
+    '<title>Termo de Ciência e Adesão – '+f.n+'</title>' +
+    '<style>' +
+      '*{box-sizing:border-box;margin:0;padding:0;}' +
+      'body{font-family:Arial,sans-serif;font-size:10pt;color:#000;padding:1.5cm 2cm;}' +
+      'h1{font-size:12pt;font-weight:700;text-align:center;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}' +
+      'h2{font-size:10pt;font-weight:700;text-align:center;text-transform:uppercase;margin-bottom:20px;padding-bottom:8px;border-bottom:2px solid #000;}' +
+      'p{font-size:10pt;line-height:1.7;margin-bottom:10px;text-align:justify;}' +
+      'ol{margin:0 0 12px 22px;font-size:10pt;line-height:1.7;}' +
+      '.campo{font-weight:700;border-bottom:1px solid #000;padding:0 2px;}' +
+      '.ass-box{text-align:center;margin-top:50px;}' +
+      '.ass-linha{border-top:1px solid #000;width:320px;margin:0 auto 6px;}' +
+      '@media print{body{padding:1cm 1.5cm;}@page{size:A4;margin:0;}}' +
+    '</style></head><body>' +
+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">' +
+      '<div>'+logoHtml+'</div>' +
+      '<div style="text-align:right;font-size:9pt;color:#555;">'+EMP_NOME_PADRAO+'<br>CNPJ: '+EMP_CNPJ_PADRAO+'</div>' +
+    '</div>' +
+
+    '<h1>Termo de Ciência e Adesão</h1>' +
+    '<h2>Política Corporativa de Promoção à Saúde e Vacinação — Lei nº 15.377/2026</h2>' +
+
+    '<p>Eu, <strong class="campo">'+f.n+'</strong>, inscrito(a) no CPF nº ' +
+    '<strong class="campo">'+(f.cpf||'___.___.___-__')+'</strong>, colaborador(a) da empresa ' +
+    '<strong>'+EMP_NOME_PADRAO+'</strong>, declaro para os devidos fins que:</p>' +
+
+    '<ol>' +
+      '<li>Recebi, li e compreendi integralmente a Política Corporativa de Promoção à Saúde e ' +
+      'Vacinação, instituída pela empresa em conformidade com a Lei nº 15.377/2026;</li>' +
+      '<li>Estou ciente de que a empresa promove ações de conscientização relacionadas à vacinação, ' +
+      'prevenção de doenças e incentivo à realização de exames preventivos;</li>' +
+      '<li>Tenho conhecimento do meu direito de me ausentar do trabalho para realização de exames ' +
+      'preventivos, conforme previsto na legislação vigente e nas diretrizes internas da empresa;</li>' +
+      '<li>Comprometo-me a respeitar e seguir as orientações estabelecidas na referida política;</li>' +
+      '<li>Estou ciente de que posso buscar esclarecimentos junto ao setor de Recursos Humanos ' +
+      'sempre que necessário.</li>' +
+    '</ol>' +
+
+    '<p>Declaro ainda que estou ciente de que o descumprimento das diretrizes internas poderá estar ' +
+    'sujeito às medidas administrativas cabíveis, conforme normas da empresa.</p>' +
+
+    '<p>Por ser a expressão da verdade, firmo o presente termo.</p>' +
+
+    '<p style="text-align:center;margin-top:20px;">São Paulo, '+dataExt+'.</p>' +
+
+    '<div class="ass-box">' +
+      '<div class="ass-linha"></div>' +
+      'Assinatura do(a) Colaborador(a)<br>' +
+      '<strong>'+f.n+'</strong>' +
+    '</div>' +
+
+  '</body></html>';
+
+  _abrirDocSimples(doc, 'Termo_Adesao_Saude_Vacinacao_'+f.n.replace(/\s+/g,'_'));
+}
+
+// ── Ficha de Presença ──────────────────────────────────────
+function gerarFichaPresenca() {
+  var f = getDocFunc(); if (!f) return;
+  var logoHtml = LOGO_EMP_B64
+    ? '<img src="'+LOGO_EMP_B64+'" style="max-height:60px;max-width:200px;object-fit:contain;">'
+    : '<strong style="font-size:16px;">'+EMP_NOME_PADRAO+'</strong>';
+
+  var linhas = '';
+  for (var i = 1; i <= 31; i++) {
+    var num = i < 10 ? '0'+i : ''+i;
+    linhas += '<tr><td style="text-align:center;font-weight:700;">'+num+'</td><td></td><td></td>' +
+      '<td style="text-align:center;">____ : ____</td></tr>';
+  }
+
+  var doc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
+    '<title>Ficha de Presença – '+f.n+'</title>' +
+    '<style>' +
+      '*{box-sizing:border-box;margin:0;padding:0;}' +
+      'body{font-family:Arial,sans-serif;font-size:10pt;color:#000;padding:1.2cm 1.5cm;}' +
+      '.hdr{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #000;padding-bottom:10px;margin-bottom:14px;}' +
+      '.hdr h1{font-size:14pt;text-transform:uppercase;letter-spacing:.5px;}' +
+      '.campo-resp{margin-bottom:14px;font-size:10.5pt;}' +
+      '.campo-resp .linha{display:inline-block;border-bottom:1px solid #000;min-width:320px;padding:0 4px;font-weight:700;}' +
+      'table{width:100%;border-collapse:collapse;font-size:9.5pt;}' +
+      'th,td{border:1px solid #333;padding:5px 8px;}' +
+      'th{background:#e8e8e8;text-align:center;}' +
+      '@media print{body{padding:0.8cm 1.2cm;}@page{size:A4;margin:0;}}' +
+    '</style></head><body>' +
+
+    '<div class="hdr">' + logoHtml + '<h1>Ficha de Presença</h1></div>' +
+
+    '<div class="campo-resp">Nome: <span class="linha">'+f.n+'</span></div>' +
+
+    '<table>' +
+      '<thead><tr><th style="width:40px;">Nº</th><th>Nome</th><th>Telefone</th><th style="width:110px;">Horário de Chegada</th></tr></thead>' +
+      '<tbody>' + linhas + '</tbody>' +
+    '</table>' +
+
+  '</body></html>';
+
+  _abrirDocSimples(doc, 'Ficha_Presenca_'+f.n.replace(/\s+/g,'_'));
+}
+
 function abrirManual() {
   var manualHTML = `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manual do Sistema RH – Equilibryum</title>
+<title>Manual do Sistema RH</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#222;}
@@ -12397,7 +12729,7 @@ tr:nth-child(even) td{background:#f7fbf9;}
 <div class="topo">
   <div>
     <h1>📘 Manual do Sistema de RH</h1>
-    <p>Equilibryum – Guia completo de uso e atualização · Versão 2.0</p>
+    <p>ABSOLUTA – Guia completo de uso e atualização · Versão 2.0</p>
   </div>
   <button class="btn-print" onclick="window.print()">🖨️ Exportar PDF</button>
 </div>
@@ -12423,8 +12755,7 @@ tr:nth-child(even) td{background:#f7fbf9;}
   <div id="s1" class="sec">
     <h2>1. Primeiros Passos</h2>
     <h3>1.1 Acessar o Sistema</h3>
-    <p>O sistema é acessado pelo navegador no endereço:</p>
-    <div class="code">https://recursoshumanosequilibryum-gif.github.io/rh-equilibryum/</div>
+    <p>O sistema é acessado pelo navegador, no endereço onde você publicou o arquivo (ex.: GitHub Pages).</p>
     <div class="tip">💡 Use sempre o Chrome ou Edge para melhor compatibilidade. Abra em aba anônima (Ctrl+Shift+N) após atualizações.</div>
     <h3>1.2 Conectar ao Google Drive</h3>
     <p>Na primeira vez, o sistema exibe a tela de conexão. Clique em <strong>☁️ Conectar ao Google Drive</strong>, faça login com a conta Google do RH e autorize o acesso. Os dados ficam salvos automaticamente no Drive.</p>
@@ -12445,7 +12776,7 @@ tr:nth-child(even) td{background:#f7fbf9;}
     <tr><td>Salário</td><td>Usado em documentos como Carta de Retenção ao INSS</td></tr>
     </table>
     <h3>2.3 Documentos</h3>
-    <p>Na aba <strong>Documentos</strong>, anexe os arquivos por categoria. Com Drive conectado, são salvos em <em>RH Equilibryum / [Nome do Funcionário]</em>. Clique em <strong>👁️ Visualizar</strong> para abrir o documento direto no sistema.</p>
+    <p>Na aba <strong>Documentos</strong>, anexe os arquivos por categoria. Com Drive conectado, são salvos em <em>RH Absoluta / [Nome do Funcionário]</em>. Clique em <strong>👁️ Visualizar</strong> para abrir o documento direto no sistema.</p>
     <h3>2.4 Importar do Formulário de Admissão</h3>
     <p>Clique em <strong>📊 Importar do Sheets</strong>, cole o ID da planilha de admissões, selecione o candidato e importe. Todos os dados preenchem automaticamente.</p>
     <h3>2.5 Foto e Crachá</h3>
@@ -12519,8 +12850,8 @@ tr:nth-child(even) td{background:#f7fbf9;}
 
   <div id="s8" class="sec">
     <h2>8. Formulário de Admissão</h2>
-    <p>Link do formulário para candidatos:</p>
-    <div class="code">https://recursoshumanosequilibryum-gif.github.io/formulario-admissao/</div>
+    <p>Link do formulário para candidatos (configure o seu formulário de admissão e cole o endereço aqui):</p>
+    <div class="code">[endereço do seu formulário de admissão]</div>
     <h3>Fluxo completo:</h3>
     <ol>
       <li>Envie o link ao candidato aprovado pelo WhatsApp</li>
@@ -12538,7 +12869,7 @@ tr:nth-child(even) td{background:#f7fbf9;}
     <div class="warn">⚠️ Sempre faça backup antes de atualizar! Baixe o index.html atual do GitHub antes de substituir.</div>
     <h3>Passo a Passo</h3>
     <ol>
-      <li>Acesse <strong>github.com/recursoshumanosequilibryum-gif/rh-equilibryum</strong></li>
+      <li>Acesse o repositório do sistema no GitHub</li>
       <li>Clique em <strong>index.html → Cru (Raw)</strong> → salve como backup</li>
       <li>Receba o novo <strong>index.html</strong> do desenvolvedor</li>
       <li>No repositório, clique no ícone de upload e envie o novo arquivo</li>
@@ -12576,7 +12907,7 @@ tr:nth-child(even) td{background:#f7fbf9;}
     <div class="ok" style="margin-top:20px;">
       <strong>Sistema desenvolvido com Claude (Anthropic)</strong><br>
       Para melhorias e novas funcionalidades, descreva o que precisa no chat com o assistente.<br>
-      <strong>Repositório:</strong> github.com/recursoshumanosequilibryum-gif/rh-equilibryum
+      <strong>Repositório:</strong> o repositório configurado para este sistema no GitHub
     </div>
   </div>
 
