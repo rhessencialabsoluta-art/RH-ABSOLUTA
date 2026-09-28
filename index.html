@@ -38,7 +38,9 @@
   };
   function mapKey(store, k) {
     var T = window.RH_TENANT;
-    if (!T || T.prefix === 'eq_' || typeof k !== 'string' || k.indexOf('eq_') !== 0 || SHARED[k]) return k;
+    if (!T || T.prefix === 'eq_' || typeof k !== 'string' || SHARED[k]) return k;
+    if (k.indexOf('exp_') === 0) { try { if (store !== window.localStorage) return k; } catch (e) { return k; } return T.prefix + k; }
+    if (k.indexOf('eq_') !== 0) return k;
     try { if (store !== window.localStorage) return k; } catch (e) { return k; }
     return T.prefix + k.slice(3);
   }
@@ -1061,15 +1063,15 @@ document.addEventListener('DOMContentLoaded', function () {
       <button class="btn btn-primary btn-sm" onclick="openModal(&#39;modal-form-exp&#39;)">📄 Gerar Formulário de Avaliação</button>
     </div>
     <div class="tabs">
-      <div class="tab active" onclick="expTab(&#39;e45&#39;,this)">45 Dias</div>
-      <div class="tab" onclick="expTab(&#39;e90&#39;,this)">90 Dias</div>
+      <div class="tab active" onclick="expTab(&#39;e45&#39;,this)">45 Dias <span style="font-weight:400;font-size:11px;opacity:.75;">(dia 1 ao 45)</span></div>
+      <div class="tab" onclick="expTab(&#39;e90&#39;,this)">90 Dias <span style="font-weight:400;font-size:11px;opacity:.75;">(dia 46 ao 90)</span></div>
     </div>
     <div id="e45"><div class="table-wrap"><table>
-      <thead><tr><th>Funcionário</th><th>Admissão</th><th>Vencimento</th><th>Prazo</th><th>Status</th><th>Envio ao Gestor</th></tr></thead>
+      <thead><tr><th>Funcionário</th><th>Admissão</th><th>Período</th><th>Vencimento</th><th>Prazo</th><th>Status</th><th>Envio ao Gestor</th></tr></thead>
       <tbody id="tb-e45"></tbody>
     </table></div></div>
     <div id="e90" style="display:none"><div class="table-wrap"><table>
-      <thead><tr><th>Funcionário</th><th>Admissão</th><th>Vencimento</th><th>Prazo</th><th>Status</th><th>Envio ao Gestor</th></tr></thead>
+      <thead><tr><th>Funcionário</th><th>Admissão</th><th>Período</th><th>Vencimento</th><th>Prazo</th><th>Status</th><th>Envio ao Gestor</th></tr></thead>
       <tbody id="tb-e90"></tbody>
     </table></div></div>
   </div>
@@ -5047,6 +5049,29 @@ function exportUniCSV() {
 // ============================================================
 // PERÍODO DE EXPERIÊNCIA
 // ============================================================
+// ── Datas do contrato de experiência ──────────────────────────
+// 1º período (45 dias): admissão (dia 1) até admissão + 44 dias
+// 2º período (90 dias): dia seguinte ao fim do 1º (admissão + 45) até + 45 dias (admissão + 89)
+function _expAddDias(iso, n) {
+  var p = iso.split('-'); var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+  d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10);
+}
+function _expDif(a, b) {
+  var pa = a.split('-'), pb = b.split('-');
+  return Math.round((Date.UTC(+pb[0], +pb[1] - 1, +pb[2]) - Date.UTC(+pa[0], +pa[1] - 1, +pa[2])) / 86400000);
+}
+function _expHoje() {
+  var n = new Date();
+  return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0');
+}
+function expPeriodos(adm) {
+  var fim45 = _expAddDias(adm, 44);
+  var ini90 = _expAddDias(fim45, 1);
+  var fim90 = _expAddDias(fim45, 45);
+  return { p45: { ini: adm, fim: fim45 }, p90: { ini: ini90, fim: fim90 } };
+}
+function expVencimento(adm, dias) { var p = expPeriodos(adm); return dias === 90 ? p.p90.fim : p.p45.fim; }
+
 let _avdFunc = null;
 function rdExp() {
   const funcs = DB.g('funcionarios').filter(f => f.adm && f.st !== 'Desligado');
@@ -5054,70 +5079,77 @@ function rdExp() {
 }
 function rdExpTab(funcs, dias, tbId) {
   var tb = document.getElementById(tbId);
-  var hoje = td();
+  if (!tb) return;
+  var hoje = _expHoje();
+  var CAR = 5; // dias em que o vencido continua na lista para a última ação
+  var deps = DB.g('departamentos'), emps = DB.g('empresas');
 
-  // "Contando o primeiro dia da admissão como dia 1"
-  // Vencimento = adm + (dias - 1) dias corridos
-  // Ex: admitido 01/07 → 45 dias → vence em 14/08 (01/07 é dia 1, 14/08 é dia 45)
-  var prazo = dias - 1; // dias a adicionar na data de admissão
-
-  var eligivel = funcs.filter(function(f) {
-    if (!f.adm) return false;
-    var diasDeAdm = dif(f.adm, hoje); // 0 = dia da admissão, 1 = dia seguinte...
-    // Exibir: a partir do dia da admissão (diasDeAdm >= 0)
-    // Até 5 dias após o vencimento (diasDeAdm <= prazo + 5)
-    return diasDeAdm >= 0 && diasDeAdm <= prazo + 5;
+  var linhas = [];
+  funcs.forEach(function (f) {
+    if (!f.adm || f.st === 'Desligado') return;
+    var per = expPeriodos(f.adm)[dias === 90 ? 'p90' : 'p45'];
+    var desdeIni = _expDif(per.ini, hoje);      // 0 = primeiro dia do período
+    var ateFim = _expDif(hoje, per.fim);        // positivo = dias que faltam
+    if (desdeIni < 0 || ateFim < -CAR) return;  // fora do período
+    linhas.push({ f: f, per: per, ateFim: ateFim,
+      diaContrato: _expDif(f.adm, hoje) + 1 });
   });
 
-  if (!eligivel.length) {
-    tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--gray-400)">Nenhum funcionário neste período.</td></tr>';
+  if (!linhas.length) {
+    tb.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--gray-400)">Nenhum funcionário ' +
+      (dias === 90 ? 'no 2º período (dia 46 ao dia 90) da experiência.' : 'no 1º período (dia 1 ao dia 45) da experiência.') + '</td></tr>';
     return;
   }
+  linhas.sort(function (a, b) { return a.per.fim.localeCompare(b.per.fim); });
 
-  eligivel.sort(function(a,b) { return a.adm.localeCompare(b.adm); });
-
-  tb.innerHTML = eligivel.map(function(f) {
-    // Vencimento: admissão + (dias-1) — conta o primeiro dia
-    var venc = add(f.adm, prazo);
-    // Dias restantes: positivo = faltam dias, negativo = vencido
-    var d = dif(hoje, venc);
-
+  tb.innerHTML = linhas.map(function (L) {
+    var f = L.f, d = L.ateFim;
+    var dep = deps.find(function (x) { return x.id === f.dep; });
+    var emp = emps.find(function (x) { return x.id === f.emp; });
     var bc, st;
-    if (d < 0)       { bc = 'badge-red';    st = 'Vencido há ' + Math.abs(d) + 'd'; }
+    if (d < 0)        { bc = 'badge-red';    st = 'Vencido há ' + Math.abs(d) + 'd'; }
     else if (d === 0) { bc = 'badge-yellow'; st = 'Vence HOJE'; }
     else if (d <= 7)  { bc = 'badge-yellow'; st = 'Vence em ' + d + 'd'; }
     else              { bc = 'badge-green';  st = 'Em andamento'; }
 
+    var diaTxt = L.diaContrato > dias ? 'período de ' + dias + ' dias encerrado' : L.diaContrato + 'º dia de ' + dias;
     var diasInfo = d < 0
       ? '<span style="color:var(--red);font-weight:600;">' + Math.abs(d) + 'd atraso</span>'
-      : d === 0
-        ? '<strong style="color:var(--accent);">HOJE</strong>'
-        : '<strong style="color:var(--green-dark);">' + d + ' dias restantes</strong>';
+      : d === 0 ? '<strong style="color:var(--accent);">HOJE</strong>'
+      : '<strong style="color:var(--green-dark);">' + d + ' dias restantes</strong>';
+    diasInfo += '<div style="font-size:11px;color:var(--gray-400);">' + diaTxt + '</div>';
 
-    // Verificar status de envio ao gestor
-    var envKey  = 'exp_enviado_' + f.id + '_' + dias;
-    var enviado = localStorage.getItem(envKey) === '1';
-    var eKey    = 'exp_env_' + f.id + '_' + dias;
+    var info = [f.car, dep ? dep.nome : '', emp ? emp.razao : ''].filter(Boolean).join(' · ');
+    var gestor = f.ges ? '<div style="font-size:11px;color:var(--gray-600);">Gestor: ' + f.ges + '</div>' : '';
+
+    var eKey = 'exp_env_' + f.id + '_' + dias;
     var enviado = localStorage.getItem(eKey) === '1';
     var btnEnvio = enviado
-      ? '<button data-fid="' + f.id + '" data-dias="' + dias + '" onclick="toggleEnvioGestor(this)" style="background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;white-space:nowrap;">&#9989; Enviado ao Gestor</button>'
-      : '<button data-fid="' + f.id + '" data-dias="' + dias + '" onclick="toggleEnvioGestor(this)" style="background:#fff3e0;color:#e65100;border:1px solid #ffcc80;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;white-space:nowrap;">&#128228; Enviar ao Gestor</button>';
+      ? '<button data-fid="' + f.id + '" data-dias="' + dias + '" onclick="toggleEnvioGestor(this)" style="background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;white-space:nowrap;">✅ Enviado</button>'
+      : '<button data-fid="' + f.id + '" data-dias="' + dias + '" onclick="toggleEnvioGestor(this)" style="background:#fff3e0;color:#e65100;border:1px solid #ffcc80;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;white-space:nowrap;">⏳ Pendente</button>';
+    var btnForm = '<button class="btn btn-outline btn-sm" style="margin-top:4px;white-space:nowrap;" onclick="expGerarForm(\'' + f.id + '\',' + dias + ')" title="Gerar formulário de avaliação deste período">📄 Formulário</button>';
 
     return '<tr>' +
-      '<td><strong>' + f.n + '</strong></td>' +
+      '<td><strong>' + f.n + '</strong>' + (info ? '<div style="font-size:11px;color:var(--gray-400);">' + info + '</div>' : '') + gestor + '</td>' +
       '<td>' + fd(f.adm) + '</td>' +
-      '<td><strong>' + fd(venc) + '</strong></td>' +
+      '<td style="white-space:nowrap;">' + fd(L.per.ini) + ' a ' + fd(L.per.fim) + '</td>' +
+      '<td><strong>' + fd(L.per.fim) + '</strong></td>' +
       '<td>' + diasInfo + '</td>' +
       '<td><span class="badge ' + bc + '">' + st + '</span></td>' +
-      '<td>' + btnEnvio + '</td>' +
+      '<td>' + btnEnvio + '<div>' + btnForm + '</div></td>' +
     '</tr>';
   }).join('');
+}
+function expGerarForm(fid, dias) {
+  openModal('modal-form-exp');
+  var s = document.getElementById('fexp-func'); if (s) s.value = fid;
+  var p = document.getElementById('fexp-dias'); if (p) p.value = String(dias);
 }
 function openAvd(fid, dias) {
   var f = DB.g('funcionarios').find(function(x){ return x.id === fid; });
   if (!f) return;
   _avdFunc = f;
-  var venc = add(f.adm, dias);
+  var venc = expVencimento(f.adm, dias);
   var deps = DB.g('departamentos');
   var emps = DB.g('empresas');
   var dep  = deps.find(function(d){ return d.id === f.dep; });
@@ -5206,7 +5238,7 @@ function envWha() { const num = v('whan'), msg = v('whamsg'); if (!num) { alert(
 function updDash() {
   const funcs = DB.g('funcionarios'); const hoje = td();
   document.getElementById('s-func').textContent = funcs.filter(f => f.st === 'Ativo').length;
-  let exp = 0; funcs.forEach(f => { if (f.adm && f.st !== 'Desligado' && dif(f.adm, hoje) <= 90) exp++; });
+  let exp = 0; funcs.forEach(f => { if (f.adm && f.st !== 'Desligado') { var _dc = _expDif(f.adm, _expHoje()); if (_dc >= 0 && _dc <= 89) exp++; } });
   document.getElementById('s-exp').textContent = exp;
   document.getElementById('s-fer').textContent = DB.g('ferias').filter(r => r.st === 'Em andamento').length;
   document.getElementById('s-ex').textContent = DB.g('exames').filter(function(e){ return !e.res; }).length;
@@ -5215,7 +5247,7 @@ function updDash() {
   const alerts = [];
   funcs.forEach(f => {
     if (!f.adm || f.st === 'Desligado') return;
-    const d45 = dif(hoje, add(f.adm, 45)); const d90 = dif(hoje, add(f.adm, 90));
+    const d45 = _expDif(_expHoje(), expVencimento(f.adm, 45)); const d90 = _expDif(_expHoje(), expVencimento(f.adm, 90));
     if (d45 >= 0 && d45 <= 7) alerts.push(`<div class="alert alert-warning">&#9888; <strong>${f.n}</strong>: experiência 45 dias vence em ${d45} dia(s).</div>`);
     if (d90 >= 0 && d90 <= 7) alerts.push(`<div class="alert alert-warning">&#9888; <strong>${f.n}</strong>: experiência 90 dias vence em ${d90} dia(s).</div>`);
   });
@@ -10481,7 +10513,8 @@ function gerarFormExp() {
   var emps = DB.g('empresas');
   var dep  = deps.find(function(d){ return d.id===f.dep; });
   var emp  = emps.find(function(e){ return e.id===f.emp; });
-  var venc = add(f.adm, dias - 1); // conta o primeiro dia da admissão como dia 1
+  var _per = expPeriodos(f.adm)[dias === 90 ? 'p90' : 'p45'];
+  var venc = _per.fim; // 45 dias: admissão + 44 · 90 dias: fim dos 45 + 45
   var dataFmt = data ? data.split('-').reverse().join('/') : new Date().toLocaleDateString('pt-BR');
 
   var criterios = [
@@ -10553,6 +10586,7 @@ function gerarFormExp() {
           '<td class="lbl">Departamento:</td><td>' + (dep ? dep.nome : '—') + '</td></tr>' +
       '<tr><td class="lbl">Data Admissão:</td><td>' + fd(f.adm) + '</td>' +
           '<td class="lbl">Vencimento ' + dias + 'd:</td><td><strong>' + fd(venc) + '</strong></td></tr>' +
+      '<tr><td class="lbl">Período avaliado:</td><td colspan="3">' + (dias === 90 ? '2º período' : '1º período') + ' — ' + fd(_per.ini) + ' a ' + fd(_per.fim) + '</td></tr>' +
       '<tr><td class="lbl">Gestor / Supervisor:</td><td>' + (f.ges||'—') + '</td>' +
           '<td class="lbl">Empresa:</td><td>' + (emp ? emp.razao.split(' ')[0] : '—') + '</td></tr>' +
     '</table>' +
