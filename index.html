@@ -632,6 +632,7 @@ input#client-id-inp:focus{border-color:var(--green);outline:none;}
 .rh-tenant-chip .rh-tc-dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;}
 .rh-tenant-chip .btn{background:#fff;font-size:11.5px;padding:5px 10px;border-radius:20px;white-space:nowrap;}
 .rh-tenant-chip strong{white-space:nowrap;}
+.page-title{white-space:nowrap;}
 @media (max-width:900px){.rh-tenant-chip strong{display:none;}}
 @media print{.rh-tenant-chip{display:none!important;}}
 
@@ -1480,6 +1481,20 @@ document.addEventListener('DOMContentLoaded', function () {
       <span class="card-title">🛡 Políticas &amp; Normas</span>
       <button class="btn btn-primary" onclick="openModal(&#39;modal-pol&#39;)">+ Nova Política</button>
     </div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray-400);margin:0 0 8px;">Modelos oficiais</div>
+    <div class="pol-card" style="border-left:4px solid var(--green);">
+      <div class="pol-icon">&#128176;</div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+          <div>
+            <div class="pol-title">POL01 · Política de Prêmio Assiduidade</div>
+            <div class="pol-desc">Política Interna | R$ 15,00 por dia trabalhado | Inclui Termo de Ciência do colaborador</div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="gerarPol01Assiduidade()">📄 Gerar documento</button>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray-400);margin:18px 0 8px;">Políticas cadastradas</div>
     <div id="pol-list"></div>
   </div>
 </div>
@@ -1760,6 +1775,7 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
     <div style="font-weight:700;font-size:13px;color:var(--green-dark);margin:18px 0 10px;">👤 Funcionário</div>
     <div class="form-grid">
+      <div class="form-group form-full"><label>Trazer dados do colaborador</label><select id="dm-func" onchange="dmTrocarFunc()"></select></div>
       <div class="form-group form-full" data-campo="nome"><label>Nome completo</label><input id="dm-nome" type="text"></div>
       <div class="form-group" data-campo="rg"><label>RG</label><input id="dm-rg" type="text"></div>
       <div class="form-group" data-campo="cpf"><label>CPF</label><input id="dm-cpf" type="text"></div>
@@ -1770,6 +1786,14 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="form-group" data-campo="bairro"><label>Bairro</label><input id="dm-bairro" type="text"></div>
       <div class="form-group" data-campo="cid"><label>Cidade</label><input id="dm-cid" type="text"></div>
       <div class="form-group form-full" data-campo="email"><label>E-mail</label><input id="dm-email" type="text"></div>
+      <div class="form-group" data-campo="funcao"><label>Função</label><input id="dm-funcao" type="text"></div>
+    </div>
+    <div data-campo="vigencia">
+      <div style="font-weight:700;font-size:13px;color:var(--green-dark);margin:18px 0 10px;">📌 Dados da política</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Início da vigência</label><input id="dm-vigencia" type="date"></div>
+        <div class="form-group" data-campo="fechamento"><label>Dia do fechamento do ponto</label><input id="dm-fechamento" type="text" placeholder="Ex.: 25"></div>
+      </div>
     </div>
     <div style="font-weight:700;font-size:13px;color:var(--green-dark);margin:18px 0 10px;">📅 Data do documento</div>
     <div class="form-grid" data-campo="data">
@@ -12818,7 +12842,9 @@ var DOC_MODELO_EMPRESA = {
   resp:   { razao: 'ABSOLUTA ASSESSORIA EMPRESARIAL', cnpj: '33.420.655/0001-78',
             end: 'Rua Dr. Nilton Silva, 364, Vila Santa Teresa, São Paulo/SP, CEP 03564-020' },
   imagem: { razao: 'ABSOLUTA SOLUÇÕES FINANCEIRAS', cnpj: '33.420.655/0001-78', end: '' },
-  adesao: { razao: 'Equilibryum Reabilitação e Consultoria em Saúde Ltda', cnpj: '', end: '' }
+  adesao: { razao: 'Equilibryum Reabilitação e Consultoria em Saúde Ltda', cnpj: '', end: '' },
+  pol01:  { razao: 'ABSOLUTA ASSESSORIA EMPRESARIAL', cnpj: '33.420.655/0001-78',
+            end: 'Rua Dr. Nilton Silva, 364, Vila Santa Teresa, São Paulo/SP, CEP 03564-020' }
 };
 
 var DOC_MODELO_INFO = {
@@ -12827,7 +12853,9 @@ var DOC_MODELO_INFO = {
   imagem: { titulo: 'Termo de Autorização de Uso de Imagem e Voz', cod: 'FOR02',
             campos: ['nome','cpf','emp-razao','emp-cnpj','data'] },
   adesao: { titulo: 'Termo de Ciência e Adesão – Saúde e Vacinação', cod: '',
-            campos: ['nome','cpf','emp-razao','data'] }
+            campos: ['nome','cpf','emp-razao','data'] },
+  pol01:  { titulo: 'Política de Prêmio Assiduidade', cod: 'POL01',
+            campos: ['nome','cpf','funcao','emp-razao','emp-cnpj','emp-end','vigencia','fechamento','data'] }
 };
 
 function _dmModeloEmpresa(tipo) {
@@ -12898,14 +12926,26 @@ function _dmPreencherFuncionario() {
   var f = _docModeloFunc || {};
   var e = _dmParseEndereco(f.end);
   _dmSetVal('dm-nome', f.n); _dmSetVal('dm-rg', f.rg); _dmSetVal('dm-cpf', f.cpf);
-  _dmSetVal('dm-nac', 'brasileiro(a)');
+  _dmSetVal('dm-nac', f.n ? 'brasileiro(a)' : '');
+  _dmSetVal('dm-funcao', f.car);
   _dmSetVal('dm-rua', e.rua); _dmSetVal('dm-num', e.num); _dmSetVal('dm-comp', e.comp);
   _dmSetVal('dm-bairro', e.bairro); _dmSetVal('dm-cid', e.cid); _dmSetVal('dm-email', f.email);
 }
 
 function _dmAbrir(tipo) {
-  var f = getDocFunc(); if (!f) return;
+  var fid = (document.getElementById('doc-func-sel') || {}).value || '';
+  var funcs = DB.g('funcionarios');
+  var f = funcs.find(function(x){ return x.id === fid; }) || null;
   _docModeloAtual = tipo; _docModeloFunc = f;
+  var fs = document.getElementById('dm-func');
+  if (fs) {
+    fs.innerHTML = '<option value="">— Sem colaborador (em branco) —</option>' +
+      funcs.filter(function(x){ return x.st !== 'Desligado' || x.id === fid; })
+        .sort(function(a,b){ return (a.n||'').localeCompare(b.n||''); })
+        .map(function(x){ return '<option value="'+_dmEsc(x.id)+'">'+_dmEsc(x.n)+'</option>'; }).join('');
+    fs.value = f ? f.id : '';
+  }
+  _dmSetVal('dm-vigencia', ''); _dmSetVal('dm-fechamento', '');
   var info = DOC_MODELO_INFO[tipo];
   document.getElementById('dm-titulo').textContent = (info.cod ? info.cod + ' · ' : '') + info.titulo;
 
@@ -12915,7 +12955,7 @@ function _dmAbrir(tipo) {
   var modelo = _dmModeloEmpresa(tipo);
   sel.innerHTML = emps.map(function(e){ return '<option value="'+_dmEsc(e.id)+'">'+_dmEsc(e.razao)+'</option>'; }).join('') +
     '<option value="__modelo">'+(window.RH_IS_ESSENCIAL ? 'Dados da empresa ('+_dmEsc(modelo.razao)+')' : 'Texto original do modelo ('+_dmEsc(modelo.razao)+')')+'</option>';
-  sel.value = (f.emp && emps.some(function(e){ return e.id === f.emp; })) ? f.emp : '__modelo';
+  sel.value = (f && f.emp && emps.some(function(e){ return e.id === f.emp; })) ? f.emp : '__modelo';
 
   // Mostra só os campos usados pelo modelo escolhido
   document.querySelectorAll('#modal-doc-modelo [data-campo]').forEach(function(el){
@@ -12924,14 +12964,24 @@ function _dmAbrir(tipo) {
 
   _dmPreencherFuncionario();
   _dmPreencherEmpresa();
-  _dmSetVal('dm-data', td());
+  _dmSetVal('dm-data', typeof _expHoje === 'function' ? _expHoje() : td());
   document.getElementById('dm-data-branco').checked = false;
   document.getElementById('dm-data').disabled = false;
   document.getElementById('modal-doc-modelo').classList.add('open');
 }
 
+// Troca de colaborador dentro da janela
+function dmTrocarFunc() {
+  var fid = _dmVal('dm-func');
+  _docModeloFunc = DB.g('funcionarios').find(function(x){ return x.id === fid; }) || null;
+  _dmPreencherFuncionario();
+  var f = _docModeloFunc, sel = document.getElementById('dm-emp');
+  if (f && f.emp && sel && Array.prototype.some.call(sel.options, function(o){ return o.value === f.emp; })) { sel.value = f.emp; _dmPreencherEmpresa(); }
+}
+
 function dmLimparCampos() {
-  ['dm-nome','dm-rg','dm-cpf','dm-nac','dm-rua','dm-num','dm-comp','dm-bairro','dm-cid','dm-email'].forEach(function(id){ _dmSetVal(id, ''); });
+  ['dm-nome','dm-rg','dm-cpf','dm-nac','dm-rua','dm-num','dm-comp','dm-bairro','dm-cid','dm-email','dm-funcao'].forEach(function(id){ _dmSetVal(id, ''); });
+  _dmSetVal('dm-func', '');
   document.getElementById('dm-data-branco').checked = true;
   document.getElementById('dm-data').disabled = true;
 }
@@ -12952,12 +13002,14 @@ function dmGerar() {
   var d = {
     nome: _dmVal('dm-nome'), rg: _dmVal('dm-rg'), cpf: _dmVal('dm-cpf'), nac: _dmVal('dm-nac'),
     rua: _dmVal('dm-rua'), num: _dmVal('dm-num'), comp: _dmVal('dm-comp'), bairro: _dmVal('dm-bairro'),
-    cid: _dmVal('dm-cid'), email: _dmVal('dm-email'),
+    cid: _dmVal('dm-cid'), email: _dmVal('dm-email'), funcao: _dmVal('dm-funcao'),
+    vigencia: _dmVal('dm-vigencia'), fechamento: _dmVal('dm-fechamento'),
     empRazao: _dmVal('dm-emp-razao'), empCnpj: _dmVal('dm-emp-cnpj'), empEnd: _dmVal('dm-emp-end'),
     data: document.getElementById('dm-data-branco').checked ? '' : _dmVal('dm-data')
   };
   var html = _docModeloAtual === 'resp'   ? _dmHtmlResponsabilidade(d)
            : _docModeloAtual === 'imagem' ? _dmHtmlImagem(d)
+           : _docModeloAtual === 'pol01'  ? _dmHtmlPol01(d)
            : _dmHtmlAdesao(d);
   closeModal('modal-doc-modelo');
   var info = DOC_MODELO_INFO[_docModeloAtual];
@@ -13171,6 +13223,97 @@ function _dmHtmlAdesao(d) {
     body: body
   });
 }
+
+// ── POL01 · Política de Prêmio Assiduidade (com Termo de Ciência) ──
+function _dmHtmlPol01(d) {
+  var dt = _dmDataPartes(d.data);
+  var vig = d.vigencia ? d.vigencia.split('-').reverse().join('/') : '____/____/________';
+  var P = function (txt, cls) { return '<p class="' + (cls || 'c') + '">' + txt + '</p>'; };
+  var vazio = '<p class="c">&nbsp;</p>';
+  var R = 'R$ 15,00 (quinze reais)';
+  var body =
+    P('POLÍTICA DE PRÊMIO ASSIDUIDADE', 'tit') +
+    P('A empresa <b>' + _dmCampo(d.empRazao, '______________________________') + '</b>, inscrita no <b>CNPJ nº ' +
+      _dmCampo(d.empCnpj, '______________________') + '</b>, com sede na ' + _dmCampo(d.empEnd, '__________________________________________________') +
+      ', institui a presente Política de Prêmio Assiduidade, com o objetivo de reconhecer a presença regular de seus colaboradores, ' +
+      'observadas as disposições da Convenção Coletiva de Trabalho 2025/2027 firmada com o SECOBESP (registro MTE nº SP001440/2026) ' +
+      'e a legislação trabalhista vigente.', 'c pri') +
+    P('CLÁUSULA 1 – OBJETIVO E ABRANGÊNCIA', 'c h') +
+    P('O Prêmio Assiduidade tem por finalidade reconhecer o comparecimento regular dos colaboradores ao trabalho, no valor de ' + R + ' por dia efetivamente trabalhado.') +
+    P('Esta política abrange todos os colaboradores contratados pelo regime da CLT e regidos pela Convenção Coletiva de Trabalho citada, ' +
+      'inclusive aqueles em regime de teletrabalho (home office) ou híbrido. Não abrange aprendizes, estagiários e prestadores de serviço, ' +
+      'salvo decisão expressa da empresa.') +
+    P('Esta política entra em vigor em ' + vig + ', por prazo indeterminado.') +
+    P('CLÁUSULA 2 – VALOR E FORMA DE CÁLCULO', 'c h') +
+    P('O prêmio mensal corresponde a ' + R + ' multiplicado pelo número de dias úteis de trabalho previstos na escala do colaborador no mês, ' +
+      'deduzido o valor de ' + R + ' por dia de falta que reduza o prêmio, conforme a Cláusula 3.') +
+    P('Não integram o cálculo os descansos semanais remunerados e os feriados. Nos meses de admissão ou desligamento, o cálculo ' +
+      'considerará apenas os dias úteis do período efetivamente trabalhado.') +
+    P('O prêmio nunca será negativo: a redução fica limitada ao valor do próprio prêmio do mês e não gera qualquer desconto no salário do colaborador.') +
+    P('Exemplo: em um mês com 22 (vinte e dois) dias úteis e 2 (duas) faltas, o prêmio será de (22 – 2) × R$ 15,00 = R$ 300,00 (trezentos reais).') +
+    P('CLÁUSULA 3 – FALTAS QUE REDUZEM O PRÊMIO', 'c h') +
+    P('Cada dia de falta, justificada ou injustificada, reduzirá o prêmio do mês em ' + R + ', a saber:') +
+    P('a) Faltas injustificadas: ausências sem comunicação ou sem apresentação de documento aceito pela empresa;', 'c li') +
+    P('b) Faltas justificadas: ausências amparadas por atestado médico ou odontológico, declaração de comparecimento ou motivo pessoal aceito pelo gestor.', 'c li') +
+    P('A falta justificada permanece abonada para fins de salário e de descanso semanal remunerado, conforme a Convenção Coletiva e a CLT, ' +
+      'deixando apenas de gerar o prêmio referente àquele dia. A falta injustificada segue as regras normais de desconto salarial previstas ' +
+      'em lei, independentemente desta política.') +
+    P('CLÁUSULA 4 – AUSÊNCIAS QUE NÃO REDUZEM O PRÊMIO', 'c h') +
+    P('Serão consideradas como dia trabalhado, para fins deste prêmio, as ausências garantidas por lei ou pela Convenção Coletiva de Trabalho, a saber:') +
+    P('a) Ausências previstas na cláusula 43 da CCT: acompanhamento de genitores idosos, esposa grávida ou filho menor ao médico (até 18 horas ' +
+      'por semestre), casamento (3 dias úteis), falecimento de familiar (2 dias úteis) e dia do aniversário;', 'c li') +
+    P('b) Provas escolares, exames vestibulares e cursos de aperfeiçoamento autorizados (cláusulas 44, 45 e 46 da CCT);', 'c li') +
+    P('c) Atividade sindical de dirigente eleito (cláusula 54 da CCT);', 'c li') +
+    P('d) Liberação para vacinação (cláusula 62 da CCT);', 'c li') +
+    P('e) Faltas legais previstas no art. 473 da CLT, tais como doação de sangue, alistamento eleitoral, serviço militar, comparecimento em ' +
+      'juízo e serviço do júri;', 'c li') +
+    P('f) Dias compensados em banco de horas ou acordo de compensação de jornada.', 'c li') +
+    P('Durante férias, licença-maternidade, licença-paternidade, afastamento pelo INSS, acidente de trabalho ou suspensão do contrato, não há ' +
+      'dia de trabalho previsto e, portanto, o prêmio não é devido nesses períodos, que também não serão considerados como falta.') +
+    P('CLÁUSULA 5 – APURAÇÃO E PAGAMENTO', 'c h') +
+    P('O prêmio será apurado com base no registro de ponto do mês e pago na folha de pagamento do mês subsequente, em rubrica própria no ' +
+      'demonstrativo de pagamento.') +
+    P('O Departamento de Recursos Humanos realizará o fechamento do ponto até o dia ' + _dmCampo(d.fechamento, '____') + ' de cada mês. ' +
+      'Os atestados e demais comprovantes deverão ser entregues em até 48 (quarenta e oito) horas após o retorno do colaborador; fora desse ' +
+      'prazo, a ausência será considerada falta injustificada.') +
+    P('O colaborador poderá contestar a apuração junto ao Departamento de Recursos Humanos em até 5 (cinco) dias úteis após o pagamento.') +
+    P('CLÁUSULA 6 – DISPOSIÇÕES GERAIS', 'c h') +
+    P('O prêmio não se confunde nem se compensa com a Participação nos Lucros ou Resultados, o auxílio-refeição ou alimentação e o adicional ' +
+      'de permanência previstos na Convenção Coletiva de Trabalho.') +
+    P('A natureza da verba e a incidência de encargos observarão a orientação da contabilidade da empresa e a legislação vigente.') +
+    P('Eventuais alterações desta política serão comunicadas por escrito aos colaboradores com antecedência mínima de 30 (trinta) dias. ' +
+      'Os casos omissos serão decididos pelo Departamento de Recursos Humanos em conjunto com a Diretoria.') +
+    vazio + vazio +
+    '<div class="nobreak">' +
+    P('TERMO DE CIÊNCIA', 'c h') +
+    P('Eu, ' + _dmCampo(d.nome, '____________________________________________') + ', portador(a) do CPF nº ' +
+      _dmCampo(d.cpf, '______________________') + ', colaborador(a) da empresa ' + _dmCampo(d.empRazao, '______________________________') +
+      ', na função de ' + _dmCampo(d.funcao, '______________________') + ', declaro ter recebido e lido integralmente a presente Política de ' +
+      'Prêmio Assiduidade, compreendendo seu conteúdo, em especial as regras de cálculo, as faltas que reduzem o prêmio e as ausências que ' +
+      'não o reduzem, e concordando com suas disposições de forma livre e consciente.') +
+    vazio +
+    P(dt ? 'São Paulo, ' + dt.dia + ' de ' + dt.mes + ' de ' + dt.ano + '.' : 'São Paulo, ____ de __________________ de _________.') +
+    vazio + vazio +
+    P('_______________________________________________', 's1') +
+    P('Assinatura do(a) Colaborador(a)', 's2') +
+    '</div>';
+
+  return _dmPagina({
+    title: 'POL01 - Política de Prêmio Assiduidade - ' + (d.nome || 'em branco'),
+    footer: 'POL01', ml: 31.1, mr: 30, topo: 159.5, logoTop: 76, logoLeft: 239.2,
+    bodyCss: 'font-family:Arial,Helvetica,sans-serif;font-size:12pt;line-height:1.15;',
+    css: '.tit{font-weight:bold;text-align:center;margin:0 0 14pt;}' +
+         '.c{text-align:justify;margin:14pt 0;}' +
+         '.pri{margin-top:0;}' +
+         '.h{font-weight:bold;}' +
+         '.li{padding-left:28.35pt;text-indent:-14.15pt;}' +
+         '.s1{text-align:justify;margin:0 0 12pt;}' +
+         '.s2{text-align:justify;margin:14pt 0 12pt;}' +
+         '.nobreak{break-inside:avoid;page-break-inside:avoid;}',
+    body: body
+  });
+}
+function gerarPol01Assiduidade() { _dmAbrir('pol01'); }
 
 // Botões da tela "Gerar Documentos"
 function gerarTermoResponsabilidadeConf() { _dmAbrir('resp'); }
