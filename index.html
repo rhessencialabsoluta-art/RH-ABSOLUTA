@@ -1391,6 +1391,45 @@ input#client-id-inp:focus{border-color:var(--green);outline:none;}
   </div>
 </div>
 
+<!-- Dados para os modelos oficiais (FOR01 / FOR02 / Termo de Adesão) -->
+<div class="modal-bg" id="modal-doc-modelo">
+  <div class="modal"><div class="modal-header"><span class="modal-title" id="dm-titulo">Documento</span><button class="modal-close" onclick="closeModal(&#39;modal-doc-modelo&#39;)">×</button></div>
+    <div class="alert alert-info" style="margin-bottom:16px;font-size:13px;">Os dados abaixo vieram do cadastro. Confira ou ajuste antes de gerar. Campo deixado vazio sai com a linha em branco do modelo, para preencher à mão.</div>
+    <div style="font-weight:700;font-size:13px;color:var(--green-dark);margin:4px 0 10px;">🏢 Empresa</div>
+    <div class="form-grid">
+      <div class="form-group form-full"><label>Trazer dados da empresa</label><select id="dm-emp" onchange="_dmPreencherEmpresa()"></select></div>
+      <div class="form-group form-full" data-campo="emp-razao"><label>Razão Social</label><input id="dm-emp-razao" type="text"></div>
+      <div class="form-group" data-campo="emp-cnpj"><label>CNPJ</label><input id="dm-emp-cnpj" type="text" oninput="mCNPJ(this)"></div>
+      <div class="form-group form-full" data-campo="emp-end"><label>Endereço da sede</label><input id="dm-emp-end" type="text" placeholder="Rua, nº, bairro, cidade/UF, CEP"></div>
+    </div>
+    <div style="font-weight:700;font-size:13px;color:var(--green-dark);margin:18px 0 10px;">👤 Funcionário</div>
+    <div class="form-grid">
+      <div class="form-group form-full" data-campo="nome"><label>Nome completo</label><input id="dm-nome" type="text"></div>
+      <div class="form-group" data-campo="rg"><label>RG</label><input id="dm-rg" type="text"></div>
+      <div class="form-group" data-campo="cpf"><label>CPF</label><input id="dm-cpf" type="text"></div>
+      <div class="form-group" data-campo="nac"><label>Nacionalidade</label><input id="dm-nac" type="text"></div>
+      <div class="form-group form-full" data-campo="rua"><label>Endereço (logradouro)</label><input id="dm-rua" type="text"></div>
+      <div class="form-group" data-campo="num"><label>Nº</label><input id="dm-num" type="text"></div>
+      <div class="form-group" data-campo="comp"><label>Complemento</label><input id="dm-comp" type="text"></div>
+      <div class="form-group" data-campo="bairro"><label>Bairro</label><input id="dm-bairro" type="text"></div>
+      <div class="form-group" data-campo="cid"><label>Cidade</label><input id="dm-cid" type="text"></div>
+      <div class="form-group form-full" data-campo="email"><label>E-mail</label><input id="dm-email" type="text"></div>
+    </div>
+    <div style="font-weight:700;font-size:13px;color:var(--green-dark);margin:18px 0 10px;">📅 Data do documento</div>
+    <div class="form-grid" data-campo="data">
+      <div class="form-group"><label>Data</label><input id="dm-data" type="date"></div>
+      <div class="form-group" style="justify-content:flex-end;"><label style="display:flex;align-items:center;gap:8px;font-weight:500;cursor:pointer;"><input id="dm-data-branco" type="checkbox" style="width:auto;" onchange="dmToggleData()"> Deixar a data em branco</label></div>
+    </div>
+    <div class="modal-footer" style="flex-wrap:wrap;gap:8px;">
+      <button class="btn btn-outline btn-sm" onclick="dmRecarregar()" title="Preencher de novo com os dados do cadastro">↺ Dados do cadastro</button>
+      <button class="btn btn-outline btn-sm" onclick="dmLimparCampos()" title="Dados do funcionário e data em branco, como o modelo impresso">▢ Funcionário em branco</button>
+      <span style="flex:1;"></span>
+      <button class="btn btn-outline" onclick="closeModal(&#39;modal-doc-modelo&#39;)">Cancelar</button>
+      <button class="btn btn-primary" onclick="dmGerar()">📄 Gerar Documento</button>
+    </div>
+  </div>
+</div>
+
 <!-- Usuário -->
 <div class="modal-bg" id="modal-usr">
   <div class="modal"><div class="modal-header"><span class="modal-title">Usuário do Sistema</span><button class="modal-close" onclick="closeModal(&#39;modal-usr&#39;)">×</button></div>
@@ -12373,140 +12412,285 @@ function _abrirDocSimples(docHTML, filename) {
   if (w) { w.document.write(docHTML); w.document.close(); setTimeout(function(){ w.print(); }, 700); }
 }
 
-// ── Termo de Responsabilidade e Confidencialidade ──────────
-function gerarTermoResponsabilidadeConf() {
-  var f = getDocFunc(); if (!f) return;
-  var logoHtml = LOGO_EMP_B64
-    ? '<img src="'+LOGO_EMP_B64+'" style="max-height:55px;max-width:180px;object-fit:contain;">'
-    : '<strong style="font-size:14px;">'+EMP_NOME_PADRAO+'</strong>';
-  var hoje = new Date();
-  var dataExt = fmtDataExtenso(td());
+// ════════════════════════════════════════════════════════════
+// MODELOS OFICIAIS (FOR01, FOR02 e Termo de Adesão)
+// Reproduzem fielmente os arquivos .docx. Os dados do funcionário e
+// da empresa são trazidos do cadastro e podem ser ajustados antes de gerar.
+// ════════════════════════════════════════════════════════════
+var LOGO_MODELO_DOC_B64 = 'data:image/jpeg;base64,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';
 
-  var doc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
-    '<title>Termo de Responsabilidade e Confidencialidade – '+f.n+'</title>' +
-    '<style>' +
-      '*{box-sizing:border-box;margin:0;padding:0;}' +
-      'body{font-family:Arial,sans-serif;font-size:8.3pt;color:#000;padding:1cm 1.6cm;}' +
-      'h1{font-size:11pt;font-weight:700;text-align:center;text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px;padding-bottom:6px;border-bottom:1.5px solid #000;}' +
-      'h2{font-size:8.6pt;font-weight:700;margin:8px 0 3px;}' +
-      'p{font-size:8.3pt;line-height:1.35;margin-bottom:5px;text-align:justify;}' +
-      '.campo{font-weight:700;border-bottom:1px solid #000;padding:0 2px;}' +
-      '.assinaturas{margin-top:22px;display:flex;justify-content:space-between;gap:24px;}' +
-      '.ass-box{text-align:center;flex:1;}' +
-      '.ass-linha{border-top:1px solid #000;margin-bottom:4px;}' +
-      '@media print{body{padding:0.6cm 1.2cm;}@page{size:A4;margin:0;}}' +
-    '</style></head><body>' +
+// Dados da empresa exatamente como estão escritos em cada modelo
+var DOC_MODELO_EMPRESA = {
+  resp:   { razao: 'ABSOLUTA ASSESSORIA EMPRESARIAL', cnpj: '33.420.655/0001-78',
+            end: 'Rua Dr. Nilton Silva, 364, Vila Santa Teresa, São Paulo/SP, CEP 03564-020' },
+  imagem: { razao: 'ABSOLUTA SOLUÇÕES FINANCEIRAS', cnpj: '33.420.655/0001-78', end: '' },
+  adesao: { razao: 'Equilibryum Reabilitação e Consultoria em Saúde Ltda', cnpj: '', end: '' }
+};
 
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">' +
-      '<div>'+logoHtml+'</div>' +
-      '<div style="text-align:right;font-size:7.6pt;color:#555;">'+EMP_NOME_PADRAO+'<br>CNPJ: '+EMP_CNPJ_PADRAO+'</div>' +
-    '</div>' +
+var DOC_MODELO_INFO = {
+  resp:   { titulo: 'Termo de Responsabilidade e Confidencialidade – Supervisão', cod: 'FOR01',
+            campos: ['nome','rg','cpf','nac','rua','num','comp','bairro','cid','email','emp-razao','emp-cnpj','emp-end','data'] },
+  imagem: { titulo: 'Termo de Autorização de Uso de Imagem e Voz', cod: 'FOR02',
+            campos: ['nome','cpf','emp-razao','emp-cnpj','data'] },
+  adesao: { titulo: 'Termo de Ciência e Adesão – Saúde e Vacinação', cod: '',
+            campos: ['nome','cpf','emp-razao','data'] }
+};
 
-    '<h1>Termo de Responsabilidade e Confidencialidade</h1>' +
+var _docModeloAtual = null;
+var _docModeloFunc  = null;
 
-    '<p>Pelo presente instrumento particular, eu, <strong class="campo">'+f.n+'</strong>, ' +
-    'portador(a) do RG nº <strong class="campo">'+(f.rg||'____________________')+'</strong>, ' +
-    'CPF nº <strong class="campo">'+(f.cpf||'___.___.___-__')+'</strong>, ' +
-    'residente e domiciliado(a) à <strong class="campo">'+(f.end||'____________________')+'</strong>, ' +
-    'e-mail <strong class="campo">'+(f.email||'____________________')+'</strong>, ' +
-    'na qualidade de colaborador(a) da empresa <strong>'+EMP_NOME_PADRAO+'</strong>, inscrita no CNPJ nº ' +
-    '<strong>'+EMP_CNPJ_PADRAO+'</strong>, com sede na '+EMP_ENDERECO_PADRAO+', exercendo a função de ' +
-    '<strong class="campo">'+(f.car||'____________________')+'</strong>, declaro estar ciente das responsabilidades ' +
-    'inerentes às minhas atribuições profissionais, comprometendo-me a atuar com ética, sigilo, boa-fé, ' +
-    'profissionalismo e observância às normas internas da empresa.</p>' +
-
-    '<h2>Cláusula 1 – Confidencialidade e Proteção de Dados</h2>' +
-    '<p>O(A) colaborador(a) compromete-se a manter absoluto sigilo sobre todas as informações, documentos, ' +
-    'dados cadastrais, estratégias comerciais, informações financeiras, dados pessoais de clientes, parceiros ' +
-    'e demais informações confidenciais às quais tiver acesso em razão de suas atividades profissionais, ' +
-    'inclusive após o encerramento do vínculo empregatício ou contratual. O tratamento de dados deverá ' +
-    'observar integralmente a Lei nº 13.709/2018 (LGPD), sendo vedada qualquer utilização indevida, ' +
-    'compartilhamento não autorizado ou armazenamento inadequado de informações.</p>' +
-
-    '<h2>Cláusula 2 – Uso Adequado das Informações</h2>' +
-    '<p>O(A) colaborador(a) declara que utilizará as informações acessadas exclusivamente para fins ' +
-    'relacionados ao exercício de suas funções profissionais, abstendo-se de utilizá-las em benefício ' +
-    'próprio ou de terceiros, bem como de reproduzir, divulgar ou compartilhar conteúdos internos sem ' +
-    'autorização expressa da empresa.</p>' +
-
-    '<h2>Cláusula 3 – Responsabilização</h2>' +
-    '<p>O(A) colaborador(a) declara estar ciente de que eventual utilização indevida, vazamento de ' +
-    'informações, conduta dolosa, fraude, negligência grave ou violação das obrigações previstas neste ' +
-    'termo poderá ensejar a adoção das medidas administrativas, cíveis e criminais cabíveis, nos termos ' +
-    'da legislação vigente. Fica assegurado o direito de apuração interna e, se necessário, judicial, ' +
-    'para eventual ressarcimento de danos comprovadamente causados à empresa, clientes, parceiros ' +
-    'comerciais ou terceiros.</p>' +
-
-    '<h2>Cláusula 4 – Parceiros e Prestadores de Serviço</h2>' +
-    '<p>As obrigações de confidencialidade previstas neste instrumento estendem-se às informações ' +
-    'compartilhadas com empresas parceiras, fornecedores, prestadores de serviço e terceiros vinculados ' +
-    'às operações da empresa, incluindo plataformas tecnológicas, escritórios contábeis, consultorias e ' +
-    'assessorias jurídicas.</p>' +
-
-    '<h2>Cláusula 5 – Disposições Gerais</h2>' +
-    '<p>Este termo possui caráter complementar às normas internas da empresa, políticas de segurança da ' +
-    'informação e legislação aplicável, não substituindo obrigações previstas em contrato de trabalho, ' +
-    'regulamentos internos ou demais instrumentos jurídicos. O(A) colaborador(a) declara ter lido ' +
-    'integralmente o presente documento, compreendendo seu conteúdo e concordando com suas disposições ' +
-    'de forma livre e consciente.</p>' +
-
-    '<p style="text-align:center;margin-top:10px;">São Paulo, '+dataExt+'.</p>' +
-
-    '<div class="assinaturas">' +
-      '<div class="ass-box">' +
-        '<div class="ass-linha"></div>' +
-        '<strong>'+f.n+'</strong><br>' +
-        '<span style="font-size:7.6pt;">Colaborador(a)</span>' +
-      '</div>' +
-      '<div class="ass-box">' +
-        '<div class="ass-linha"></div>' +
-        '<strong>RH - ABSOLUTA</strong>' +
-      '</div>' +
-    '</div>' +
-
-  '</body></html>';
-
-  _abrirDocSimples(doc, 'Termo_Responsabilidade_Confidencialidade_'+f.n.replace(/\s+/g,'_'));
+function _dmEsc(s) {
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ── Termo de Autorização de Uso de Imagem e Voz (modelo FOR02) ──
-function gerarTermoAutorizacaoImagemVozNovo() {
+// Tenta separar "Rua X, 123, Apto 4, Bairro, Cidade/UF" em partes
+function _dmParseEndereco(s) {
+  var r = { rua:'', num:'', comp:'', bairro:'', cid:'' };
+  s = String(s || '').trim();
+  if (!s) return r;
+  var parts = s.split(/\s*[,;]\s*|\s+[–—-]\s+/).map(function(p){ return p.trim(); }).filter(function(p){
+    return p && !/^CEP\b/i.test(p) && !/^\d{5}-?\d{3}$/.test(p);
+  });
+  if (!parts.length) return r;
+  var iNum = -1;
+  for (var i = 1; i < parts.length; i++) {
+    if (/^(n[º°o]\.?\s*)?\d+[A-Za-z]?$/i.test(parts[i]) || /^s\/?n$/i.test(parts[i])) { iNum = i; break; }
+  }
+  if (iNum === -1) {
+    // número colado no logradouro: "Rua X 123"
+    var m = parts[0].match(/^(.*\D)\s+(\d+[A-Za-z]?)$/);
+    if (m) { parts.splice(0, 1, m[1], m[2]); iNum = 1; }
+  }
+  if (iNum === -1) { r.rua = s; return r; }
+  r.rua = parts.slice(0, iNum).join(', ');
+  r.num = parts[iNum].replace(/^n[º°o]\.?\s*/i, '');
+  var rest = parts.slice(iNum + 1);
+  if (rest.length >= 3) { r.cid = rest.pop(); r.bairro = rest.pop(); r.comp = rest.join(', '); }
+  else if (rest.length === 2) { r.cid = rest[1]; r.bairro = rest[0]; }
+  else if (rest.length === 1) {
+    if (/\/\s*[A-Z]{2}$/.test(rest[0]) || /São Paulo/i.test(rest[0])) r.cid = rest[0]; else r.bairro = rest[0];
+  }
+  return r;
+}
+
+function _dmEmpresaEndereco(e) {
+  var p = [];
+  if (e.end) p.push(e.end);
+  if (e.cid && (!e.end || e.end.indexOf(e.cid) === -1)) p.push(e.cid);
+  if (e.cep && (!e.end || e.end.indexOf(e.cep) === -1)) p.push('CEP ' + e.cep);
+  return p.join(', ');
+}
+
+function _dmSetVal(id, v) { var el = document.getElementById(id); if (el) el.value = v || ''; }
+function _dmVal(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+function _dmPreencherEmpresa() {
+  var sel = _dmVal('dm-emp');
+  if (sel === '__modelo' || !sel) {
+    var m = DOC_MODELO_EMPRESA[_docModeloAtual] || {};
+    _dmSetVal('dm-emp-razao', m.razao); _dmSetVal('dm-emp-cnpj', m.cnpj); _dmSetVal('dm-emp-end', m.end);
+    return;
+  }
+  var e = DB.g('empresas').find(function(x){ return x.id === sel; }) || {};
+  _dmSetVal('dm-emp-razao', e.razao); _dmSetVal('dm-emp-cnpj', e.cnpj); _dmSetVal('dm-emp-end', _dmEmpresaEndereco(e));
+}
+
+function _dmPreencherFuncionario() {
+  var f = _docModeloFunc || {};
+  var e = _dmParseEndereco(f.end);
+  _dmSetVal('dm-nome', f.n); _dmSetVal('dm-rg', f.rg); _dmSetVal('dm-cpf', f.cpf);
+  _dmSetVal('dm-nac', 'brasileiro(a)');
+  _dmSetVal('dm-rua', e.rua); _dmSetVal('dm-num', e.num); _dmSetVal('dm-comp', e.comp);
+  _dmSetVal('dm-bairro', e.bairro); _dmSetVal('dm-cid', e.cid); _dmSetVal('dm-email', f.email);
+}
+
+function _dmAbrir(tipo) {
   var f = getDocFunc(); if (!f) return;
-  var logoHtml = LOGO_EMP_B64
-    ? '<img src="'+LOGO_EMP_B64+'" style="max-height:55px;max-width:180px;object-fit:contain;">'
-    : '<strong style="font-size:14px;">'+EMP_NOME_PADRAO+'</strong>';
-  var dataExt = fmtDataExtenso(td());
+  _docModeloAtual = tipo; _docModeloFunc = f;
+  var info = DOC_MODELO_INFO[tipo];
+  document.getElementById('dm-titulo').textContent = (info.cod ? info.cod + ' · ' : '') + info.titulo;
 
-  var doc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
-    '<title>Termo de Autorização de Uso de Imagem e Voz – '+f.n+'</title>' +
+  // Empresas
+  var sel = document.getElementById('dm-emp');
+  var emps = DB.g('empresas');
+  var modelo = DOC_MODELO_EMPRESA[tipo];
+  sel.innerHTML = emps.map(function(e){ return '<option value="'+_dmEsc(e.id)+'">'+_dmEsc(e.razao)+'</option>'; }).join('') +
+    '<option value="__modelo">Texto original do modelo ('+_dmEsc(modelo.razao)+')</option>';
+  sel.value = (f.emp && emps.some(function(e){ return e.id === f.emp; })) ? f.emp : '__modelo';
+
+  // Mostra só os campos usados pelo modelo escolhido
+  document.querySelectorAll('#modal-doc-modelo [data-campo]').forEach(function(el){
+    el.style.display = info.campos.indexOf(el.getAttribute('data-campo')) !== -1 ? '' : 'none';
+  });
+
+  _dmPreencherFuncionario();
+  _dmPreencherEmpresa();
+  _dmSetVal('dm-data', td());
+  document.getElementById('dm-data-branco').checked = false;
+  document.getElementById('dm-data').disabled = false;
+  document.getElementById('modal-doc-modelo').classList.add('open');
+}
+
+function dmLimparCampos() {
+  ['dm-nome','dm-rg','dm-cpf','dm-nac','dm-rua','dm-num','dm-comp','dm-bairro','dm-cid','dm-email'].forEach(function(id){ _dmSetVal(id, ''); });
+  document.getElementById('dm-data-branco').checked = true;
+  document.getElementById('dm-data').disabled = true;
+}
+
+function dmRecarregar() {
+  _dmPreencherFuncionario();
+  _dmPreencherEmpresa();
+  document.getElementById('dm-data-branco').checked = false;
+  document.getElementById('dm-data').disabled = false;
+  if (!_dmVal('dm-data')) _dmSetVal('dm-data', td());
+}
+
+function dmToggleData() {
+  document.getElementById('dm-data').disabled = document.getElementById('dm-data-branco').checked;
+}
+
+function dmGerar() {
+  var d = {
+    nome: _dmVal('dm-nome'), rg: _dmVal('dm-rg'), cpf: _dmVal('dm-cpf'), nac: _dmVal('dm-nac'),
+    rua: _dmVal('dm-rua'), num: _dmVal('dm-num'), comp: _dmVal('dm-comp'), bairro: _dmVal('dm-bairro'),
+    cid: _dmVal('dm-cid'), email: _dmVal('dm-email'),
+    empRazao: _dmVal('dm-emp-razao'), empCnpj: _dmVal('dm-emp-cnpj'), empEnd: _dmVal('dm-emp-end'),
+    data: document.getElementById('dm-data-branco').checked ? '' : _dmVal('dm-data')
+  };
+  var html = _docModeloAtual === 'resp'   ? _dmHtmlResponsabilidade(d)
+           : _docModeloAtual === 'imagem' ? _dmHtmlImagem(d)
+           : _dmHtmlAdesao(d);
+  closeModal('modal-doc-modelo');
+  var info = DOC_MODELO_INFO[_docModeloAtual];
+  _abrirDocSimples(html, (info.cod ? info.cod + '_' : '') + info.titulo.replace(/\s+/g,'_') + '_' + (d.nome || 'em_branco').replace(/\s+/g,'_'));
+}
+
+// ── Estrutura comum da página (A4, faixa azul, logo) ──
+function _dmPagina(opts) {
+  var logoTop = opts.logoTop, logoLeft = opts.logoLeft;
+  return '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
+    '<title>' + _dmEsc(opts.title) + '</title>' +
     '<style>' +
-      '*{box-sizing:border-box;margin:0;padding:0;}' +
-      'body{font-family:Arial,sans-serif;font-size:10pt;color:#000;padding:1.5cm 2cm;}' +
-      'h1{font-size:12pt;font-weight:700;text-align:center;text-transform:uppercase;letter-spacing:.5px;margin-bottom:20px;padding-bottom:8px;border-bottom:2px solid #000;}' +
-      'p{font-size:10pt;line-height:1.8;margin-bottom:12px;text-align:justify;}' +
-      'ul{margin:0 0 12px 22px;font-size:10pt;line-height:1.7;}' +
-      '.campo{font-weight:700;border-bottom:1px solid #000;padding:0 2px;}' +
-      '.assinaturas{margin-top:40px;display:flex;justify-content:space-between;gap:30px;}' +
-      '.ass-box{text-align:center;flex:1;}' +
-      '.ass-linha{border-top:1px solid #000;margin-bottom:5px;}' +
-      '@media print{body{padding:1cm 1.5cm;}@page{size:A4;margin:0;}}' +
+      '@page{size:A4;margin:0 0 ' + (opts.footer ? '63pt' : '1.6cm') + ' 0;' +
+        (opts.footer ? '@bottom-left{content:"' + opts.footer + '";font-family:Verdana,Geneva,"DejaVu Sans",sans-serif;font-size:11pt;color:#000;padding:0 0 34pt ' + opts.ml + 'pt;vertical-align:bottom;}' : '') + '}' +
+      '*{box-sizing:border-box;}' +
+      'html,body{margin:0;padding:0;}' +
+      'body{position:relative;width:595.3pt;padding:0 ' + opts.mr + 'pt 0 ' + opts.ml + 'pt;color:#000;background:#fff;' +
+        '-webkit-print-color-adjust:exact;print-color-adjust:exact;' + opts.bodyCss + '}' +
+      '.faixa{position:absolute;top:0;left:0;width:595.3pt;height:44.25pt;background:#4472C4;border-bottom:1pt solid #1D3155;}' +
+      '.logo{position:absolute;top:' + logoTop + 'pt;left:' + logoLeft + 'pt;width:103.25pt;height:72.3pt;}' +
+      '.topo{height:' + opts.topo + 'pt;}' +
+      'p{margin:0;}' +
+      '.rodape-tela{display:none;}' +
+      '@media screen{html{background:#e6e6e6;}body{margin:16px auto;min-height:841.9pt;box-shadow:0 2px 12px rgba(0,0,0,.18);}' +
+        '.rodape-tela{display:block;position:absolute;left:' + opts.ml + 'pt;top:793pt;font-family:Verdana,Geneva,"DejaVu Sans",sans-serif;font-size:11pt;}}' +
+      opts.css +
     '</style></head><body>' +
+    '<div class="faixa"></div>' +
+    '<img class="logo" src="' + LOGO_MODELO_DOC_B64 + '" alt="">' +
+    '<div class="topo"></div>' +
+    opts.body +
+    (opts.footer ? '<div class="rodape-tela">' + opts.footer + '</div>' : '') +
+    '</body></html>';
+}
 
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">' +
-      '<div>'+logoHtml+'</div>' +
-      '<div style="text-align:right;font-size:9pt;color:#555;">'+EMP_NOME_PADRAO+'<br>CNPJ: '+EMP_CNPJ_PADRAO+'</div>' +
-    '</div>' +
+function _dmCampo(v, linha) { return v ? _dmEsc(v) : linha; }
 
-    '<h1>Termo de Autorização de Uso de Imagem e Voz</h1>' +
+function _dmDataPartes(iso) {
+  if (!iso) return null;
+  var meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  var p = iso.split('-');
+  return { dia: String(parseInt(p[2], 10)), mes: meses[parseInt(p[1], 10) - 1], ano: p[0] };
+}
 
-    '<p>Pelo presente instrumento particular, eu, <strong class="campo">'+f.n+'</strong>, ' +
-    'CPF nº <strong class="campo">'+(f.cpf||'___.___.___-__')+'</strong>, autorizo, de forma livre, ' +
-    'expressa, informada e gratuita, a empresa <strong>'+EMP_NOME_PADRAO+'</strong>, inscrita no CNPJ nº ' +
-    '<strong>'+EMP_CNPJ_PADRAO+'</strong>, a utilizar minha imagem, voz e nome em fotografias, vídeos, ' +
-    'gravações e demais materiais produzidos em ambiente corporativo, institucional, comercial ou ' +
-    'promocional.</p>' +
+// ── FOR01 · Termo de Responsabilidade e Confidencialidade – Supervisão ──
+function _dmHtmlResponsabilidade(d) {
+  var dt = _dmDataPartes(d.data);
+  var algumDado = d.nome || d.rg || d.cpf || d.rua;
+  var P = function(txt, cls){ return '<p' + (cls ? ' class="' + cls + '"' : '') + '>' + txt + '</p>'; };
+  var vazio = '<p class="c">&nbsp;</p>';
 
-    '<p>A presente autorização poderá ser utilizada nos seguintes meios de comunicação:</p>' +
+  var body =
+    P('TERMO DE RESPONSABILIDADE E CONFIDENCIALIDADE – SUPERVISÃO', 'tit') +
+    P('Pelo presente instrumento particular, eu, ' + _dmCampo(d.nome, '____________________________________________') + ', ' +
+      'Portador do RG nº ' + _dmCampo(d.rg, '______________________') + ', ' +
+      'CPF nº ' + _dmCampo(d.cpf, '______________________') + ', ' +
+      'nacionalidade ' + _dmCampo(d.nac, '______________________') + ', ' +
+      'residente e domiciliado(a) à ' + _dmCampo(d.rua, '__________________________________') + ',' + (algumDado ? ' ' : '<br>') +
+      'nº ' + _dmCampo(d.num, '________') + ', ' +
+      'complemento ' + _dmCampo(d.comp, '____________________') + ', ' +
+      'bairro ' + _dmCampo(d.bairro, '____________________') + ', ' +
+      'cidade ' + _dmCampo(d.cid, '____________________') + (d.cid ? ', ' : ',') +
+      'e-mail ' + _dmCampo(d.email, '_______________________________________________') + ', ' +
+      'na qualidade de colaborador(a) da empresa <b>' + _dmCampo(d.empRazao, '______________________________') + '</b>, ' +
+      'inscrita no <b>CNPJ nº ' + _dmCampo(d.empCnpj, '______________________') + '</b>, ' +
+      'com sede na ' + _dmCampo(d.empEnd, '__________________________________________________') + ', ' +
+      'exercendo a função de Supervisor(a), declaro estar ciente das responsabilidades inerentes às minhas atribuições ' +
+      'profissionais, comprometendo-me a atuar com ética, sigilo, boa-fé, profissionalismo e observância às normas internas da empresa.', 'c pri') +
+    P('CLÁUSULA 1 – CONFIDENCIALIDADE E PROTEÇÃO DE DADOS', 'c h') +
+    P('O(A) colaborador(a) compromete-se a manter absoluto sigilo sobre todas as informações, documentos, dados cadastrais, ' +
+      'estratégias comerciais, informações financeiras, dados pessoais de clientes, parceiros e demais informações confidenciais ' +
+      'às quais tiver acesso em razão de suas atividades profissionais, inclusive após o encerramento do vínculo empregatício ou contratual.', 'c') +
+    P('O tratamento de dados deverá observar integralmente a Lei nº 13.709/2018 (Lei Geral de Proteção de Dados – LGPD), ' +
+      'sendo vedada qualquer utilização indevida, compartilhamento não autorizado ou armazenamento inadequado de informações.', 'c') +
+    P('CLÁUSULA 2 – USO ADEQUADO DAS INFORMAÇÕES', 'c h') +
+    P('O(A) colaborador(a) declara que utilizará as informações acessadas exclusivamente para fins relacionados ao exercício ' +
+      'de suas funções profissionais, abstendo-se de utilizá-las em benefício próprio ou de terceiros, bem como de reproduzir, ' +
+      'divulgar ou compartilhar conteúdos internos sem autorização expressa da empresa.', 'c') +
+    P('CLÁUSULA 3 – RESPONSABILIZAÇÃO', 'c h') +
+    P('O(A) colaborador(a) declara estar ciente de que eventual utilização indevida, vazamento de informações, conduta dolosa, ' +
+      'fraude, negligência grave ou violação das obrigações previstas neste termo poderá ensejar a adoção das medidas ' +
+      'administrativas, cíveis e criminais cabíveis, nos termos da legislação vigente.', 'c') +
+    P('Fica assegurado o direito de apuração interna e, se necessário, judicial, para eventual ressarcimento de danos ' +
+      'comprovadamente causados à empresa, clientes, parceiros comerciais ou terceiros.', 'c') +
+    P('CLÁUSULA 4 – PARCEIROS E PRESTADORES DE SERVIÇO', 'c h') +
+    P('As obrigações de confidencialidade previstas neste instrumento estendem-se às informações compartilhadas com empresas ' +
+      'parceiras, fornecedores, prestadores de serviço e terceiros vinculados às operações da empresa, incluindo plataformas ' +
+      'tecnológicas, escritórios contábeis, consultorias e assessorias jurídicas.', 'c') +
+    vazio + vazio +
+    P('CLÁUSULA 5 – DISPOSIÇÕES GERAIS', 'c h') +
+    P('Este termo possui caráter complementar às normas internas da empresa, políticas de segurança da informação e ' +
+      'legislação aplicável, não substituindo obrigações previstas em contrato de trabalho, regulamentos internos ou demais ' +
+      'instrumentos jurídicos.', 'c') +
+    P('O(A) colaborador(a) declara ter lido integralmente o presente documento, compreendendo seu conteúdo e concordando ' +
+      'com suas disposições de forma livre e consciente.', 'c') +
+    vazio + vazio + vazio + vazio + vazio +
+    '<div class="nobreak">' +
+    P(dt ? 'São Paulo, ' + dt.dia + ' de ' + dt.mes + ' de ' + dt.ano + '.'
+         : 'São Paulo, ____ de __________________ de _________.', 'c') +
+    vazio + vazio +
+    '<p class="s0">&nbsp;</p>' +
+    P('_______________________________________________', 's1') +
+    P('Assinatura do(a) Colaborador(a)', 's2') +
+    '</div>';
+
+  return _dmPagina({
+    title: 'FOR01 - Termo de Responsabilidade e Confidencialidade - ' + (d.nome || 'em branco'),
+    footer: 'FOR01', ml: 31.1, mr: 30, topo: 159.5, logoTop: 76, logoLeft: 239.2,
+    bodyCss: 'font-family:Arial,Helvetica,sans-serif;font-size:12pt;line-height:1.15;',
+    css: '.tit{font-weight:bold;text-align:center;margin:0 0 14pt;}' +
+         '.c{text-align:justify;margin:14pt 0;}' +
+         '.pri{margin-top:0;}' +
+         '.h{font-weight:bold;}' +
+         '.s0{text-align:justify;margin:0;}' +
+         '.s1{text-align:justify;margin:0 0 12pt;}' +
+         '.s2{text-align:justify;margin:14pt 0 12pt;}' +
+         '.nobreak{break-inside:avoid;page-break-inside:avoid;}',
+    body: body
+  });
+}
+
+// ── FOR02 · Termo de Autorização de Uso de Imagem e Voz ──
+function _dmHtmlImagem(d) {
+  var dt = _dmDataPartes(d.data);
+  var body =
+    '<p class="tit">TERMO DE AUTORIZAÇÃO DE USO DE IMAGEM E VOZ</p>' +
+    '<p class="nw" style="margin-top:0;">Pelo presente instrumento particular,eu, ' + _dmCampo(d.nome, '___________________________________________') + ', ' +
+      'CPF nº ' + _dmCampo(d.cpf, '______________') + ', autorizo, de forma livre, expressa, informada e gratuita, a empresa ' +
+      _dmCampo(d.empRazao, '______________________________') + ', inscrita no CNPJ nº ' + _dmCampo(d.empCnpj, '______________________') +
+      ', a utilizar minha imagem, voz e nome em fotografias, vídeos, gravações e demais materiais produzidos em ambiente ' +
+      'corporativo, institucional, comercial ou promocional.</p>' +
+    '<p class="nw j">A presente autorização poderá ser utilizada nos seguintes meios de comunicação:</p>' +
     '<ul>' +
       '<li>Redes sociais e plataformas digitais;</li>' +
       '<li>Websites institucionais;</li>' +
@@ -12514,105 +12698,84 @@ function gerarTermoAutorizacaoImagemVozNovo() {
       '<li>Apresentações corporativas internas e externas;</li>' +
       '<li>Campanhas institucionais e ações de marketing.</li>' +
     '</ul>' +
+    '<p class="nw j">A utilização da imagem e voz ocorrerá exclusivamente para fins institucionais, comerciais legítimos e ' +
+      'promocionais relacionados às atividades da empresa, sendo vedada qualquer utilização que exponha o(a) colaborador(a) ' +
+      'a situação vexatória, ofensiva ou que viole seus direitos de personalidade.</p>' +
+    '<p class="nw j">A presente autorização é concedida por prazo indeterminado, podendo ser revogada mediante solicitação ' +
+      'formal e escrita do(a) titular da imagem, respeitados os materiais já produzidos e campanhas em andamento.</p>' +
+    '<p class="nw j">A empresa compromete-se a realizar o tratamento das imagens e dados pessoais em conformidade com a ' +
+      'Lei nº 13.709/2018 (Lei Geral de Proteção de Dados – LGPD) e demais legislações aplicáveis.</p>' +
+    '<p class="nw j">Por estarem de acordo, firmam o presente instrumento.</p>' +
+    '<p class="nw j">' + (dt ? 'São Paulo, ' + dt.dia + ' de ' + dt.mes + ' de ' + dt.ano + '.'
+                             : 'São Paulo, ____ de __________________ de _______.') + '</p>' +
+    '<p class="nw">&nbsp;</p>' +
+    '<p class="nw" style="margin-bottom:0;">___________________________________________</p>' +
+    '<p class="nw" style="margin-bottom:0;">EMPRESA: ' + _dmEsc(d.empRazao) + '<br>CNPJ: ' + _dmEsc(d.empCnpj) + '</p>' +
+    '<p class="nm">&nbsp;</p><p class="nm">&nbsp;</p>' +
+    '<p class="nw j" style="margin-top:0;">________________________________________</p>' +
+    '<p class="nw j" style="margin-top:0;">Colaborador(a)</p>';
 
-    '<p>A utilização da imagem e voz ocorrerá exclusivamente para fins institucionais, comerciais ' +
-    'legítimos e promocionais relacionados às atividades da empresa, sendo vedada qualquer utilização ' +
-    'que exponha o(a) colaborador(a) a situação vexatória, ofensiva ou que viole seus direitos de ' +
-    'personalidade.</p>' +
-
-    '<p>A presente autorização é concedida por prazo indeterminado, podendo ser revogada mediante ' +
-    'solicitação formal e escrita do(a) titular da imagem, respeitados os materiais já produzidos e ' +
-    'campanhas em andamento.</p>' +
-
-    '<p>A empresa compromete-se a realizar o tratamento das imagens e dados pessoais em conformidade ' +
-    'com a Lei nº 13.709/2018 (Lei Geral de Proteção de Dados – LGPD) e demais legislações aplicáveis.</p>' +
-
-    '<p>Por estarem de acordo, firmam o presente instrumento.</p>' +
-
-    '<p style="text-align:center;margin-top:16px;">São Paulo, '+dataExt+'.</p>' +
-
-    '<div class="assinaturas">' +
-      '<div class="ass-box">' +
-        '<div class="ass-linha"></div>' +
-        '<strong>'+f.n+'</strong><br>' +
-        '<span style="font-size:9pt;">Colaborador(a)</span>' +
-      '</div>' +
-      '<div class="ass-box">' +
-        '<div class="ass-linha"></div>' +
-        '<strong>'+EMP_NOME_PADRAO+'</strong><br>' +
-        '<span style="font-size:9pt;">CNPJ: '+EMP_CNPJ_PADRAO+'</span>' +
-      '</div>' +
-    '</div>' +
-
-  '</body></html>';
-
-  _abrirDocSimples(doc, 'Termo_Autorizacao_Imagem_Voz_'+f.n.replace(/\s+/g,'_'));
+  return _dmPagina({
+    title: 'FOR02 - Termo de Autorização de Uso de Imagem e Voz - ' + (d.nome || 'em branco'),
+    footer: 'FOR02', ml: 31.1, mr: 30, topo: 162, logoTop: 76, logoLeft: 239.2,
+    bodyCss: 'font-family:Arial,Helvetica,sans-serif;font-size:12pt;line-height:1.15;',
+    css: '.tit{font-weight:bold;text-align:center;margin:0 0 14pt;}' +
+         '.nw{margin:14pt 0;}' +
+         '.j{text-align:justify;}' +
+         '.nm{margin:0;font-family:Verdana,Geneva,sans-serif;font-size:11pt;line-height:1.2;}' +
+         'ul{margin:14pt 0;padding-left:36pt;text-align:justify;}' +
+         'li{margin:0;padding-left:0;}',
+    body: body
+  });
 }
 
 // ── Termo de Ciência e Adesão – Política de Saúde e Vacinação ──
-function gerarTermoAdesaoSaude() {
-  var f = getDocFunc(); if (!f) return;
-  var logoHtml = LOGO_EMP_B64
-    ? '<img src="'+LOGO_EMP_B64+'" style="max-height:55px;max-width:180px;object-fit:contain;">'
-    : '<strong style="font-size:14px;">'+EMP_NOME_PADRAO+'</strong>';
-  var dataExt = fmtDataExtenso(td());
-
-  var doc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
-    '<title>Termo de Ciência e Adesão – '+f.n+'</title>' +
-    '<style>' +
-      '*{box-sizing:border-box;margin:0;padding:0;}' +
-      'body{font-family:Arial,sans-serif;font-size:10pt;color:#000;padding:1.5cm 2cm;}' +
-      'h1{font-size:12pt;font-weight:700;text-align:center;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}' +
-      'h2{font-size:10pt;font-weight:700;text-align:center;text-transform:uppercase;margin-bottom:20px;padding-bottom:8px;border-bottom:2px solid #000;}' +
-      'p{font-size:10pt;line-height:1.7;margin-bottom:10px;text-align:justify;}' +
-      'ol{margin:0 0 12px 22px;font-size:10pt;line-height:1.7;}' +
-      '.campo{font-weight:700;border-bottom:1px solid #000;padding:0 2px;}' +
-      '.ass-box{text-align:center;margin-top:50px;}' +
-      '.ass-linha{border-top:1px solid #000;width:320px;margin:0 auto 6px;}' +
-      '@media print{body{padding:1cm 1.5cm;}@page{size:A4;margin:0;}}' +
-    '</style></head><body>' +
-
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">' +
-      '<div>'+logoHtml+'</div>' +
-      '<div style="text-align:right;font-size:9pt;color:#555;">'+EMP_NOME_PADRAO+'<br>CNPJ: '+EMP_CNPJ_PADRAO+'</div>' +
-    '</div>' +
-
-    '<h1>Termo de Ciência e Adesão</h1>' +
-    '<h2>Política Corporativa de Promoção à Saúde e Vacinação — Lei nº 15.377/2026</h2>' +
-
-    '<p>Eu, <strong class="campo">'+f.n+'</strong>, inscrito(a) no CPF nº ' +
-    '<strong class="campo">'+(f.cpf||'___.___.___-__')+'</strong>, colaborador(a) da empresa ' +
-    '<strong>'+EMP_NOME_PADRAO+'</strong>, declaro para os devidos fins que:</p>' +
-
+function _dmHtmlAdesao(d) {
+  var dt = _dmDataPartes(d.data);
+  var vazio = '<p>&nbsp;</p>';
+  var body =
+    '<p class="ce b">TERMO DE CIÊNCIA E ADESÃO</p>' +
+    '<p class="ce">&nbsp;</p>' +
+    '<p class="ce b">POLÍTICA CORPORATIVA DE PROMOÇÃO À SAÚDE E VACINAÇÃO<br>Lei nº 15.377/2026</p>' +
+    '<p class="ce">&nbsp;</p><p class="ce">&nbsp;</p>' +
+    '<p class="j" style="margin-top:12pt;">Eu, ' + _dmCampo(d.nome, '____________________________________________') +
+      ', inscrito(a) no CPF nº ' + _dmCampo(d.cpf, '____________________________') +
+      ', colaborador(a) da empresa ' + _dmCampo(d.empRazao, '______________________________') +
+      ', declaro para os devidos fins que:</p>' +
     '<ol>' +
-      '<li>Recebi, li e compreendi integralmente a Política Corporativa de Promoção à Saúde e ' +
-      'Vacinação, instituída pela empresa em conformidade com a Lei nº 15.377/2026;</li>' +
-      '<li>Estou ciente de que a empresa promove ações de conscientização relacionadas à vacinação, ' +
-      'prevenção de doenças e incentivo à realização de exames preventivos;</li>' +
-      '<li>Tenho conhecimento do meu direito de me ausentar do trabalho para realização de exames ' +
-      'preventivos, conforme previsto na legislação vigente e nas diretrizes internas da empresa;</li>' +
+      '<li>Recebi, li e compreendi integralmente a <b>Política Corporativa de Promoção à Saúde e Vacinação</b>, instituída pela empresa em conformidade com a Lei nº 15.377/2026;</li>' +
+      '<li>Estou ciente de que a empresa promove ações de conscientização relacionadas à vacinação, prevenção de doenças e incentivo à realização de exames preventivos;</li>' +
+      '<li>Tenho conhecimento do meu direito de me ausentar do trabalho para realização de exames preventivos, conforme previsto na legislação vigente e nas diretrizes internas da empresa;</li>' +
       '<li>Comprometo-me a respeitar e seguir as orientações estabelecidas na referida política;</li>' +
-      '<li>Estou ciente de que posso buscar esclarecimentos junto ao setor de Recursos Humanos ' +
-      'sempre que necessário.</li>' +
+      '<li>Estou ciente de que posso buscar esclarecimentos junto ao setor de Recursos Humanos sempre que necessário.</li>' +
     '</ol>' +
+    '<p class="j">Declaro ainda que estou ciente de que o descumprimento das diretrizes internas poderá estar sujeito às medidas administrativas cabíveis, conforme normas da empresa.</p>' +
+    '<p class="j">Por ser a expressão da verdade, firmo o presente termo.</p>' +
+    vazio + vazio +
+    '<p class="j">' + (dt ? 'São Paulo, ' + dt.dia + ' de ' + dt.mes + ' de ' + dt.ano
+                          : 'São Paulo___de_______________de 2026') + '</p>' +
+    vazio + vazio +
+    '<p><b>Assinatura do(a) Colaborador(a):</b> _______________________________________</p>' +
+    vazio +
+    '<p class="j"><b>Nome Completo:</b> ' + _dmCampo(d.nome, '______________________________________________________') + '</p>';
 
-    '<p>Declaro ainda que estou ciente de que o descumprimento das diretrizes internas poderá estar ' +
-    'sujeito às medidas administrativas cabíveis, conforme normas da empresa.</p>' +
-
-    '<p>Por ser a expressão da verdade, firmo o presente termo.</p>' +
-
-    '<p style="text-align:center;margin-top:20px;">São Paulo, '+dataExt+'.</p>' +
-
-    '<div class="ass-box">' +
-      '<div class="ass-linha"></div>' +
-      'Assinatura do(a) Colaborador(a)<br>' +
-      '<strong>'+f.n+'</strong>' +
-    '</div>' +
-
-  '</body></html>';
-
-  _abrirDocSimples(doc, 'Termo_Adesao_Saude_Vacinacao_'+f.n.replace(/\s+/g,'_'));
+  return _dmPagina({
+    title: 'Termo de Ciência e Adesão - Saúde e Vacinação - ' + (d.nome || 'em branco'),
+    footer: '', ml: 54, mr: 54, topo: 179, logoTop: 83, logoLeft: 262,
+    bodyCss: 'font-family:Verdana,Geneva,"DejaVu Sans",sans-serif;font-size:11pt;line-height:1.2;',
+    css: '.ce{text-align:center;}' +
+         '.b{font-weight:bold;}' +
+         '.j{text-align:justify;}' +
+         'ol{margin:0;padding-left:36pt;}' +
+         'li{text-align:justify;margin:0 0 8pt;line-height:1.35;padding-left:0;}',
+    body: body
+  });
 }
+
+// Botões da tela "Gerar Documentos"
+function gerarTermoResponsabilidadeConf() { _dmAbrir('resp'); }
+function gerarTermoAutorizacaoImagemVozNovo() { _dmAbrir('imagem'); }
+function gerarTermoAdesaoSaude() { _dmAbrir('adesao'); }
 
 // ── Ficha de Presença ──────────────────────────────────────
 function gerarFichaPresenca() {
