@@ -21,7 +21,7 @@
                  razao: 'ESSENCIAL SOLUÇÕES FINANCEIRAS' }
   };
   // Chaves compartilhadas entre as empresas (conexão Google e preferências de tela)
-  var SHARED = { eq_client_id: 1, eq_drive_token: 1, eq_drive_token_time: 1, eq_sidebar_collapsed: 1, eq_skip_drive: 1 };
+  var SHARED = { eq_client_id: 1, eq_drive_token: 1, eq_drive_token_time: 1, eq_drive_email: 1, eq_sidebar_collapsed: 1, eq_skip_drive: 1 };
 
   var t = null;
   try { t = sessionStorage.getItem('rh_tenant'); } catch (e) {}
@@ -636,6 +636,49 @@ input#client-id-inp:focus{border-color:var(--green);outline:none;}
 @media (max-width:900px){.rh-tenant-chip strong{display:none;}}
 @media print{.rh-tenant-chip{display:none!important;}}
 
+/* ── Integração / Treinamentos ── */
+.mt-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px;}
+.mt-toolbar input[type=search]{flex:1;min-width:220px;padding:9px 12px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-family:inherit;font-size:13px;}
+.mt-toolbar select{padding:9px 12px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-family:inherit;font-size:13px;background:#fff;}
+.mt-count{font-size:12px;color:var(--gray-400);margin-left:auto;}
+.mt-info{font-size:12.5px;color:var(--gray-600);background:var(--gray-50);border-radius:var(--radius-sm);padding:9px 12px;margin-bottom:14px;}
+.mt-vazio{text-align:center;padding:36px 20px;color:var(--gray-400);font-size:13.5px;border:1.5px dashed var(--gray-200);border-radius:var(--radius);}
+.mt-card{border:1.5px solid var(--gray-100);border-radius:var(--radius);padding:16px 18px;margin-bottom:12px;background:#fff;transition:border-color .15s,box-shadow .15s;}
+.mt-card:hover{box-shadow:var(--shadow);}
+.mt-card.mt-drag,.mt-drop.mt-drag{border-color:var(--green);background:var(--green-pale);}
+.mt-card-head{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;}
+.mt-card-tit{font-size:15px;font-weight:700;color:var(--gray-800);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.mt-meta{font-size:12px;color:var(--gray-600);margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;}
+.mt-meta span{color:var(--gray-200);}
+.mt-desc{font-size:13px;color:var(--gray-600);margin-top:8px;line-height:1.55;white-space:pre-line;}
+.mt-mats{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:12px;}
+.mt-sem-mat{grid-column:1/-1;font-size:12.5px;color:var(--gray-400);padding:12px;border:1.5px dashed var(--gray-200);border-radius:var(--radius-sm);text-align:center;}
+.mt-chip{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--radius-sm);background:var(--gray-50);border:1px solid var(--gray-100);cursor:pointer;position:relative;transition:background .15s;}
+.mt-chip:hover{background:var(--green-pale);border-color:var(--green-light);}
+.mt-chip-ic{font-size:22px;flex-shrink:0;}
+.mt-chip-txt{flex:1;min-width:0;display:flex;flex-direction:column;}
+.mt-chip-txt strong{font-size:12.5px;color:var(--gray-800);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mt-chip-txt small{font-size:11px;color:var(--gray-400);}
+.mt-src{font-size:12px;}
+.mt-chip-x{background:none;border:none;color:var(--gray-400);cursor:pointer;font-size:12px;padding:2px 4px;border-radius:4px;visibility:hidden;}
+.mt-chip:hover .mt-chip-x{visibility:visible;}
+.mt-chip-x:hover{color:var(--red);background:#ffebee;}
+.mt-drop{display:flex;flex-direction:column;align-items:center;gap:2px;padding:18px;border:2px dashed var(--gray-200);border-radius:var(--radius);cursor:pointer;font-size:13px;color:var(--gray-600);text-align:center;transition:.15s;}
+.mt-drop:hover{border-color:var(--green-light);}
+.mt-fila-row{display:flex;align-items:center;gap:8px;padding:6px 10px;margin-top:6px;background:var(--gray-50);border-radius:6px;font-size:12.5px;}
+.mt-fila-row button{background:none;border:none;color:var(--red);cursor:pointer;}
+.mt-view-corpo{background:#111;border-radius:var(--radius-sm);min-height:300px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.mt-view-corpo iframe{width:100%;height:72vh;border:0;background:#fff;}
+.mt-view-corpo img{max-width:100%;max-height:72vh;display:block;}
+.mt-view-corpo video{max-width:100%;max-height:72vh;display:block;}
+.mt-view-msg{background:#fff;width:100%;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;font-size:13.5px;color:var(--gray-600);line-height:1.6;}
+#mt-prog{position:fixed;right:20px;bottom:90px;z-index:1500;display:flex;flex-direction:column;gap:8px;width:300px;}
+.mt-prog-row{background:#fff;border-radius:10px;box-shadow:var(--shadow-lg);padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;}
+.mt-prog-nome{grid-column:1/-1;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mt-prog-bar{height:6px;background:var(--gray-100);border-radius:4px;overflow:hidden;}
+.mt-prog-bar span{display:block;height:100%;background:var(--green);transition:width .2s;}
+.mt-prog-pct{font-size:11px;color:var(--gray-600);}
+
 /* ── Tema Essencial (cores da logo) ── */
 html[data-tenant="essencial"]{
   --green:#b46051;--green-dark:#7d3b30;--green-light:#e3a597;--green-pale:#faeeea;
@@ -725,7 +768,7 @@ async function rhCopiarDaAbsoluta() {
   if (!window.RH_IS_ESSENCIAL) return;
   if (!confirm('Copiar todos os cadastros da Absoluta para a Essencial?\n\nOs dados atuais da Essencial serão substituídos. A Absoluta não será alterada.')) return;
   var SKIP = { eq_client_id:1, eq_drive_token:1, eq_drive_token_time:1, eq_sidebar_collapsed:1, eq_skip_drive:1,
-               eq_perfil_empresa:1, eq_sheets_admissao_id:1 };
+               eq_perfil_empresa:1, eq_sheets_admissao_id:1, eq_rt_dirty:1, eq_drive_email:1, eq_rt_tomb:1, eq_rt_v2:1 };
   var keys = [];
   for (var i = 0; i < localStorage.length; i++) {
     var k = localStorage.key(i);
@@ -734,7 +777,7 @@ async function rhCopiarDaAbsoluta() {
   keys.forEach(function (k) { window.__rawLS.set('es_' + k.slice(3), window.__rawLS.get(k)); });
   if (typeof driveReady !== 'undefined' && driveReady) {
     if (typeof toast === 'function') toast('Enviando a cópia para a pasta RH Essencial no Drive...');
-    var lists = ['funcionarios','departamentos','empresas','usuarios','ferias','exames','epi','uni-mov','uni-itens','vagas','pagamentos','treinamentos','campanhas','politicas','benef-atrib','benef-compras'];
+    var lists = ['funcionarios','departamentos','empresas','usuarios','ferias','exames','epi','uni-mov','uni-itens','vagas','pagamentos','treinamentos','campanhas','politicas','benef-atrib','benef-compras','integracoes'];
     for (var j = 0; j < lists.length; j++) { try { await driveSync(lists[j]); } catch (e) {} }
     try { await driveSyncObj('uni-est'); } catch (e) {}
     try { if (typeof _fotoStore !== 'undefined') { _fotoStore = JSON.parse(localStorage.getItem('eq_fotos_func') || '{}'); await saveDriveJSON('eq_fotos_func.json', _fotoStore); } } catch (e) {}
@@ -780,6 +823,7 @@ document.addEventListener('DOMContentLoaded', function () {
     chip.className = 'rh-tenant-chip';
     chip.innerHTML = '<span class="rh-tc-dot"></span><strong>' + T.nome + '</strong>' +
       (window.RH_IS_ESSENCIAL ? '<button class="btn btn-outline btn-sm" onclick="rhAbrirPerfil()" title="Razão social, CNPJ e contatos usados nos documentos">⚙️ Dados da empresa</button>' : '') +
+      '<button class="btn btn-outline btn-sm" onclick="rhAbrirPastaDrive()" title="Abrir a pasta desta empresa no Google Drive">📂 Pasta</button>' +
       '<button class="btn btn-outline btn-sm" onclick="rhTrocarEmpresa()" title="Sair desta empresa e escolher outra">⇄ Trocar empresa</button>';
     actions.insertBefore(chip, actions.firstChild);
   }
@@ -907,6 +951,10 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="nav-item" onclick="nav(&#39;beneficios&#39;,this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg><span>Benefícios
   </span></div>
+  <div class="nav-item" onclick="nav(&#39;integracao&#39;,this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg><span>Integração</span></div>
+  <div class="nav-item" onclick="nav(&#39;treinamentos&#39;,this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10 12 5 2 10l10 5 10-5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg><span>Treinamentos</span></div>
   <div class="nav-item" onclick="nav(&#39;documentos&#39;,this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg><span>Gerar Documentos
   </span></div>
@@ -1010,9 +1058,9 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- DEPARTAMENTOS -->
 <div class="section-page" id="sec-empresas">
   <div class="card">
-    <div class="card-header"><span class="card-title">🏭 Empresas</span><button class="btn btn-primary" onclick="openModal(&#39;modal-emp&#39;)">+ Nova</button></div>
+    <div class="card-header"><span class="card-title">🏭 Empresas</span><button class="btn btn-primary" onclick="empNova()">+ Nova</button></div>
     <div class="table-wrap"><table>
-      <thead><tr><th>Razão Social</th><th>CNPJ</th><th>Cidade</th><th>Telefone</th><th>Ações</th></tr></thead>
+      <thead><tr><th>Razão Social</th><th>CNPJ</th><th>Cidade</th><th>Telefone</th><th>Documentos</th><th>Ações</th></tr></thead>
       <tbody id="tb-emp"></tbody>
     </table></div>
   </div>
@@ -1475,6 +1523,12 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 
 <!-- TREINAMENTOS -->
+<!-- INTEGRAÇÃO -->
+<div class="section-page" id="sec-integracao"><div id="mt-root-integracao"></div></div>
+
+<!-- TREINAMENTOS (materiais) -->
+<div class="section-page" id="sec-treinamentos"><div id="mt-root-treinamentos"></div></div>
+
 <div class="section-page" id="sec-politicas">
   <div class="card">
     <div class="section-header">
@@ -1747,7 +1801,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <!-- Empresa -->
 <div class="modal-bg" id="modal-emp">
-  <div class="modal"><div class="modal-header"><span class="modal-title">Empresa</span><button class="modal-close" onclick="closeModal(&#39;modal-emp&#39;)">×</button></div>
+  <div class="modal" style="max-width:760px;"><div class="modal-header"><span class="modal-title" id="emp-modal-titulo">Empresa</span><button class="modal-close" onclick="closeModal(&#39;modal-emp&#39;)">×</button></div>
     <div class="form-grid">
       <div class="form-group form-full"><label>Razão Social *</label><input id="en" type="text" placeholder="Razão Social"></div>
       <div class="form-group"><label>CNPJ</label><input id="ecnpj" type="text" placeholder="00.000.000/0000-00" oninput="mCNPJ(this)"></div>
@@ -1755,8 +1809,18 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="form-group"><label>Telefone</label><input id="etel" type="text" placeholder="(11) 99999-9999" oninput="mFone(this)"></div>
       <div class="form-group"><label>E-mail</label><input id="eem" type="email" placeholder="contato@empresa.com"></div>
       <div class="form-group"><label>Cidade / UF</label><input id="ecid" type="text" placeholder="Cidade – SP"></div>
-      <div class="form-group"><label>Endereço</label><input id="eend" type="text" placeholder="Endereço completo"></div>
+      <div class="form-group form-full"><label>Endereço</label><input id="eend" type="text" placeholder="Endereço completo"></div>
       <div class="form-group"><label>CEP</label><input id="ecep" type="text" placeholder="00000-000"></div>
+    </div>
+    <div style="margin-top:20px;">
+      <div style="font-weight:700;font-size:13px;color:var(--green-dark);margin-bottom:10px;">📂 Documentos da empresa</div>
+      <div style="display:grid;grid-template-columns:1fr 170px auto;gap:10px;align-items:end;">
+        <div class="form-group"><label>Tipo do documento</label><select id="emp-doc-tipo"><option>Cartão CNPJ</option><option>Contrato Social / Alteração</option><option>Alvará de Funcionamento</option><option>Inscrição Estadual / Municipal</option><option>Certidões Negativas</option><option>Procuração</option><option>Comprovante de Endereço</option><option>Licença Sanitária / AVCB</option><option>Convenção Coletiva</option><option>Outros</option></select></div>
+        <div class="form-group"><label>Validade (opcional)</label><input id="emp-doc-validade" type="date"></div>
+        <label class="btn btn-primary" style="cursor:pointer;height:40px;">📎 Anexar<input type="file" multiple accept=".pdf,.doc,.docx,.odt,.xls,.xlsx,image/*" style="display:none" onchange="empEscolherArquivos(this.files);this.value=''"></label>
+      </div>
+      <div id="emp-docs-lista" class="mt-mats" ondragover="event.preventDefault()" ondrop="event.preventDefault();empEscolherArquivos(event.dataTransfer.files)"></div>
+      <div style="font-size:11.5px;color:var(--gray-400);margin-top:6px;">PDF, imagem, Word ou planilha. Com o Drive conectado, os arquivos vão para <em>Pasta da empresa / Empresas / [razão social]</em>.</div>
     </div>
     <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal(&#39;modal-emp&#39;)">Cancelar</button><button class="btn btn-primary" onclick="savEmp()">💾 Salvar</button></div>
   </div>
@@ -1807,6 +1871,32 @@ document.addEventListener('DOMContentLoaded', function () {
       <button class="btn btn-outline" onclick="closeModal(&#39;modal-doc-modelo&#39;)">Cancelar</button>
       <button class="btn btn-primary" onclick="dmGerar()">📄 Gerar Documento</button>
     </div>
+  </div>
+</div>
+
+<!-- Integração / Treinamentos: cadastro -->
+<div class="modal-bg" id="mt-modal">
+  <div class="modal" style="max-width:680px;"><div class="modal-header"><span class="modal-title" id="mt-modal-titulo">Novo</span><button class="modal-close" onclick="closeModal(&#39;mt-modal&#39;)">×</button></div>
+    <div class="form-grid" id="mt-modal-campos"></div>
+    <div style="margin-top:18px;">
+      <label style="font-size:12px;font-weight:700;color:var(--gray-600);display:block;margin-bottom:6px;">MATERIAIS DE APRESENTAÇÃO</label>
+      <label class="mt-drop" ondragover="event.preventDefault();this.classList.add('mt-drag')" ondragleave="this.classList.remove('mt-drag')" ondrop="event.preventDefault();this.classList.remove('mt-drag');mtFila(event.dataTransfer.files)">
+        <input type="file" multiple accept=".pdf,.doc,.docx,.odt,.rtf,.ppt,.pptx,.pps,.ppsx,.odp,.xls,.xlsx,image/*,video/*" style="display:none" onchange="mtFila(this.files);this.value=''">
+        <div style="font-size:26px;">📎</div>
+        <div><strong>Clique para escolher</strong> ou arraste os arquivos aqui</div>
+        <div style="font-size:11.5px;color:var(--gray-400);margin-top:2px;">PDF · Imagem · Word · PowerPoint · Vídeo</div>
+      </label>
+      <div id="mt-modal-fila"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal(&#39;mt-modal&#39;)">Cancelar</button><button class="btn btn-primary" onclick="mtSalvar()">💾 Salvar</button></div>
+  </div>
+</div>
+
+<!-- Integração / Treinamentos: visualizar material -->
+<div class="modal-bg" id="mt-view" onclick="if(event.target===this)mtFecharView()">
+  <div class="modal" style="max-width:1000px;padding:20px;"><div class="modal-header"><span class="modal-title" id="mt-view-titulo">Material</span><button class="modal-close" onclick="mtFecharView()">×</button></div>
+    <div id="mt-view-corpo" class="mt-view-corpo"></div>
+    <div id="mt-view-acoes" style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap;"></div>
   </div>
 </div>
 
@@ -3013,7 +3103,7 @@ function initGIS(adminMode, promptMode) {
             try {
               var resp = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', { headers: { 'Authorization': 'Bearer ' + driveToken } });
               var user = await resp.json();
-              driveUserEmail = user.email || '';
+              driveUserEmail = user.email || ''; if (driveUserEmail) { try { localStorage.setItem('eq_drive_email', driveUserEmail); } catch(e){} }
               updDriveStatus(true, driveUserEmail);
             } catch(e) {}
             await ensureRHFolder();
@@ -3035,7 +3125,7 @@ function initGIS(adminMode, promptMode) {
               try {
                 var resp2 = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', { headers: { 'Authorization': 'Bearer ' + driveToken } });
                 var user2 = await resp2.json();
-                driveUserEmail = user2.email || '';
+                driveUserEmail = user2.email || ''; if (driveUserEmail) { try { localStorage.setItem('eq_drive_email', driveUserEmail); } catch(e){} }
                 var av = document.getElementById('user-avatar');
                 if (av) { av.title = driveUserEmail; av.textContent = (user2.given_name||user2.name||driveUserEmail||'A')[0].toUpperCase(); }
                 updDriveStatus(true, driveUserEmail);
@@ -3066,7 +3156,8 @@ function initGIS(adminMode, promptMode) {
           }
         }
       });
-      tokenClient.requestAccessToken({ prompt: promptMode });
+      var _emH = ''; try { _emH = localStorage.getItem('eq_drive_email') || ''; } catch(e){}
+      tokenClient.requestAccessToken(_emH && promptMode === 'select_account' ? { prompt: '', login_hint: _emH } : (_emH ? { prompt: promptMode, login_hint: _emH } : { prompt: promptMode }));
     } catch(e) {
       _reconnectInProgress = false;
       if (promptMode !== '') {
@@ -3200,7 +3291,7 @@ async function loadDriveJSON(filename) {
 }
 
 async function syncFromDrive() {
-  const keys = ['funcionarios','departamentos','empresas','usuarios','ferias','exames','epi','uni-mov','uni-itens','vagas','pagamentos','treinamentos','campanhas','politicas','benef-atrib','benef-compras'];
+  const keys = ['funcionarios','departamentos','empresas','usuarios','ferias','exames','epi','uni-mov','uni-itens','vagas','pagamentos','treinamentos','campanhas','politicas','benef-atrib','benef-compras','integracoes'];
   let synced = 0;
   for (const k of keys) {
     try {
@@ -3224,7 +3315,7 @@ async function syncFromDrive() {
   const active = document.querySelector('.section-page.active');
   if (active) {
     const id = active.id.replace('sec-','');
-    const rd = { funcionarios:rdFunc, departamentos:rdDep, empresas:rdEmp, usuarios:rdUsr, vagas:rdVagas, pagamentos:rdPagamentos, experiencia:rdExp, ferias:rdFer, exames:rdExm, epi:rdEPI, uniforme:rdUni, relatorios:rdRel, aniversariantes:rdBday, treinamentos:rdTrein, campanhas:rdCamp, politicas:rdPol, beneficios:rdBenefFunc };
+    const rd = { funcionarios:rdFunc, departamentos:rdDep, empresas:rdEmp, usuarios:rdUsr, vagas:rdVagas, pagamentos:rdPagamentos, experiencia:rdExp, ferias:rdFer, exames:rdExm, epi:rdEPI, uniforme:rdUni, relatorios:rdRel, aniversariantes:rdBday, treinamentos:rdTreinamentosMat, integracao:rdIntegracao, campanhas:rdCamp, politicas:rdPol, beneficios:rdBenefFunc };
     if (rd[id]) rd[id]();
   }
   toast('✅ ' + synced + ' registros carregados do Drive ☁️');
@@ -3389,9 +3480,9 @@ function nav(id, el) {
   secEl.classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   el.classList.add('active');
-  const T = { dashboard:'Dashboard', funcionarios:'Funcionários', empresas:'Empresas', vagas:'Vagas', experiencia:'Período de Experiência', ferias:'Férias', exames:'Exames Médicos', beneficios:'Benefícios por Funcionário', documentos:'Gerar Documentos', aniversariantes:'Aniversariantes', politicas:'Políticas & Normas', manual:'Manual do Sistema' };
+  const T = { dashboard:'Dashboard', funcionarios:'Funcionários', empresas:'Empresas', vagas:'Vagas', experiencia:'Período de Experiência', ferias:'Férias', exames:'Exames Médicos', beneficios:'Benefícios por Funcionário', documentos:'Gerar Documentos', aniversariantes:'Aniversariantes', politicas:'Políticas & Normas', manual:'Manual do Sistema' , integracao:'Integração', treinamentos:'Treinamentos' };
   document.getElementById('topbar-title').textContent = T[id] || id;
-  const rd = { dashboard:updDash, funcionarios:rdFunc, empresas:rdEmp, vagas:rdVagas, experiencia:rdExp, ferias:rdFer, exames:rdExm, beneficios:rdBenef, documentos:rdDocs, aniversariantes:rdBday, politicas:rdPol };
+  const rd = { dashboard:updDash, funcionarios:rdFunc, empresas:rdEmp, vagas:rdVagas, experiencia:rdExp, ferias:rdFer, exames:rdExm, beneficios:rdBenef, documentos:rdDocs, aniversariantes:rdBday, politicas:rdPol, integracao:rdIntegracao, treinamentos:rdTreinamentosMat };
   if (rd[id]) rd[id]();
 }
 
@@ -4255,20 +4346,6 @@ async function delDep(id) {
 // ============================================================
 // EMPRESAS
 // ============================================================
-async function savEmp() {
-  const n = document.getElementById('en').value.trim();
-  if (!n) { alert('Razão Social obrigatória.'); return; }
-  const list = DB.g('empresas');
-  list.push({ id: uid(), razao: n, cnpj: v('ecnpj'), fan: v('ef'), tel: v('etel'), email: v('eem'), cid: v('ecid'), end: v('eend'), cep: v('ecep') });
-  DB.s('empresas', list);
-  if (driveReady) await driveSync('empresas');
-  closeModal('modal-emp'); rdEmp(); toast('Empresa salva' + (driveReady ? ' ☁️' : '!'));
-}
-function rdEmp() {
-  const list = DB.g('empresas'); const tb = document.getElementById('tb-emp');
-  if (!list.length) { tb.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--gray-400)">Nenhuma empresa.</td></tr>'; return; }
-  tb.innerHTML = list.map(e => `<tr><td>${e.razao}</td><td>${e.cnpj||'—'}</td><td>${e.cid||'—'}</td><td>${e.tel||'—'}</td><td><button class="btn-icon danger" onclick="delEmp('${e.id}')">&#128465;</button></td></tr>`).join('');
-}
 async function delEmp(id) {
   if (!confirm('Excluir?')) return;
   DB.s('empresas', DB.g('empresas').filter(e => e.id !== id));
@@ -11866,8 +11943,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Sem empresa escolhida nesta aba: a tela de escolha assume
   if (!window.RH_TENANT) return;
-  // Always show sync overlay first
-  showSyncOverlay();
+  // Entra direto se o acesso ao Drive ainda vale; senão, um clique (conta lembrada)
+  if (typeof rhAutoStart === 'function') rhAutoStart(); else showSyncOverlay();
 });
 
 // ── Treinamento: participants checkbox panel ──
@@ -13315,6 +13392,490 @@ function _dmHtmlPol01(d) {
 }
 function gerarPol01Assiduidade() { _dmAbrir('pol01'); }
 
+// ════════════════════════════════════════════════════════════
+// INTEGRAÇÃO e TREINAMENTOS — biblioteca de materiais
+// Arquivos: com o Drive conectado vão para <pasta da empresa>/Integração|Treinamentos/<título>
+// (upload em partes, aceita vídeos grandes). Sem Drive ficam guardados neste navegador (IndexedDB).
+// ════════════════════════════════════════════════════════════
+var MT_KINDS = {
+  integracao: {
+    key: 'integracoes', folder: 'Integração', titulo: 'Integração', icone: '🤝',
+    novo: '+ Nova integração', singular: 'integração', vazio: 'Nenhuma integração cadastrada ainda.',
+    status: ['Ativa', 'Em revisão', 'Inativa'],
+    sub: 'Materiais de boas-vindas e apresentação da empresa para novos colaboradores.',
+    campos: [
+      { id: 'titulo', label: 'Título *', full: true, ph: 'Ex.: Integração – Recepção' },
+      { id: 'setor', label: 'Setor / cargo', ph: 'Ex.: Recepção, Todos' },
+      { id: 'inst', label: 'Responsável', ph: 'Quem conduz a integração' },
+      { id: 'data', label: 'Data', type: 'date' },
+      { id: 'ch', label: 'Carga horária (h)', type: 'number' },
+      { id: 'st', label: 'Status', type: 'status' },
+      { id: 'desc', label: 'Descrição', full: true, type: 'textarea' }
+    ]
+  },
+  treinamentos: {
+    key: 'treinamentos', folder: 'Treinamentos', titulo: 'Treinamentos', icone: '🎓',
+    novo: '+ Novo treinamento', singular: 'treinamento', vazio: 'Nenhum treinamento cadastrado ainda.',
+    status: ['Agendado', 'Em andamento', 'Concluído', 'Cancelado'],
+    sub: 'Treinamentos da equipe com os materiais de apresentação.',
+    campos: [
+      { id: 'titulo', label: 'Título *', full: true, ph: 'Ex.: Treinamento Portal de Atendimento' },
+      { id: 'data', label: 'Data', type: 'date' },
+      { id: 'hora', label: 'Horário', type: 'time' },
+      { id: 'local', label: 'Local / plataforma', ph: 'Ex.: Sala de reunião, Google Meet' },
+      { id: 'inst', label: 'Instrutor(a)' },
+      { id: 'ch', label: 'Carga horária (h)', type: 'number' },
+      { id: 'st', label: 'Status', type: 'status' },
+      { id: 'desc', label: 'Descrição', full: true, type: 'textarea' }
+    ]
+  }
+};
+var MT_ACCEPT = '.pdf,.doc,.docx,.odt,.rtf,.ppt,.pptx,.pps,.ppsx,.odp,.xls,.xlsx,image/*,video/*';
+var _mtEdit = { kind: null, id: null, queue: [] };
+var _mtFiltro = { integracao: { q: '', st: '' }, treinamentos: { q: '', st: '' } };
+
+function _mtEsc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function _mtTam(b) { if (!b && b !== 0) return ''; if (b < 1024) return b + ' B'; if (b < 1048576) return (b / 1024).toFixed(0) + ' KB'; if (b < 1073741824) return (b / 1048576).toFixed(1) + ' MB'; return (b / 1073741824).toFixed(2) + ' GB'; }
+function _mtTipo(name, mime) {
+  var n = (name || '').toLowerCase(), m = (mime || '').toLowerCase();
+  if (m.indexOf('video/') === 0 || /\.(mp4|mov|avi|mkv|webm|wmv|m4v)$/.test(n)) return 'video';
+  if (m.indexOf('image/') === 0 || /\.(png|jpe?g|gif|webp|bmp|svg|heic)$/.test(n)) return 'imagem';
+  if (m === 'application/pdf' || /\.pdf$/.test(n)) return 'pdf';
+  if (/\.(ppt|pptx|pps|ppsx|odp|key)$/.test(n) || m.indexOf('presentation') !== -1) return 'apresentacao';
+  if (/\.(doc|docx|odt|rtf)$/.test(n) || m.indexOf('word') !== -1) return 'word';
+  if (/\.(xls|xlsx|ods|csv)$/.test(n) || m.indexOf('sheet') !== -1) return 'planilha';
+  return 'outro';
+}
+var MT_ICON = { video: '🎬', imagem: '🖼️', pdf: '📕', apresentacao: '📙', word: '📘', planilha: '📗', outro: '📎' };
+var MT_TIPO_NOME = { video: 'Vídeo', imagem: 'Imagem', pdf: 'PDF', apresentacao: 'Apresentação', word: 'Word', planilha: 'Planilha', outro: 'Arquivo' };
+
+// ── Armazenamento local (IndexedDB) ──
+function _mtIdb() {
+  return new Promise(function (res, rej) {
+    var r = indexedDB.open('rh_materiais', 1);
+    r.onupgradeneeded = function () { r.result.createObjectStore('files'); };
+    r.onsuccess = function () { res(r.result); };
+    r.onerror = function () { rej(r.error); };
+  });
+}
+function _mtIdbOp(mode, fn) {
+  return _mtIdb().then(function (db) {
+    return new Promise(function (res, rej) {
+      var tx = db.transaction('files', mode), st = tx.objectStore('files'), out;
+      var req = fn(st); if (req) req.onsuccess = function () { out = req.result; };
+      tx.oncomplete = function () { res(out); }; tx.onerror = function () { rej(tx.error); }; tx.onabort = function () { rej(tx.error); };
+    });
+  });
+}
+function _mtIdbPut(id, file) { return _mtIdbOp('readwrite', function (st) { return st.put({ blob: file, name: file.name, type: file.type }, id); }); }
+function _mtIdbGet(id) { return _mtIdbOp('readonly', function (st) { return st.get(id); }); }
+function _mtIdbDel(id) { return _mtIdbOp('readwrite', function (st) { return st.delete(id); }); }
+
+// ── Upload para o Drive (resumable: aceita arquivos grandes) ──
+async function _mtDrivePasta(parts) {
+  var parent = rhFolderId;
+  for (var i = 0; i < parts.length; i++) {
+    var nome = String(parts[i] || 'Sem título').replace(/['\\]/g, ' ').replace(/[\/]/g, '-').trim().slice(0, 80) || 'Sem título';
+    parent = await findOrCreateFolder(nome, parent);
+  }
+  return parent;
+}
+function _mtDriveUpload(file, parentId, onProg) {
+  return fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&fields=id,name,webViewLink,mimeType,size', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + driveToken, 'Content-Type': 'application/json; charset=UTF-8',
+               'X-Upload-Content-Type': file.type || 'application/octet-stream', 'X-Upload-Content-Length': String(file.size) },
+    body: JSON.stringify({ name: file.name, parents: [parentId] })
+  }).then(function (r) {
+    if (!r.ok) throw new Error('Drive ' + r.status);
+    var loc = r.headers.get('Location'); if (!loc) throw new Error('Drive sem URL de envio');
+    return new Promise(function (res, rej) {
+      var x = new XMLHttpRequest();
+      x.open('PUT', loc);
+      x.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+      x.upload.onprogress = function (e) { if (e.lengthComputable && onProg) onProg(e.loaded / e.total); };
+      x.onload = function () { if (x.status >= 200 && x.status < 300) { try { res(JSON.parse(x.responseText)); } catch (e) { rej(e); } } else rej(new Error('Drive ' + x.status)); };
+      x.onerror = function () { rej(new Error('Falha de rede no envio')); };
+      x.send(file);
+    });
+  });
+}
+
+// ── Painel de progresso ──
+function _mtProg(id, nome, frac, erro) {
+  var box = document.getElementById('mt-prog');
+  if (!box) { box = document.createElement('div'); box.id = 'mt-prog'; document.body.appendChild(box); }
+  var row = document.getElementById('mt-prog-' + id);
+  if (frac === null) { if (row) row.remove(); if (!box.children.length) box.remove(); return; }
+  if (!row) { row = document.createElement('div'); row.id = 'mt-prog-' + id; row.className = 'mt-prog-row'; box.appendChild(row); }
+  row.innerHTML = '<div class="mt-prog-nome">' + _mtEsc(nome) + '</div>' +
+    (erro ? '<div style="color:var(--red);font-size:11px;">' + _mtEsc(erro) + '</div>'
+          : '<div class="mt-prog-bar"><span style="width:' + Math.round(frac * 100) + '%"></span></div><div class="mt-prog-pct">' + Math.round(frac * 100) + '%</div>');
+}
+
+// Guarda um arquivo (Drive se conectado, senão local) e devolve o registro do material
+async function _mtGuardarArquivo(kind, rec, file) {
+  var K = MT_KINDS[kind];
+  var mat = { id: uid(), nome: file.name.replace(/\.[^.]+$/, ''), name: file.name, mime: file.type || '', size: file.size,
+              tipo: _mtTipo(file.name, file.type), data: (typeof _expHoje === 'function' ? _expHoje() : td()) };
+  var pid = mat.id;
+  _mtProg(pid, file.name, 0);
+  try {
+    if (typeof driveReady !== 'undefined' && driveReady && rhFolderId) {
+      var pasta = await _mtDrivePasta([K.folder, rec.titulo]);
+      var up = await _mtDriveUpload(file, pasta, function (f) { _mtProg(pid, file.name, f); });
+      mat.src = 'drive'; mat.driveId = up.id; mat.url = up.webViewLink;
+    } else {
+      await _mtIdbPut(mat.id, file);
+      mat.src = 'local';
+    }
+    _mtProg(pid, file.name, null);
+    return mat;
+  } catch (e) {
+    // Drive falhou: guarda local para não perder o arquivo
+    try { await _mtIdbPut(mat.id, file); mat.src = 'local'; _mtProg(pid, file.name, null);
+          toast('⚠️ ' + file.name + ' guardado neste navegador (Drive indisponível).', 'warn'); return mat; }
+    catch (e2) { _mtProg(pid, file.name, 0, 'Não foi possível guardar: ' + (e2.message || e2)); setTimeout(function () { _mtProg(pid, '', null); }, 6000); return null; }
+  }
+}
+
+function _mtLista(kind) { return DB.g(MT_KINDS[kind].key); }
+async function _mtSalvarLista(kind, list) {
+  DB.s(MT_KINDS[kind].key, list);
+  if (typeof driveReady !== 'undefined' && driveReady) { try { await driveSync(MT_KINDS[kind].key); } catch (e) {} }
+}
+// Materiais do registro (inclui anexos do cadastro antigo de treinamentos)
+function _mtMats(rec) {
+  var mats = (rec.mats || []).slice();
+  (rec.files || []).forEach(function (f, i) {
+    mats.push({ id: 'legacy-' + i, nome: f.matNome || (f.name || '').replace(/\.[^.]+$/, ''), name: f.name, src: f.url ? 'drive' : 'nome',
+                driveId: f.id, url: f.url, tipo: _mtTipo(f.name, ''), legacy: i, data: f.matData });
+  });
+  return mats;
+}
+
+// ── Tela ──
+function rdMt(kind) {
+  var K = MT_KINDS[kind], root = document.getElementById('mt-root-' + kind); if (!root) return;
+  var F = _mtFiltro[kind];
+  var list = _mtLista(kind).slice().sort(function (a, b) { return (b.data || '').localeCompare(a.data || '') || (a.titulo || '').localeCompare(b.titulo || ''); });
+  var q = (F.q || '').toLowerCase();
+  var vis = list.filter(function (r) {
+    if (F.st && r.st !== F.st) return false;
+    if (!q) return true;
+    return [r.titulo, r.desc, r.inst, r.local, r.setor].concat(_mtMats(r).map(function (m) { return m.nome + ' ' + m.name; })).join(' ').toLowerCase().indexOf(q) !== -1;
+  });
+  var totMats = list.reduce(function (s, r) { return s + _mtMats(r).length; }, 0);
+
+  var html =
+    '<div class="card">' +
+      '<div class="card-header"><div><span class="card-title">' + K.icone + ' ' + K.titulo + '</span>' +
+        '<div style="font-size:12.5px;color:var(--gray-400);margin-top:3px;">' + K.sub + '</div></div>' +
+        '<button class="btn btn-primary" onclick="mtNovo(\'' + kind + '\')">' + K.novo + '</button></div>' +
+      '<div class="mt-toolbar">' +
+        '<input type="search" placeholder="Buscar por título, responsável ou material..." value="' + _mtEsc(F.q) + '" oninput="_mtFiltro.' + kind + '.q=this.value;rdMtLista(\'' + kind + '\')">' +
+        '<select onchange="_mtFiltro.' + kind + '.st=this.value;rdMtLista(\'' + kind + '\')"><option value="">Todos os status</option>' +
+          K.status.map(function (s) { return '<option' + (F.st === s ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select>' +
+        '<div class="mt-count">' + list.length + ' ' + (list.length === 1 ? K.singular : K.titulo.toLowerCase().replace('integração', 'integrações')) + ' · ' + totMats + ' materia' + (totMats === 1 ? 'l' : 'is') + '</div>' +
+      '</div>' +
+      '<div class="mt-info">' + (typeof driveReady !== 'undefined' && driveReady
+        ? '☁️ Os arquivos vão para o Google Drive, na pasta <strong>' + _mtEsc((window.RH_TENANT && RH_TENANT.drive) || 'RH') + ' / ' + K.folder + '</strong>.'
+        : '💾 Drive desconectado: os arquivos ficam guardados neste navegador. Conecte o Drive para compartilhar com outros computadores.') + '</div>' +
+      '<div id="mt-lista-' + kind + '"></div>' +
+    '</div>';
+  root.innerHTML = html;
+  rdMtLista(kind, vis);
+}
+function rdMtLista(kind, vis) {
+  var K = MT_KINDS[kind], el = document.getElementById('mt-lista-' + kind); if (!el) return;
+  if (!vis) {
+    var F = _mtFiltro[kind], q = (F.q || '').toLowerCase();
+    vis = _mtLista(kind).slice().sort(function (a, b) { return (b.data || '').localeCompare(a.data || '') || (a.titulo || '').localeCompare(b.titulo || ''); })
+      .filter(function (r) {
+        if (F.st && r.st !== F.st) return false;
+        if (!q) return true;
+        return [r.titulo, r.desc, r.inst, r.local, r.setor].concat(_mtMats(r).map(function (m) { return m.nome + ' ' + m.name; })).join(' ').toLowerCase().indexOf(q) !== -1;
+      });
+  }
+  if (!vis.length) {
+    el.innerHTML = '<div class="mt-vazio">' + (_mtLista(kind).length ? 'Nada encontrado com esse filtro.' : K.vazio + '<br><button class="btn btn-outline btn-sm" style="margin-top:10px;" onclick="mtNovo(\'' + kind + '\')">' + K.novo + '</button>') + '</div>';
+    return;
+  }
+  var stCor = { 'Ativa': 'badge-green', 'Concluído': 'badge-green', 'Em andamento': 'badge-yellow', 'Agendado': 'badge-blue', 'Em revisão': 'badge-yellow', 'Inativa': 'badge-gray', 'Cancelado': 'badge-red' };
+  el.innerHTML = vis.map(function (r) {
+    var meta = [];
+    if (r.data) meta.push('📅 ' + fd(r.data) + (r.hora ? ' às ' + _mtEsc(r.hora) : ''));
+    if (r.ch) meta.push('⏱ ' + _mtEsc(r.ch) + 'h');
+    if (r.setor) meta.push('👥 ' + _mtEsc(r.setor));
+    if (r.inst) meta.push((kind === 'integracao' ? '🧑‍💼 ' : '🎤 ') + _mtEsc(r.inst));
+    if (r.local) meta.push('📍 ' + _mtEsc(r.local));
+    var mats = _mtMats(r);
+    var chips = mats.map(function (m) {
+      var badge = m.src === 'drive' ? '<span class="mt-src" title="No Google Drive">☁️</span>' : m.src === 'local' ? '<span class="mt-src" title="Guardado neste navegador">💾</span>' : '';
+      return '<div class="mt-chip" onclick="mtAbrir(\'' + kind + '\',\'' + r.id + '\',\'' + m.id + '\')" title="' + _mtEsc(m.name) + '">' +
+        '<span class="mt-chip-ic">' + MT_ICON[m.tipo] + '</span>' +
+        '<span class="mt-chip-txt"><strong>' + _mtEsc(m.nome || m.name) + '</strong><small>' + MT_TIPO_NOME[m.tipo] + (m.size ? ' · ' + _mtTam(m.size) : '') + '</small></span>' + badge +
+        '<button class="mt-chip-x" title="Remover" onclick="event.stopPropagation();mtRemoverMat(\'' + kind + '\',\'' + r.id + '\',\'' + m.id + '\')">✕</button>' +
+      '</div>';
+    }).join('');
+    return '<div class="mt-card" ondragover="event.preventDefault();this.classList.add(\'mt-drag\')" ondragleave="this.classList.remove(\'mt-drag\')" ' +
+      'ondrop="event.preventDefault();this.classList.remove(\'mt-drag\');mtAnexar(\'' + kind + '\',\'' + r.id + '\',event.dataTransfer.files)">' +
+      '<div class="mt-card-head">' +
+        '<div style="flex:1;min-width:0;"><div class="mt-card-tit">' + _mtEsc(r.titulo) + (r.st ? ' <span class="badge ' + (stCor[r.st] || 'badge-gray') + '">' + _mtEsc(r.st) + '</span>' : '') + '</div>' +
+          (meta.length ? '<div class="mt-meta">' + meta.join('<span>·</span>') + '</div>' : '') + '</div>' +
+        '<div style="display:flex;gap:6px;flex-shrink:0;">' +
+          '<label class="btn btn-primary btn-sm" style="cursor:pointer;">📎 Anexar<input type="file" multiple accept="' + MT_ACCEPT + '" style="display:none" onchange="mtAnexar(\'' + kind + '\',\'' + r.id + '\',this.files);this.value=\'\'"></label>' +
+          '<button class="btn-icon" title="Editar" onclick="mtEditar(\'' + kind + '\',\'' + r.id + '\')">✏️</button>' +
+          '<button class="btn-icon danger" title="Excluir" onclick="mtExcluir(\'' + kind + '\',\'' + r.id + '\')">🗑</button>' +
+        '</div>' +
+      '</div>' +
+      (r.desc ? '<div class="mt-desc">' + _mtEsc(r.desc) + '</div>' : '') +
+      '<div class="mt-mats">' + (chips || '<div class="mt-sem-mat">Nenhum material ainda. Clique em <strong>📎 Anexar</strong> ou arraste arquivos para cá (PDF, imagem, Word, PowerPoint, vídeo).</div>') + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ── Cadastro ──
+function mtNovo(kind) { _mtAbrirModal(kind, null); }
+function mtEditar(kind, id) { _mtAbrirModal(kind, id); }
+function _mtAbrirModal(kind, id) {
+  var K = MT_KINDS[kind];
+  var r = id ? (_mtLista(kind).find(function (x) { return x.id === id; }) || {}) : { st: K.status[0] };
+  _mtEdit = { kind: kind, id: id, queue: [] };
+  document.getElementById('mt-modal-titulo').textContent = K.icone + ' ' + (id ? 'Editar ' : (kind === 'treinamentos' ? 'Novo ' : 'Nova ')) + K.singular;
+  document.getElementById('mt-modal-campos').innerHTML = K.campos.map(function (c) {
+    var val = r[c.id] == null ? '' : r[c.id], inp;
+    if (c.type === 'status') inp = '<select id="mtf-' + c.id + '">' + K.status.map(function (s) { return '<option' + (val === s ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select>';
+    else if (c.type === 'textarea') inp = '<textarea id="mtf-' + c.id + '" rows="3">' + _mtEsc(val) + '</textarea>';
+    else inp = '<input id="mtf-' + c.id + '" type="' + (c.type || 'text') + '" value="' + _mtEsc(val) + '" placeholder="' + _mtEsc(c.ph || '') + '">';
+    return '<div class="form-group' + (c.full ? ' form-full' : '') + '"><label>' + c.label + '</label>' + inp + '</div>';
+  }).join('');
+  _mtRenderFila();
+  document.getElementById('mt-modal').classList.add('open');
+  var _t = document.getElementById('mtf-titulo'); if (_t) _t.focus();
+}
+function mtFila(files) { Array.prototype.forEach.call(files || [], function (f) { _mtEdit.queue.push(f); }); _mtRenderFila(); }
+function _mtRenderFila() {
+  var el = document.getElementById('mt-modal-fila'); if (!el) return;
+  el.innerHTML = _mtEdit.queue.map(function (f, i) {
+    var t = _mtTipo(f.name, f.type);
+    return '<div class="mt-fila-row"><span>' + MT_ICON[t] + '</span><span style="flex:1;">' + _mtEsc(f.name) + ' <small style="color:var(--gray-400);">' + _mtTam(f.size) + '</small></span>' +
+      '<button onclick="_mtEdit.queue.splice(' + i + ',1);_mtRenderFila()">✕</button></div>';
+  }).join('');
+}
+async function mtSalvar() {
+  var kind = _mtEdit.kind, K = MT_KINDS[kind];
+  var dados = {};
+  K.campos.forEach(function (c) { var e = document.getElementById('mtf-' + c.id); dados[c.id] = e ? e.value.trim() : ''; });
+  if (!dados.titulo) { alert('Informe o título.'); return; }
+  var list = _mtLista(kind), rec;
+  if (_mtEdit.id) {
+    var idx = list.findIndex(function (x) { return x.id === _mtEdit.id; });
+    rec = Object.assign({}, list[idx], dados); list[idx] = rec;
+  } else {
+    rec = Object.assign({ id: uid(), mats: [], criado: _expHoje ? _expHoje() : td() }, dados);
+    if (kind === 'treinamentos') { rec.parts = []; rec.files = []; }
+    list.push(rec);
+  }
+  var fila = _mtEdit.queue.slice();
+  await _mtSalvarLista(kind, list);
+  closeModal('mt-modal');
+  rdMt(kind);
+  if (fila.length) await mtAnexar(kind, rec.id, fila);
+  else toast((_mtEdit.id ? 'Alterações salvas' : K.titulo.replace(/s$/, '') + ' cadastrado(a)') + '!');
+}
+async function mtExcluir(kind, id) {
+  var list = _mtLista(kind), r = list.find(function (x) { return x.id === id; }); if (!r) return;
+  var n = _mtMats(r).length;
+  if (!confirm('Excluir "' + r.titulo + '"' + (n ? ' e os ' + n + ' materiais vinculados' : '') + '?\n\nArquivos no Google Drive não são apagados, apenas desvinculados.')) return;
+  (r.mats || []).forEach(function (m) { if (m.src === 'local') _mtIdbDel(m.id).catch(function () {}); });
+  await _mtSalvarLista(kind, list.filter(function (x) { return x.id !== id; }));
+  rdMt(kind); toast('Excluído.');
+}
+
+// ── Materiais ──
+async function mtAnexar(kind, id, files) {
+  files = Array.prototype.slice.call(files || []); if (!files.length) return;
+  var rec = _mtLista(kind).find(function (x) { return x.id === id; }); if (!rec) return;
+  var novos = [];
+  for (var i = 0; i < files.length; i++) { var m = await _mtGuardarArquivo(kind, rec, files[i]); if (m) novos.push(m); }
+  if (!novos.length) return;
+  var list = _mtLista(kind), idx = list.findIndex(function (x) { return x.id === id; });
+  if (idx === -1) return;
+  list[idx].mats = (list[idx].mats || []).concat(novos);
+  await _mtSalvarLista(kind, list);
+  rdMt(kind);
+  toast('📎 ' + novos.length + ' material(is) anexado(s)' + (novos.some(function (m) { return m.src === 'drive'; }) ? ' ☁️' : '') + '!');
+}
+async function mtRemoverMat(kind, id, mid) {
+  var list = _mtLista(kind), idx = list.findIndex(function (x) { return x.id === id; }); if (idx === -1) return;
+  var r = list[idx], m = _mtMats(r).find(function (x) { return x.id === mid; }); if (!m) return;
+  if (!confirm('Remover o material "' + (m.nome || m.name) + '"?' + (m.src === 'drive' ? '\n\nO arquivo continua no Google Drive, apenas deixa de aparecer aqui.' : ''))) return;
+  if (m.legacy != null) { r.files = (r.files || []).filter(function (_, i) { return i !== m.legacy; }); }
+  else { r.mats = (r.mats || []).filter(function (x) { return x.id !== mid; }); if (m.src === 'local') _mtIdbDel(mid).catch(function () {}); }
+  await _mtSalvarLista(kind, list); rdMt(kind);
+  if (kind === 'empresas') { rdEmp(); empRenderDocs(); }
+}
+var _mtUrlAtual = null;
+async function mtAbrir(kind, id, mid) {
+  var r = _mtLista(kind).find(function (x) { return x.id === id; }); if (!r) return;
+  var m = _mtMats(r).find(function (x) { return x.id === mid; }); if (!m) return;
+  if (_mtUrlAtual) { URL.revokeObjectURL(_mtUrlAtual); _mtUrlAtual = null; }
+  var corpo = document.getElementById('mt-view-corpo'), acoes = document.getElementById('mt-view-acoes');
+  document.getElementById('mt-view-titulo').textContent = MT_ICON[m.tipo] + ' ' + (m.nome || m.name);
+  corpo.innerHTML = '<div style="padding:40px;text-align:center;color:var(--gray-400);">Carregando...</div>'; acoes.innerHTML = '';
+  document.getElementById('mt-view').classList.add('open');
+
+  if (m.src === 'drive' && m.driveId) {
+    corpo.innerHTML = '<iframe src="https://drive.google.com/file/d/' + encodeURIComponent(m.driveId) + '/preview" allow="autoplay" allowfullscreen></iframe>';
+    acoes.innerHTML = '<a class="btn btn-primary btn-sm" href="' + _mtEsc(m.url || ('https://drive.google.com/file/d/' + m.driveId + '/view')) + '" target="_blank" rel="noopener">Abrir no Google Drive ↗</a>';
+    return;
+  }
+  if (m.src !== 'local') {
+    corpo.innerHTML = '<div class="mt-view-msg">Este anexo foi registrado só pelo nome (<strong>' + _mtEsc(m.name) + '</strong>), sem o arquivo. Anexe-o novamente para visualizar.</div>';
+    return;
+  }
+  var rec;
+  try { rec = await _mtIdbGet(m.id); } catch (e) {}
+  if (!rec || !rec.blob) {
+    corpo.innerHTML = '<div class="mt-view-msg">O arquivo <strong>' + _mtEsc(m.name) + '</strong> foi guardado em outro computador ou navegador e não está disponível aqui. Conecte o Drive e anexe novamente para acessar de qualquer lugar.</div>';
+    return;
+  }
+  var url = _mtUrlAtual = URL.createObjectURL(rec.blob);
+  if (m.tipo === 'imagem') corpo.innerHTML = '<img src="' + url + '" alt="">';
+  else if (m.tipo === 'video') corpo.innerHTML = '<video src="' + url + '" controls autoplay playsinline></video>';
+  else if (m.tipo === 'pdf') corpo.innerHTML = '<iframe src="' + url + '"></iframe>';
+  else corpo.innerHTML = '<div class="mt-view-msg"><div style="font-size:46px;margin-bottom:8px;">' + MT_ICON[m.tipo] + '</div>Arquivos ' + MT_TIPO_NOME[m.tipo] + ' abrem no programa do computador.<br>Use <strong>Baixar</strong> para abrir.</div>';
+  acoes.innerHTML = '<a class="btn btn-primary btn-sm" href="' + url + '" download="' + _mtEsc(m.name) + '">⬇ Baixar</a>' +
+    (typeof driveReady !== 'undefined' && driveReady ? '<button class="btn btn-outline btn-sm" onclick="mtEnviarDrive(\'' + kind + '\',\'' + id + '\',\'' + mid + '\')">☁️ Enviar ao Drive</button>' : '');
+}
+function mtFecharView() {
+  document.getElementById('mt-view').classList.remove('open');
+  document.getElementById('mt-view-corpo').innerHTML = '';
+  if (_mtUrlAtual) { URL.revokeObjectURL(_mtUrlAtual); _mtUrlAtual = null; }
+}
+async function mtEnviarDrive(kind, id, mid) {
+  var list = _mtLista(kind), idx = list.findIndex(function (x) { return x.id === id; }); if (idx === -1) return;
+  var r = list[idx], m = (r.mats || []).find(function (x) { return x.id === mid; }); if (!m) return;
+  var rec = await _mtIdbGet(mid); if (!rec) return;
+  var file = new File([rec.blob], m.name, { type: m.mime || rec.type || '' });
+  _mtProg(mid, m.name, 0);
+  try {
+    var pasta = await _mtDrivePasta([MT_KINDS[kind].folder, r.titulo]);
+    var up = await _mtDriveUpload(file, pasta, function (f) { _mtProg(mid, m.name, f); });
+    m.src = 'drive'; m.driveId = up.id; m.url = up.webViewLink;
+    await _mtSalvarLista(kind, list); _mtIdbDel(mid).catch(function () {});
+    _mtProg(mid, '', null); mtFecharView(); rdMt(kind); if (kind === 'empresas') { rdEmp(); empRenderDocs(); } toast('☁️ Enviado ao Drive!');
+  } catch (e) { _mtProg(mid, m.name, 0, 'Falha ao enviar: ' + e.message); setTimeout(function () { _mtProg(mid, '', null); }, 6000); }
+}
+// ════════════════ EMPRESAS: editar + documentos ════════════════
+var _empEditId = null, _empFila = [];
+var EMP_DOC_TIPOS = ['Cartão CNPJ', 'Contrato Social / Alteração', 'Alvará de Funcionamento', 'Inscrição Estadual / Municipal',
+  'Certidões Negativas', 'Procuração', 'Comprovante de Endereço', 'Licença Sanitária / AVCB', 'Convenção Coletiva', 'Outros'];
+MT_KINDS.empresas = { key: 'empresas', folder: 'Empresas', titulo: 'Empresas', icone: '🏭', singular: 'empresa', campos: [], status: [] };
+
+function _empCampos() { return ['en','ecnpj','ef','etel','eem','ecid','eend','ecep']; }
+function _empResetDoc() { var t = document.getElementById('emp-doc-tipo'); if (t) t.selectedIndex = 0; var d = document.getElementById('emp-doc-validade'); if (d) d.value = ''; }
+function empNova() {
+  _empEditId = null; _empFila = [];
+  _empCampos().forEach(function (id) { var el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('emp-modal-titulo').textContent = '🏭 Nova empresa'; _empResetDoc();
+  empRenderDocs();
+  document.getElementById('modal-emp').classList.add('open');
+}
+function empEditar(id) {
+  var e = DB.g('empresas').find(function (x) { return x.id === id; }); if (!e) return;
+  _empEditId = id; _empFila = [];
+  var map = { en: 'razao', ecnpj: 'cnpj', ef: 'fan', etel: 'tel', eem: 'email', ecid: 'cid', eend: 'end', ecep: 'cep' };
+  Object.keys(map).forEach(function (k) { var el = document.getElementById(k); if (el) el.value = e[map[k]] || ''; });
+  document.getElementById('emp-modal-titulo').textContent = '✏️ Editar empresa'; _empResetDoc();
+  empRenderDocs();
+  document.getElementById('modal-emp').classList.add('open');
+}
+async function savEmp() {
+  var n = document.getElementById('en').value.trim();
+  if (!n) { alert('Razão Social obrigatória.'); return; }
+  var dados = { razao: n, cnpj: v('ecnpj'), fan: v('ef'), tel: v('etel'), email: v('eem'), cid: v('ecid'), end: v('eend'), cep: v('ecep') };
+  var list = DB.g('empresas'), id = _empEditId;
+  if (id) { var i = list.findIndex(function (x) { return x.id === id; }); if (i !== -1) list[i] = Object.assign({}, list[i], dados); }
+  else { id = uid(); list.push(Object.assign({ id: id, mats: [] }, dados)); }
+  DB.s('empresas', list);
+  var fila = _empFila.slice(); _empFila = []; var editando = !!_empEditId; _empEditId = null;
+  closeModal('modal-emp'); rdEmp();
+  toast(editando ? 'Empresa atualizada!' : 'Empresa cadastrada!');
+  if (fila.length) await empAnexar(id, fila);
+  if (typeof driveReady !== 'undefined' && driveReady) await driveSync('empresas');
+}
+async function empAnexar(id, itens) {
+  var e = DB.g('empresas').find(function (x) { return x.id === id; }); if (!e) return;
+  var novos = [];
+  for (var i = 0; i < itens.length; i++) {
+    var m = await _mtGuardarArquivo('empresas', { titulo: e.razao || 'Empresa' }, itens[i].file);
+    if (m) { m.cat = itens[i].cat || 'Outros'; if (itens[i].validade) m.validade = itens[i].validade; novos.push(m); }
+  }
+  if (!novos.length) return;
+  var list = DB.g('empresas'), idx = list.findIndex(function (x) { return x.id === id; }); if (idx === -1) return;
+  list[idx].mats = (list[idx].mats || []).concat(novos);
+  DB.s('empresas', list);
+  rdEmp(); empRenderDocs();
+  toast('📎 ' + novos.length + ' documento(s) anexado(s)!');
+}
+// Chamado pelo seletor de arquivo do modal
+function empEscolherArquivos(files) {
+  var cat = v('emp-doc-tipo') || 'Outros', validade = v('emp-doc-validade');
+  var itens = Array.prototype.map.call(files || [], function (f) { return { file: f, cat: cat, validade: validade }; });
+  if (!itens.length) return;
+  if (_empEditId) empAnexar(_empEditId, itens);
+  else { _empFila = _empFila.concat(itens); empRenderDocs(); }
+}
+function empRenderDocs() {
+  var el = document.getElementById('emp-docs-lista'); if (!el) return;
+  var e = _empEditId ? DB.g('empresas').find(function (x) { return x.id === _empEditId; }) : null;
+  var mats = e ? (e.mats || []) : [];
+  var hoje = typeof _expHoje === 'function' ? _expHoje() : td();
+  var html = mats.map(function (m) {
+    var venc = '';
+    if (m.validade) {
+      var d = _expDif(hoje, m.validade);
+      venc = d < 0 ? '<span class="badge badge-red">Vencido ' + fd(m.validade) + '</span>'
+           : d <= 30 ? '<span class="badge badge-yellow">Vence ' + fd(m.validade) + '</span>'
+           : '<span style="font-size:11px;color:var(--gray-400);">Válido até ' + fd(m.validade) + '</span>';
+    }
+    return '<div class="mt-chip" onclick="mtAbrir(\'empresas\',\'' + e.id + '\',\'' + m.id + '\')" title="' + _mtEsc(m.name) + '">' +
+      '<span class="mt-chip-ic">' + MT_ICON[m.tipo] + '</span>' +
+      '<span class="mt-chip-txt"><strong>' + _mtEsc(m.cat || 'Documento') + '</strong><small>' + _mtEsc(m.name) + (m.size ? ' · ' + _mtTam(m.size) : '') + '</small>' + (venc ? '<span style="margin-top:3px;">' + venc + '</span>' : '') + '</span>' +
+      '<span class="mt-src">' + (m.src === 'drive' ? '☁️' : '💾') + '</span>' +
+      '<button class="mt-chip-x" title="Remover" onclick="event.stopPropagation();mtRemoverMat(\'empresas\',\'' + e.id + '\',\'' + m.id + '\')">✕</button></div>';
+  }).join('');
+  html += _empFila.map(function (it, i) {
+    return '<div class="mt-chip" style="border-style:dashed;"><span class="mt-chip-ic">' + MT_ICON[_mtTipo(it.file.name, it.file.type)] + '</span>' +
+      '<span class="mt-chip-txt"><strong>' + _mtEsc(it.cat) + '</strong><small>' + _mtEsc(it.file.name) + ' · será anexado ao salvar</small></span>' +
+      '<button class="mt-chip-x" style="visibility:visible;" onclick="_empFila.splice(' + i + ',1);empRenderDocs()">✕</button></div>';
+  }).join('');
+  el.innerHTML = html || '<div class="mt-sem-mat">Nenhum documento anexado.</div>';
+}
+function rdEmp() {
+  var list = DB.g('empresas'), tb = document.getElementById('tb-emp'); if (!tb) return;
+  if (!list.length) { tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--gray-400)">Nenhuma empresa.</td></tr>'; return; }
+  var hoje = typeof _expHoje === 'function' ? _expHoje() : td();
+  tb.innerHTML = list.map(function (e) {
+    var mats = e.mats || [];
+    var vencidos = mats.filter(function (m) { return m.validade && m.validade < hoje; }).length;
+    var docs = mats.length
+      ? '<button class="btn btn-outline btn-sm" onclick="empEditar(\'' + e.id + '\')">📎 ' + mats.length + ' doc' + (mats.length > 1 ? 's' : '') + '</button>' +
+        (vencidos ? ' <span class="badge badge-red" title="Documentos com validade vencida">' + vencidos + ' vencido' + (vencidos > 1 ? 's' : '') + '</span>' : '')
+      : '<span style="color:var(--gray-400);font-size:12px;">—</span>';
+    return '<tr><td><strong>' + _mtEsc(e.razao) + '</strong>' + (e.fan ? '<div style="font-size:11px;color:var(--gray-400);">' + _mtEsc(e.fan) + '</div>' : '') + '</td>' +
+      '<td>' + _mtEsc(e.cnpj || '—') + '</td><td>' + _mtEsc(e.cid || '—') + '</td><td>' + _mtEsc(e.tel || '—') + '</td><td>' + docs + '</td>' +
+      '<td style="white-space:nowrap;"><button class="btn-icon" title="Editar" onclick="empEditar(\'' + e.id + '\')">✏️</button> ' +
+      '<button class="btn-icon danger" title="Excluir" onclick="delEmp(\'' + e.id + '\')">&#128465;</button></td></tr>';
+  }).join('');
+}
+
+function rdIntegracao() { rdMt('integracao'); }
+function rdTreinamentosMat() { rdMt('treinamentos'); }
+
+
 // Botões da tela "Gerar Documentos"
 function gerarTermoResponsabilidadeConf() { _dmAbrir('resp'); }
 function gerarTermoAutorizacaoImagemVozNovo() { _dmAbrir('imagem'); }
@@ -13602,6 +14163,415 @@ tr:nth-child(even) td{background:#f7fbf9;}
   w.document.write(manualHTML);
   w.document.close();
 }
+</script>
+<script>
+/* ════════════════════════════════════════════════════════════
+   SINCRONIZAÇÃO EM TEMPO REAL + LOGIN LEMBRADO + PASTAS POR EMPRESA
+   - Toda gravação vai para o Drive em ~1 s (DB.s / DB.so).
+   - A cada 15 s (e ao voltar para a aba) busca alterações feitas em outros computadores.
+   - Mescla por registro (id): duas pessoas editando itens diferentes não se sobrescrevem.
+   - Login: lembra a conta Google neste computador e renova o acesso sem pedir senha.
+   ════════════════════════════════════════════════════════════ */
+(function () {
+  var RT = window.RT = {
+    LIST: ['funcionarios','departamentos','empresas','usuarios','ferias','exames','epi','uni-mov','uni-itens','uniformes','vagas',
+           'pagamentos','treinamentos','campanhas','politicas','benef-atrib','benef-compras','flash-hist','pendencias',
+           'mat-trein','cronograma-trein','integracoes'],
+    OBJ: ['uni-est','perfil_empresa'],
+    ids: {}, mtime: {}, base: {}, busy: false, again: false, timer: null, poll: null, started: false,
+    lastOk: 0, erro: '', renewArmed: false, folderCache: {}
+  };
+  RT.ALL = RT.LIST.concat(RT.OBJ);
+  function synced(k) { return RT.ALL.indexOf(k) !== -1; }
+  function isObj(k) { return RT.OBJ.indexOf(k) !== -1; }
+
+  // ── pendências persistidas (sobrevivem a fechar a página) ──
+  function getDirty() { try { return JSON.parse(localStorage.getItem('eq_rt_dirty') || '{}') || {}; } catch (e) { return {}; } }
+  function setDirty(d) { try { localStorage.setItem('eq_rt_dirty', JSON.stringify(d)); } catch (e) {} }
+  function mark(k) { var d = getDirty(); d[k] = Date.now(); setDirty(d); }
+  function unmark(k, t) { var d = getDirty(); if (d[k] && (!t || d[k] <= t)) { delete d[k]; setDirty(d); } }
+
+  // ── leitura/gravação local sem disparar envio ──
+  function rawGet(k) { try { return JSON.parse(localStorage.getItem('eq_' + k) || (isObj(k) ? '{}' : '[]')); } catch (e) { return isObj(k) ? {} : []; } }
+  function rawSet(k, v) { localStorage.setItem('eq_' + k, JSON.stringify(v)); }
+  function clone(v) { return v == null ? v : JSON.parse(JSON.stringify(v)); }
+  function same(a, b) { return JSON.stringify(a) === JSON.stringify(b); }
+
+  // ── gancho nas gravações do sistema ──
+  // Exclusões ficam registradas (lápides) para não "ressuscitarem" na mescla
+  function getTomb() { try { return JSON.parse(localStorage.getItem('eq_rt_tomb') || '{}') || {}; } catch (e) { return {}; } }
+  function setTomb(t) { try { localStorage.setItem('eq_rt_tomb', JSON.stringify(t)); } catch (e) {} }
+  function registrarExclusoes(k, antes, depois) {
+    if (!Array.isArray(antes) || !Array.isArray(depois)) return;
+    var ficou = {}; depois.forEach(function (x) { if (x && x.id != null) ficou[x.id] = 1; });
+    var t = getTomb(), mudou = false, agora = Date.now();
+    antes.forEach(function (x) { if (x && x.id != null && !ficou[x.id]) { (t[k] = t[k] || {})[x.id] = agora; mudou = true; } });
+    if (mudou) { setTomb(t); mark('rt_tomb'); }
+  }
+  RT.getTomb = getTomb;
+  var _s = DB.s, _so = DB.so;
+  DB.s = function (k, v) { var antes = synced(k) ? rawGet(k) : null; _s(k, v); if (synced(k)) { registrarExclusoes(k, antes, v); mark(k); schedule(900); } };
+  DB.so = function (k, v) { _so(k, v); if (synced(k)) { mark(k); schedule(900); } };
+
+  // ── mescla de 3 vias: base (último sincronizado), local e remoto ──
+  function merge3(base, local, remote, tomb) {
+    if (Array.isArray(local) && Array.isArray(remote)) {
+      var ok = local.concat(remote).every(function (x) { return x && typeof x === 'object' && x.id != null; });
+      if (!ok) return local;
+      tomb = tomb || {};
+      var B = {}, L = {}, R = {};
+      (Array.isArray(base) ? base : []).forEach(function (x) { if (x && x.id != null) B[x.id] = x; });
+      local.forEach(function (x) { L[x.id] = x; });
+      remote.forEach(function (x) { R[x.id] = x; });
+      var out = [], seen = {};
+      function pick(id) {
+        if (tomb[id]) return null;                            // excluído em algum computador
+        var b = B[id], l = L[id], r = R[id];
+        if (l && r) return (b && same(l, b)) ? r : l;          // local não mudou → vale o remoto
+        return l || r || null;                                // existe só de um lado → mantém
+      }
+      remote.forEach(function (x) { seen[x.id] = 1; var v = pick(x.id); if (v) out.push(v); });
+      local.forEach(function (x) { if (seen[x.id]) return; seen[x.id] = 1; var v = pick(x.id); if (v) out.push(v); });
+      return out;
+    }
+    if (local && remote && typeof local === 'object' && typeof remote === 'object' && !Array.isArray(local) && !Array.isArray(remote)) {
+      var bo = (base && typeof base === 'object') ? base : {}, o = {};
+      Object.keys(Object.assign({}, remote, local)).forEach(function (key) {
+        var inL = key in local, inR = key in remote, inB = key in bo;
+        if (inL && inR) o[key] = same(local[key], bo[key]) ? remote[key] : local[key];
+        else if (inL) { if (!inB) o[key] = local[key]; }
+        else if (inR) { if (!inB) o[key] = remote[key]; }
+      });
+      return o;
+    }
+    return local;
+  }
+  RT.merge3 = merge3;
+  function podar(t) {                                         // lápides com mais de 180 dias saem
+    var lim = Date.now() - 180 * 86400000, o = {};
+    Object.keys(t).forEach(function (k) { Object.keys(t[k]).forEach(function (id) { if (t[k][id] > lim) (o[k] = o[k] || {})[id] = t[k][id]; }); });
+    setTomb(o); return o;
+  }
+
+  // ── API do Drive ──
+  function authFetch(url, opts) {
+    opts = opts || {}; opts.headers = Object.assign({ 'Authorization': 'Bearer ' + driveToken }, opts.headers || {});
+    return fetch(url, opts).then(function (r) {
+      if (r.status === 401) { tokenExpired(); throw new Error('401'); }
+      if (!r.ok) throw new Error('Drive ' + r.status);
+      return r;
+    });
+  }
+  function q(s) { return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
+  async function listar() {
+    var url = 'https://www.googleapis.com/drive/v3/files?pageSize=500&fields=files(id,name,modifiedTime)&q=' +
+      encodeURIComponent("'" + rhFolderId + "' in parents and trashed=false and name contains 'eq_' and mimeType='application/json'");
+    var r = await authFetch(url); var j = await r.json(); var map = {};
+    (j.files || []).forEach(function (f) {
+      var m = /^eq_(.+)\.json$/.exec(f.name); if (!m) return;
+      var k = m[1];
+      if (!map[k] || f.modifiedTime > map[k].modifiedTime) map[k] = f;   // se houver duplicado, fica o mais recente
+    });
+    return map;
+  }
+  async function baixar(id) { var r = await authFetch('https://www.googleapis.com/drive/v3/files/' + id + '?alt=media'); return r.json(); }
+  async function enviar(k, data) {
+    var id = RT.ids[k];
+    var meta = { name: 'eq_' + k + '.json', mimeType: 'application/json' };
+    if (!id) meta.parents = [rhFolderId];
+    var form = new FormData();
+    form.append('metadata', new Blob([JSON.stringify(meta)], { type: 'application/json' }));
+    form.append('file', new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }));
+    var url = id ? 'https://www.googleapis.com/upload/drive/v3/files/' + id + '?uploadType=multipart&fields=id,modifiedTime'
+                 : 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,modifiedTime';
+    var r = await authFetch(url, { method: id ? 'PATCH' : 'POST', body: form });
+    var j = await r.json(); RT.ids[k] = j.id; RT.mtime[k] = j.modifiedTime;
+  }
+
+  // ── ciclo: envia pendências e busca alterações ──
+  function schedule(ms) { clearTimeout(RT.timer); RT.timer = setTimeout(run, ms || 0); status(); }
+  function pronto() { return typeof driveReady !== 'undefined' && driveReady && driveToken && rhFolderId; }
+  async function run() {
+    if (!pronto()) { status(); return; }
+    if (RT.busy) { RT.again = true; return RT.busyPromise; }
+    RT.busy = true; status('sync');
+    RT.busyPromise = (async function () {
+      var mudou = [];
+      try {
+        var remoto = await listar();
+        var dirty = getDirty();
+        var primeira = !localStorage.getItem('eq_rt_v2');         // 1ª vez neste computador: o Drive manda
+        // 0) exclusões (lápides): união local + Drive
+        if (remoto.rt_tomb) {
+          RT.ids.rt_tomb = remoto.rt_tomb.id;
+          if (RT.mtime.rt_tomb !== remoto.rt_tomb.modifiedTime) {
+            var rt = await baixar(remoto.rt_tomb.id) || {}, lt = getTomb(), un = {}, precisa = false;
+            Object.keys(Object.assign({}, rt, lt)).forEach(function (k) { un[k] = Object.assign({}, rt[k] || {}, lt[k] || {}); });
+            Object.keys(lt).forEach(function (k) { Object.keys(lt[k]).forEach(function (id) { if (!rt[k] || !rt[k][id]) precisa = true; }); });
+            setTomb(un); RT.mtime.rt_tomb = remoto.rt_tomb.modifiedTime;
+            if (precisa) mark('rt_tomb'); else unmark('rt_tomb');
+          }
+        } else if (Object.keys(getTomb()).length) mark('rt_tomb');
+        var tombs = getTomb();
+        dirty = getDirty();
+        // 1) chaves alteradas no Drive
+        for (var k in remoto) {
+          if (!synced(k)) continue;
+          var f = remoto[k]; RT.ids[k] = f.id;
+          if (RT.mtime[k] === f.modifiedTime) continue;
+          var rv = await baixar(f.id), antes = rawGet(k), mv;
+          if (primeira && !dirty[k]) mv = rv;
+          else mv = merge3(RT.base[k], antes, rv, tombs[k]);
+          RT.mtime[k] = f.modifiedTime; RT.base[k] = clone(rv);
+          if (!same(mv, antes)) { rawSet(k, mv); mudou.push(k); }
+          if (!same(mv, rv)) mark(k); else unmark(k);          // Drive desatualizado → reenvia a mescla
+        }
+        // 2) dados locais que ainda não existem no Drive (pasta nova, cópia de dados)
+        RT.ALL.forEach(function (k) {
+          if (remoto[k] || getDirty()[k]) return;
+          var lv = rawGet(k);
+          if ((Array.isArray(lv) && lv.length) || (!Array.isArray(lv) && lv && Object.keys(lv).length)) mark(k);
+        });
+        // 3) envio das pendências
+        dirty = getDirty();
+        for (var dk in dirty) {
+          var t = dirty[dk];
+          if (dk === 'rt_tomb') { await enviar('rt_tomb', podar(getTomb())); unmark(dk, t); continue; }
+          if (!synced(dk)) { unmark(dk); continue; }
+          var lv2 = rawGet(dk);
+          await enviar(dk, lv2);
+          RT.base[dk] = clone(lv2); unmark(dk, t);
+        }
+        try { localStorage.setItem('eq_rt_v2', '1'); } catch (e) {}
+        RT.lastOk = Date.now(); RT.erro = '';
+      } catch (e) {
+        RT.erro = (e && e.message === '401') ? 'token' : 'rede';
+      }
+      RT.busy = false;
+      if (mudou.length) refresh(mudou);
+      status();
+      if (RT.again) { RT.again = false; schedule(300); }
+    })();
+    return RT.busyPromise;
+  }
+  RT.run = run;
+
+  // Atualiza a tela aberta quando chegam alterações de outro computador
+  function refresh(keys) {
+    try { if (typeof updDash === 'function') updDash(); } catch (e) {}
+    var aberta = document.querySelector('.section-page.active'); if (!aberta) return;
+    var id = aberta.id.replace('sec-', '');
+    var modalAberto = document.querySelector('.modal-bg.open');
+    var rd = { funcionarios: 'rdFunc', empresas: 'rdEmp', vagas: 'rdVagas', experiencia: 'rdExp', ferias: 'rdFer', exames: 'rdExm',
+               beneficios: 'rdBenef', aniversariantes: 'rdBday', politicas: 'rdPol', integracao: 'rdIntegracao', treinamentos: 'rdTreinamentosMat',
+               dashboard: 'updDash' };
+    var fn = rd[id];
+    if (fn && typeof window[fn] === 'function' && !(modalAberto && id === 'funcionarios')) { try { window[fn](); } catch (e) {} }
+    if (typeof toast === 'function') toast('🔄 Dados atualizados de outro computador');
+  }
+
+  // ── indicador no topo ──
+  function hora(ms) { var d = new Date(ms); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+  function status(modo) {
+    var b = document.getElementById('drive-badge'), dot = document.getElementById('drive-badge-dot'), tx = document.getElementById('drive-badge-txt');
+    if (!b || !dot || !tx) return;
+    b.style.display = 'flex';
+    var pend = Object.keys(getDirty()).length;
+    if (!pronto()) {
+      dot.style.background = '#ff7043';
+      tx.textContent = RT.erro === 'token' || RT.renewArmed ? '⚠️ Reconectar' : (pend ? '💾 Local · ' + pend + ' pendente(s)' : '💾 Local');
+      b.title = RT.renewArmed ? 'Clique em qualquer lugar do sistema para renovar a conexão com o Drive.' : 'Drive desconectado: as alterações ficam guardadas e são enviadas ao reconectar.';
+      return;
+    }
+    if (modo === 'sync') { dot.style.background = '#ffca28'; tx.textContent = '☁️ Sincronizando…'; return; }
+    if (RT.erro) { dot.style.background = '#ff7043'; tx.textContent = '⚠️ Sem conexão' + (pend ? ' · ' + pend + ' pendente(s)' : ''); b.title = 'Tentando novamente automaticamente.'; return; }
+    if (pend) { dot.style.background = '#ffca28'; tx.textContent = '☁️ Salvando…'; return; }
+    dot.style.background = '#69f0ae';
+    tx.textContent = '☁️ Sincronizado' + (RT.lastOk ? ' ' + hora(RT.lastOk) : '');
+    b.title = 'Sincronização automática com o Google Drive (pasta ' + ((window.RH_TENANT && RH_TENANT.drive) || 'RH') + ').';
+  }
+  RT.status = status;
+
+  function start() {
+    if (RT.started) return; RT.started = true;
+    RT.poll = setInterval(function () { if (document.visibilityState === 'visible') run(); }, 15000);
+    document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') run(); });
+    window.addEventListener('focus', function () { run(); });
+    window.addEventListener('online', function () { run(); });
+    setInterval(checkTokenAge, 60000);
+    window.addEventListener('beforeunload', function (e) {
+      if (pronto() && Object.keys(getDirty()).length) { run(); e.preventDefault(); e.returnValue = ''; }
+    });
+  }
+  RT.start = start;
+
+  // ── substitui a sincronização antiga ──
+  window.syncFromDrive = async function () {
+    RT.mtime = {};                 // força baixar tudo
+    await run();
+    try { if (typeof loadFotoStoreFromDrive === 'function') await loadFotoStoreFromDrive(); } catch (e) {}
+    refreshAll();
+    start();
+  };
+  function refreshAll() {
+    try { if (typeof updDash === 'function') updDash(); } catch (e) {}
+    try { if (typeof rdBenef === 'function') rdBenef(); } catch (e) {}
+    var aberta = document.querySelector('.section-page.active');
+    if (aberta) refresh([]);
+  }
+  window.driveSync = async function (k) { if (synced(k)) mark(k); await run(); };
+  window.driveSyncObj = window.driveSync;
+  window.syncManual = async function () {
+    if (!pronto()) { if (typeof showSyncOverlay === 'function') showSyncOverlay(); return; }
+    RT.mtime = {}; await run(); refreshAll(); if (!RT.erro) toast('✅ Tudo sincronizado com o Drive!');
+  };
+
+  // ════════════════ PASTAS POR EMPRESA ════════════════
+  var CATEGORIAS = ['Funcionários', 'Empresas', 'Integração', 'Treinamentos', 'Políticas e Normas', 'Benefícios', 'Vagas', 'Campanhas'];
+  var ALIAS = { 'Politicas e Normas': 'Políticas e Normas', 'Beneficios': 'Benefícios' };
+  async function acharPasta(nome, pai) {
+    var url = 'https://www.googleapis.com/drive/v3/files?fields=files(id,name)&q=' +
+      encodeURIComponent("name='" + q(nome) + "' and mimeType='application/vnd.google-apps.folder' and '" + pai + "' in parents and trashed=false");
+    var r = await authFetch(url); var j = await r.json(); return (j.files && j.files[0]) ? j.files[0].id : null;
+  }
+  async function pasta(nome, pai) {
+    var ck = pai + '/' + nome; if (RT.folderCache[ck]) return RT.folderCache[ck];
+    var id = await acharPasta(nome, pai);
+    if (!id) {
+      var r = await authFetch('https://www.googleapis.com/drive/v3/files?fields=id', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: nome, mimeType: 'application/vnd.google-apps.folder', parents: [pai] }) });
+      id = (await r.json()).id;
+    }
+    RT.folderCache[ck] = id; return id;
+  }
+  window.findOrCreateFolder = async function (name, parentId) { return pasta(String(name), parentId || 'root'); };
+
+  window.ensureRHFolder = async function () {
+    try {
+      var nome = (window.RH_TENANT && RH_TENANT.drive) || 'RH Absoluta';
+      rhFolderId = await pasta(nome, 'root');
+      RT.folderCache = { }; RT.folderCache['root/' + nome] = rhFolderId;
+      // estrutura padrão dentro da pasta da empresa
+      CATEGORIAS.forEach(function (c) { pasta(c, rhFolderId).catch(function () {}); });
+    } catch (e) {
+      console.error('Folder error:', e);
+      toast('Não foi possível acessar o Drive. Modo local ativado.', 'warn');
+      driveReady = false; if (typeof updDriveStatus === 'function') updDriveStatus(false);
+    }
+  };
+  // "Treinamentos/Fotos/X" vira subpastas; nomes de funcionário vão para Funcionários/<nome>
+  window.getOrCreateFuncFolder = async function (caminho) {
+    if (!pronto()) return null;
+    try {
+      var partes = String(caminho || 'Sem nome').split('/').map(function (p) { return p.trim(); }).filter(Boolean);
+      partes[0] = ALIAS[partes[0]] || partes[0];
+      if (CATEGORIAS.indexOf(partes[0]) !== -1) {
+        var pai = rhFolderId;
+        for (var i = 0; i < partes.length; i++) pai = await pasta(partes[i], pai);
+        return pai;
+      }
+      var nomeF = partes.join(' - ');
+      var fFunc = await pasta('Funcionários', rhFolderId);
+      var dentro = await acharPasta(nomeF, fFunc);
+      if (dentro) return dentro;
+      var antiga = await acharPasta(nomeF, rhFolderId);     // pastas criadas antes da organização
+      if (antiga) return antiga;
+      return await pasta(nomeF, fFunc);
+    } catch (e) { return null; }
+  };
+  window.rhAbrirPastaDrive = function () {
+    if (!pronto()) { toast('Conecte o Google Drive primeiro.', 'warn'); return; }
+    window.open('https://drive.google.com/drive/folders/' + rhFolderId, '_blank');
+  };
+
+  // ════════════════ LOGIN LEMBRADO ════════════════
+  function emailSalvo() { try { return localStorage.getItem('eq_drive_email') || ''; } catch (e) { return ''; } }
+  RT.emailSalvo = emailSalvo;
+  var renovador = null;
+  function clienteRenovacao() {
+    if (renovador || !window.google || !google.accounts || !CLIENT_ID) return renovador;
+    renovador = google.accounts.oauth2.initTokenClient({
+      client_id: CLIENT_ID, scope: SCOPES,
+      callback: function (t) {
+        if (!t || t.error || !t.access_token) { RT.renewArmed = false; armar(); status(); return; }
+        driveToken = t.access_token; driveReady = true;
+        localStorage.setItem('eq_drive_token', driveToken);
+        localStorage.setItem('eq_drive_token_time', Date.now().toString());
+        RT.renewArmed = false; RT.erro = '';
+        if (typeof hideReconnectButton === 'function') hideReconnectButton();
+        if (typeof updDriveStatus === 'function') updDriveStatus(true, emailSalvo());
+        (rhFolderId ? Promise.resolve() : ensureRHFolder()).then(function () { start(); run(); });
+      },
+      error_callback: function () { RT.renewArmed = false; armar(); status(); }
+    });
+    return renovador;
+  }
+  function renovarAgora() {
+    var c = clienteRenovacao(); if (!c) return;
+    var em = emailSalvo();
+    c.requestAccessToken(em ? { prompt: '', login_hint: em } : { prompt: '' });
+  }
+  // A janelinha do Google só pode abrir após um clique: renovamos no próximo clique, sem pedir senha
+  function armar() {
+    if (RT.renewArmed) return; RT.renewArmed = true; status();
+    document.addEventListener('pointerdown', function h() {
+      document.removeEventListener('pointerdown', h, true);
+      if (typeof toast === 'function') toast('🔐 Renovando conexão com o Drive…');
+      renovarAgora();
+    }, true);
+  }
+  function tokenExpired() {
+    driveReady = false; driveToken = null;
+    try { localStorage.removeItem('eq_drive_token'); } catch (e) {}
+    armar();
+  }
+  function checkTokenAge() {
+    var t = parseInt(localStorage.getItem('eq_drive_token_time') || '0', 10);
+    if (driveReady && t && Date.now() - t > 50 * 60000) armar();      // renova antes de expirar (60 min)
+  }
+  window.silentReconnect = function () { tokenExpired(); };
+
+  // Entrada automática: token válido → entra direto; conta conhecida → um clique, sem senha
+  window.rhAutoStart = async function () {
+    var cid = localStorage.getItem('eq_client_id'); if (cid) CLIENT_ID = cid;
+    var tok = localStorage.getItem('eq_drive_token');
+    var t = parseInt(localStorage.getItem('eq_drive_token_time') || '0', 10);
+    if (cid && tok && Date.now() - t < 55 * 60000) {
+      driveToken = tok;
+      try {
+        var r = await fetch('https://www.googleapis.com/drive/v3/about?fields=user', { headers: { 'Authorization': 'Bearer ' + tok } });
+        if (r.ok) {
+          var u = (await r.json()).user || {};
+          driveReady = true;
+          if (u.emailAddress) localStorage.setItem('eq_drive_email', u.emailAddress);
+          var av = document.getElementById('user-avatar'); if (av) { av.title = u.emailAddress || ''; av.textContent = ((u.displayName || u.emailAddress || 'A')[0] || 'A').toUpperCase(); }
+          ['setup-wizard', 'token-wizard'].forEach(function (id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; });
+          var bar = document.getElementById('drive-bar'); if (bar) bar.style.display = 'flex';
+          if (typeof updDriveStatus === 'function') updDriveStatus(true, u.emailAddress || '');
+          if (typeof init === 'function') init();
+          await ensureRHFolder(); await syncFromDrive();
+          return;
+        }
+      } catch (e) {}
+      driveToken = null;
+    }
+    if (typeof showSyncOverlay === 'function') showSyncOverlay();
+    var em = emailSalvo();
+    if (cid && em) {
+      var msg = document.getElementById('sync-msg');
+      if (msg) msg.innerHTML = 'Entrar como <strong>' + em.replace(/</g, '&lt;') + '</strong><br><span style="font-size:12px;color:var(--gray-400);">Sem digitar senha — a conta fica lembrada neste computador.</span>';
+      var acts = document.getElementById('sync-actions');
+      var b1 = acts && acts.querySelector('button'); if (b1) b1.innerHTML = '☁️ Entrar e sincronizar';
+      if (acts && !document.getElementById('rt-trocar-conta')) {
+        var b = document.createElement('button');
+        b.id = 'rt-trocar-conta'; b.className = 'btn btn-outline'; b.style.cssText = 'width:100%;padding:8px;font-size:12px;';
+        b.textContent = 'Usar outra conta Google';
+        b.onclick = function () { try { localStorage.removeItem('eq_drive_email'); } catch (e) {} syncOverlayAction(); };
+        acts.appendChild(b);
+      }
+    }
+  };
+})();
 </script>
 </body>
 </html>
