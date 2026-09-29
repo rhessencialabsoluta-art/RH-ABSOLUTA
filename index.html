@@ -713,6 +713,15 @@ input#client-id-inp:focus{border-color:var(--green);outline:none;}
 .setup-n{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--gray-100);color:var(--gray-600);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;}
 .setup-step.ok{opacity:.7;}
 .setup-step.ok .setup-n{background:var(--green);color:#fff;}
+/* ── Aba Uniforme do funcionário ── */
+.uni-sec-tit{font-weight:700;font-size:13.5px;color:var(--green-dark);margin:6px 0 2px;}
+.uni-sec-sub{font-size:12px;color:var(--gray-400);margin-bottom:12px;}
+.uni-vazio{text-align:center;padding:20px;color:var(--gray-400);font-size:13px;border:1.5px dashed var(--gray-200);border-radius:var(--radius-sm);line-height:1.6;}
+.uni-row{display:grid;grid-template-columns:1.6fr 90px 70px 150px 38px;gap:8px;align-items:start;margin-bottom:6px;padding:8px;background:var(--gray-50);border-radius:6px;border:1px solid var(--gray-100);}
+.uni-row.uni-head{background:none;border:none;padding:0 8px 2px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gray-400);margin-bottom:2px;}
+.uni-row select,.uni-row input{width:100%;padding:6px 8px;border:1px solid var(--gray-200);border-radius:5px;font-size:12.5px;font-family:inherit;background:#fff;}
+.uni-del{background:#ffebee;color:#c62828;border:1px solid #ffcdd2;border-radius:5px;padding:6px;cursor:pointer;}
+@media (max-width:640px){.uni-row{grid-template-columns:1fr 1fr;}.uni-row.uni-head{display:none;}}
 /* ── Tema Essencial (cores da logo) ── */
 html[data-tenant="essencial"]{
   --green:#b46051;--green-dark:#7d3b30;--green-light:#e3a597;--green-pale:#faeeea;
@@ -1677,7 +1686,7 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
       <button class="modal-close" onclick="closeModal(&#39;modal-func&#39;)">×</button>
     </div>
-    <div class="tabs"><div class="tab active" onclick="fTab(&#39;ft1&#39;,this)">Dados Pessoais</div><div class="tab" onclick="fTab(&#39;ft2&#39;,this)">Contrato</div><div class="tab" onclick="fTab(&#39;ft3&#39;,this)">Documentos</div><div class="tab" onclick="fTab(&#39;ft4&#39;,this)">👕 Uniformes</div></div>
+    <div class="tabs"><div class="tab active" onclick="fTab(&#39;ft1&#39;,this)">Dados Pessoais</div><div class="tab" onclick="fTab(&#39;ft2&#39;,this)">Contrato</div><div class="tab" onclick="fTab(&#39;ft3&#39;,this)">Documentos</div><div class="tab" onclick="fTab(&#39;ft4&#39;,this)">👕 Uniforme</div></div>
     <div id="ft1">
       <!-- Foto do funcionário -->
       <div style="display:flex;gap:20px;align-items:flex-start;margin-bottom:16px;padding:14px;background:var(--gray-50);border-radius:var(--radius-sm);">
@@ -1737,37 +1746,6 @@ document.addEventListener('DOMContentLoaded', function () {
             <option value="56">Seg a Sab (6x1)</option>
             <option value="12x36">12x36</option>
           </select><button type="button" class="est-plus" title="Cadastrar nova escala" onclick="estQuickNovo('esc','fescala')">＋</button></div>
-        </div>
-        <div class="form-group"><label>👕 Tamanho Camiseta</label>
-          <select id="ftam-camisa">
-            <option value="">Não definido</option>
-            <option>PP</option><option>P</option><option>M</option>
-            <option>G</option><option>GG</option><option>XGG</option>
-          </select>
-        </div>
-        <div class="form-group"><label>🥼 Tamanho Jaleco/Avental</label>
-          <select id="ftam-jaleco">
-            <option value="">Não definido</option>
-            <option>PP</option><option>P</option><option>M</option>
-            <option>G</option><option>GG</option><option>XGG</option>
-          </select>
-        </div>
-        <div class="form-group"><label>👖 Tamanho Calça</label>
-          <select id="ftam-calca">
-            <option value="">Não definido</option>
-            <option>34</option><option>36</option><option>38</option><option>40</option>
-            <option>42</option><option>44</option><option>46</option><option>48</option>
-            <option>50</option><option>52</option><option>54</option>
-          </select>
-        </div>
-        <div class="form-group"><label>👟 Número do Calçado</label>
-          <select id="ftam-calcado">
-            <option value="">Não definido</option>
-            <option>33</option><option>34</option><option>35</option><option>36</option>
-            <option>37</option><option>38</option><option>39</option><option>40</option>
-            <option>41</option><option>42</option><option>43</option><option>44</option>
-            <option>45</option><option>46</option>
-          </select>
         </div>
       </div>
     </div>
@@ -1858,14 +1836,48 @@ document.addEventListener('DOMContentLoaded', function () {
       <div id="docs-pendentes-resumo" style="margin-top:10px;font-size:12px;color:var(--gray-600);"></div>
     </div>
     <div id="ft4" style="display:none;">
-      <div style="padding:12px 0 8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-        <span style="font-weight:700;color:var(--green-dark);font-size:13px;">👕 Registro de Entrega de Uniformes</span>
-        <button class="btn btn-primary btn-sm" onclick="adicionarItemUniforme()">+ Adicionar Item</button>
+      <div class="uni-sec-tit">📏 Tamanhos do funcionário</div>
+      <div class="uni-sec-sub">Usados nas entregas abaixo e no relatório de funcionários.</div>
+      <div class="form-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr));">
+        <div class="form-group"><label>👕 Camiseta / Blusa</label>
+          <select id="ftam-camisa">
+            <option value="">Não definido</option>
+            <option>PP</option><option>P</option><option>M</option>
+            <option>G</option><option>GG</option><option>XGG</option>
+          </select>
+        </div>
+        <div class="form-group"><label>🥼 Jaleco / Avental</label>
+          <select id="ftam-jaleco">
+            <option value="">Não definido</option>
+            <option>PP</option><option>P</option><option>M</option>
+            <option>G</option><option>GG</option><option>XGG</option>
+          </select>
+        </div>
+        <div class="form-group"><label>👖 Calça</label>
+          <select id="ftam-calca">
+            <option value="">Não definido</option>
+            <option>34</option><option>36</option><option>38</option><option>40</option>
+            <option>42</option><option>44</option><option>46</option><option>48</option>
+            <option>50</option><option>52</option><option>54</option>
+          </select>
+        </div>
+        <div class="form-group"><label>👟 Calçado (nº)</label>
+          <select id="ftam-calcado">
+            <option value="">Não definido</option>
+            <option>33</option><option>34</option><option>35</option><option>36</option>
+            <option>37</option><option>38</option><option>39</option><option>40</option>
+            <option>41</option><option>42</option><option>43</option><option>44</option>
+            <option>45</option><option>46</option>
+          </select>
+        </div>
       </div>
+      <div class="uni-sec-tit" style="margin-top:22px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span>📦 Entregas de uniforme</span>
+        <button class="btn btn-primary btn-sm" id="uni-btn-add" onclick="adicionarItemUniforme()">+ Registrar entrega</button>
+      </div>
+      <div class="uni-sec-sub">Cada linha é um item entregue. As alterações são salvas automaticamente.</div>
       <div id="uniforme-lista-modal" style="margin-bottom:8px;"></div>
-      <div id="uniforme-vazio" style="text-align:center;padding:24px;color:var(--gray-400);font-size:13px;">
-        Nenhum uniforme registrado. Clique em "+ Adicionar Item" para registrar.
-      </div>
+      <div id="uniforme-vazio" class="uni-vazio">Nenhuma entrega registrada.</div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal(&#39;modal-func&#39;)">Cancelar</button>
@@ -3479,7 +3491,8 @@ async function uploadFileToDrive(file, funcNome) {
 function openModal(id) {
   document.getElementById(id).classList.add('open');
   if (id === 'modal-func') {
-    if (!editingFuncId) resetFuncModal();
+    if (!editingFuncId) { resetFuncModal(); _uniformeEditFid = null; renderUniformeModal(null); }
+    var _t1 = document.querySelector('#modal-func .tabs .tab'); if (_t1) fTab('ft1', _t1);
     fillSel('femp','empresas','razao'); fillSel('fdep','departamentos','nome'); checkDriveDocs();
   }
   if (id === 'modal-dep') fillSel('de','empresas','razao');
@@ -3568,7 +3581,7 @@ function fillFuncSel(selId, multi) {
   DB.g('funcionarios').filter(f => f.st !== 'Desligado').sort((a,b)=>a.n.localeCompare(b.n)).forEach(f => { const o = document.createElement('option'); o.value = f.id; o.textContent = f.n; s.appendChild(o); });
 }
 function fTab(id, btn) {
-  ['ft1','ft2','ft3'].forEach(t => { const e = document.getElementById(t); if (e) e.style.display = 'none'; });
+  ['ft1','ft2','ft3','ft4'].forEach(t => { const e = document.getElementById(t); if (e) e.style.display = 'none'; });
   document.getElementById(id).style.display = 'block';
   btn.closest('.tabs').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
@@ -3783,6 +3796,7 @@ function editFunc(id) {
   // Set uniforme tab context
   _uniformeEditFid = f.id;
   renderUniformeModal(f.id);
+  var _t1 = document.querySelector('#modal-func .tabs .tab'); if (_t1) fTab('ft1', _t1);
   document.getElementById('modal-func').classList.add('open');
 }
 
@@ -3791,7 +3805,7 @@ function resetFuncModal() {
   document.querySelector('#modal-func .modal-title').textContent = 'Cadastro de Funcionário';
   document.getElementById('btn-save-func').innerHTML = '&#128190; Salvar Funcionário';
   ['fn','fcpf','frg','fnas','ftel','femail','fend','fcep','fpis','fctps','fcar','fsal','fadm','fges','fgeswha'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-  ['fsex','fec','femp','fdep','ftip','fst'].forEach(id => { const el = document.getElementById(id); if(el) el.selectedIndex = 0; });
+  ['fsex','fec','femp','fdep','ftip','fst','fescala','ftam-camisa','ftam-jaleco','ftam-calca','ftam-calcado'].forEach(id => { const el = document.getElementById(id); if(el) el.selectedIndex = 0; });
   document.getElementById('docs-list').innerHTML = '';
   pendingFiles = [];
 }
@@ -11784,10 +11798,18 @@ function toggleEnvioGestor(el) {
 // ============================================================
 var _uniformeEditFid = null;
 
+var UNI_ITENS = [
+  { nome: 'Camiseta / Blusa', tam: 'ftam-camisa' }, { nome: 'Jaleco / Avental', tam: 'ftam-jaleco' },
+  { nome: 'Calça', tam: 'ftam-calca' }, { nome: 'Calçado', tam: 'ftam-calcado' }, { nome: 'Outro', tam: '' }
+];
+function _uniTamPara(item) {
+  var it = UNI_ITENS.find(function (x) { return x.nome === item; });
+  return it && it.tam ? ((document.getElementById(it.tam) || {}).value || '') : '';
+}
 function adicionarItemUniforme() {
   var fid = _uniformeEditFid; if (!fid) return;
-  var uni = DB.g('uniformes'); // array of {fid, id, item, qtde, data, obs}
-  uni.push({ fid: fid, id: uid(), item: '', qtde: 1, data: td(), obs: '' });
+  var uni = DB.g('uniformes'); // {fid, id, item, tam, qtde, data, obs}
+  uni.push({ fid: fid, id: uid(), item: 'Camiseta / Blusa', tam: _uniTamPara('Camiseta / Blusa'), qtde: 1, data: td(), obs: '' });
   DB.s('uniformes', uni);
   renderUniformeModal(fid);
 }
@@ -11795,29 +11817,37 @@ function adicionarItemUniforme() {
 function renderUniformeModal(fid) {
   var container = document.getElementById('uniforme-lista-modal');
   var vazio = document.getElementById('uniforme-vazio');
-  var itens = DB.g('uniformes').filter(function(u){ return u.fid === fid; });
+  var btn = document.getElementById('uni-btn-add');
   if (!container) return;
+  if (btn) { btn.disabled = !fid; btn.style.opacity = fid ? '' : '.5'; btn.title = fid ? '' : 'Salve o funcionário primeiro'; }
+  if (!fid) {
+    container.innerHTML = '';
+    if (vazio) { vazio.style.display = 'block'; vazio.innerHTML = 'Salve o cadastro do funcionário para registrar as entregas de uniforme.<br><span style="font-size:11.5px;">Os tamanhos acima já podem ser preenchidos agora.</span>'; }
+    return;
+  }
+  var itens = DB.g('uniformes').filter(function(u){ return u.fid === fid; });
   if (!itens.length) {
     container.innerHTML = '';
-    if (vazio) vazio.style.display = 'block';
+    if (vazio) { vazio.style.display = 'block'; vazio.textContent = 'Nenhuma entrega registrada. Clique em "+ Registrar entrega".'; }
     return;
   }
   if (vazio) vazio.style.display = 'none';
-  container.innerHTML = itens.map(function(u) {
-    return '<div style="display:grid;grid-template-columns:1fr 70px 120px auto;gap:8px;align-items:center;margin-bottom:6px;padding:8px;background:#f8faf9;border-radius:6px;border:1px solid var(--gray-200);">' +
-      '<input type="text" value="' + (u.item||'') + '" placeholder="Ex.: Camiseta polo tam. M" ' +
-        'onchange="updateUniforme(\'' + u.id + '\',\'item\',this.value)" ' +
-        'style="padding:5px 8px;border:1px solid var(--gray-200);border-radius:4px;font-size:12px;font-family:inherit;">' +
-      '<input type="number" value="' + (u.qtde||1) + '" min="1" placeholder="Qtde" ' +
-        'onchange="updateUniforme(\'' + u.id + '\',\'qtde\',this.value)" ' +
-        'style="padding:5px 8px;border:1px solid var(--gray-200);border-radius:4px;font-size:12px;font-family:inherit;">' +
-      '<input type="date" value="' + (u.data||td()) + '" ' +
-        'onchange="updateUniforme(\'' + u.id + '\',\'data\',this.value)" ' +
-        'style="padding:5px 8px;border:1px solid var(--gray-200);border-radius:4px;font-size:12px;font-family:inherit;">' +
-      '<button onclick="removerUniforme(\'' + u.id + '\',\'' + fid + '\')" style="background:#ffebee;color:#c62828;border:1px solid #ffcdd2;border-radius:4px;padding:4px 8px;cursor:pointer;">&#128465;</button>' +
-    '</div>';
-  }).join('') +
-  '<div style="margin-top:4px;font-size:11px;color:var(--gray-400);">As alterações são salvas automaticamente ao editar cada campo.</div>';
+  var esc = function (x) { return String(x == null ? '' : x).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); };
+  var total = itens.reduce(function (s, u) { return s + (parseInt(u.qtde, 10) || 0); }, 0);
+  container.innerHTML = '<div class="uni-row uni-head"><span>Item</span><span>Tamanho</span><span>Qtde</span><span>Data da entrega</span><span></span></div>' +
+    itens.map(function(u) {
+      var conhecido = UNI_ITENS.some(function (x) { return x.nome === u.item; });
+      var opts = UNI_ITENS.map(function (x) { return '<option' + (x.nome === u.item || (!conhecido && x.nome === 'Outro') ? ' selected' : '') + '>' + x.nome + '</option>'; }).join('');
+      return '<div class="uni-row">' +
+        '<div><select onchange="updateUniforme(\'' + u.id + '\',\'item\',this.value);var t=_uniTamPara(this.value);if(t){updateUniforme(\'' + u.id + '\',\'tam\',t);}renderUniformeModal(\'' + fid + '\')">' + opts + '</select>' +
+          ((!conhecido || u.item === 'Outro') ? '<input type="text" value="' + esc(u.obs || (conhecido ? '' : u.item)) + '" placeholder="Qual item?" onchange="updateUniforme(\'' + u.id + '\',\'obs\',this.value)" style="margin-top:4px;">' : '') + '</div>' +
+        '<input type="text" value="' + esc(u.tam) + '" placeholder="—" onchange="updateUniforme(\'' + u.id + '\',\'tam\',this.value)">' +
+        '<input type="number" value="' + esc(u.qtde || 1) + '" min="1" onchange="updateUniforme(\'' + u.id + '\',\'qtde\',this.value)">' +
+        '<input type="date" value="' + esc(u.data || td()) + '" onchange="updateUniforme(\'' + u.id + '\',\'data\',this.value)">' +
+        '<button class="uni-del" title="Remover" onclick="removerUniforme(\'' + u.id + '\',\'' + fid + '\')">&#128465;</button>' +
+      '</div>';
+    }).join('') +
+    '<div style="margin-top:6px;font-size:12px;color:var(--gray-600);">Total entregue: <strong>' + total + '</strong> peça' + (total === 1 ? '' : 's') + '</div>';
 }
 
 function updateUniforme(uid2, campo, valor) {
@@ -11827,6 +11857,7 @@ function updateUniforme(uid2, campo, valor) {
 }
 
 function removerUniforme(uid2, fid) {
+  if (!confirm('Remover esta entrega?')) return;
   DB.s('uniformes', DB.g('uniformes').filter(function(u){ return u.id !== uid2; }));
   renderUniformeModal(fid);
 }
@@ -14584,7 +14615,14 @@ function abrirManual() {
         <li><strong>Conecte o Google Drive</strong> (na primeira vez, informe o Client ID). A conta fica lembrada neste computador.</li>
         <li>No <strong>Dashboard</strong>, siga o quadro <em>🚀 Primeiros passos</em>: empresa → departamentos → cargos → funcionários.</li>
       </ol>
-      <div class="tip">💡 Os números do Dashboard são clicáveis e levam direto para a tela correspondente.</div>`],
+      <h3>O Dashboard</h3>
+      <table><tr><th>Cartão</th><th>O que mostra</th></tr>
+        <tr><td>👥 Funcionários Ativos</td><td>Quantidade com status Ativo.</td></tr>
+        <tr><td>⌛ Em Experiência</td><td>Quem está entre o 1º e o 90º dia do contrato, com a divisão <em>45 dias · 90 dias</em> e quantos vencem nos próximos 7 dias.</td></tr>
+        <tr><td>🏖 Em Férias</td><td>Férias com status "Em andamento".</td></tr>
+        <tr><td>🩹 Exames Pendentes</td><td>Exames sem resultado lançado.</td></tr></table>
+      <p><strong>Alertas:</strong> vencimento da experiência, aniversário do dia, férias que começam em até 7 dias, documentos da empresa vencendo e funcionários sem departamento.</p>
+      <div class="tip">💡 Os cartões do Dashboard são clicáveis e levam direto para a tela correspondente.</div>`],
     ['s2', '2. Empresas', `
       <p>Menu <strong>Cadastros › Empresas</strong>. Use <em>+ Nova</em> para cadastrar e ✏️ para editar.</p>
       <ul>
@@ -14603,10 +14641,18 @@ function abrirManual() {
     ['s4', '4. Funcionários', `
       <p>Menu <strong>Cadastros › Funcionários</strong>, com três abas:</p>
       <ul>
-        <li><strong>👥 Cadastro:</strong> lista por status (Ativos, Afastados, Férias, Desligados), busca e ordenação. <em>+ Novo Funcionário</em> abre o formulário (dados pessoais, contrato, uniforme, foto e documentos).</li>
+        <li><strong>👥 Cadastro:</strong> lista por status (Ativos, Afastados, Férias, Desligados), busca e ordenação. <em>+ Novo Funcionário</em> abre o formulário.</li>
         <li><strong>📊 Relatório:</strong> marque os status, filtre por empresa/departamento, escolha a ordem (A→Z) e as colunas, e clique em <em>📥 Exportar para Excel</em>.</li>
         <li><strong>🎂 Aniversariantes:</strong> do mês, da semana, próximos 30 dias ou de qualquer mês, com o template para divulgação.</li>
-      </ul>`],
+      </ul>
+      <h3>O formulário do funcionário</h3>
+      <table><tr><th>Aba</th><th>Conteúdo</th></tr>
+        <tr><td>Dados Pessoais</td><td>Nome, CPF, RG, nascimento, contato, endereço, PIS e CTPS, além da foto.</td></tr>
+        <tr><td>Contrato</td><td>Empresa, departamento, cargo, salário, admissão, tipo de contrato, gestor, status e escala. Ao escolher o cargo, salário, departamento e escala são sugeridos.</td></tr>
+        <tr><td>Documentos</td><td>Anexos por categoria (documentos pessoais, comprovante, contrato, ASO, certificados…).</td></tr>
+        <tr><td>👕 Uniforme</td><td><strong>Tamanhos</strong> (camiseta, jaleco, calça e calçado) e o <strong>registro de entregas</strong>: item, tamanho, quantidade e data.</td></tr></table>
+      <div class="tip">💡 As entregas de uniforme ficam disponíveis depois que o funcionário é salvo. Ao escolher o item, o tamanho vem do cadastro automaticamente.</div>
+      <div class="ok">✅ Datas digitadas como 15/08/2026 são convertidas automaticamente para o formato do sistema.</div>`],
     ['s5', '5. Vagas', `
       <p>Menu <strong>Gestão › Vagas</strong>. Cadastre a vaga escolhendo empresa, departamento e cargo (os dados do cargo completam a vaga). Nas abas da vaga, registre candidatos e aprovados.</p>`],
     ['s6', '6. Período de Experiência', `
@@ -14658,7 +14704,7 @@ td{padding:8px 14px;border-bottom:1px solid #eee;vertical-align:top;}
 @media print{body{background:#fff;}.btn-print,.indice{display:none;}.sec{box-shadow:none;border:1px solid #eee;page-break-inside:avoid;}
 .topo,th,.sec h2{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
 </style></head><body>
-<div class="topo"><div><h1>📘 Manual do Sistema de RH</h1><p>${emp} · Guia de uso · Versão 3.0</p></div>
+<div class="topo"><div><h1>📘 Manual do Sistema de RH</h1><p>${emp} · Guia de uso · Versão 3.1 · atualizado em 29/09/2026</p></div>
 <button class="btn-print" onclick="window.print()">🖨️ Exportar PDF</button></div>
 <div class="container"><div class="indice"><h2>📋 Índice</h2><div class="indice-grid">
 ${secoes.map(function (x) { return '<a href="#' + x[0] + '">' + x[1] + '</a>'; }).join('')}
