@@ -691,6 +691,28 @@ input#client-id-inp:focus{border-color:var(--green);outline:none;}
 #fr-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:4px 12px;padding:8px 2px;}
 .fr-col{display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer;}
 #fr-tabela td,#fr-tabela th{white-space:nowrap;}
+/* ── Estrutura (departamentos/cargos/escalas) ── */
+.est-bar{display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
+.est-bar input[type=search]{flex:1;min-width:220px;padding:9px 12px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-family:inherit;font-size:13px;}
+.est-bar .btn{margin-left:auto;}
+.est-sub{font-size:11.5px;color:var(--gray-400);margin-top:2px;white-space:normal;}
+.est-pill{display:inline-block;font-size:11.5px;background:var(--gray-50);border:1px solid var(--gray-100);border-radius:12px;padding:2px 8px;margin-right:4px;white-space:nowrap;}
+.est-vazio{text-align:center;padding:30px!important;color:var(--gray-400);}
+.est-dica{font-size:12.5px;color:var(--gray-600);background:var(--gray-50);border-radius:var(--radius-sm);padding:10px 12px;margin-top:12px;}
+.est-inline{display:flex;gap:6px;align-items:stretch;}
+.est-inline > select,.est-inline > input{flex:1;min-width:0;}
+.est-plus{flex-shrink:0;width:38px;border:1.5px solid var(--green);background:var(--green-pale);color:var(--green-dark);border-radius:var(--radius-sm);font-size:16px;font-weight:700;cursor:pointer;}
+.est-plus:hover{background:var(--green);color:#fff;}
+/* ── Primeiros passos ── */
+.setup-bar{height:6px;background:var(--gray-100);border-radius:4px;overflow:hidden;margin-bottom:14px;}
+.setup-bar span{display:block;height:100%;background:var(--green);}
+.setup-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;}
+.setup-step{display:flex;gap:10px;align-items:flex-start;padding:12px;border:1.5px solid var(--gray-100);border-radius:var(--radius-sm);cursor:pointer;font-size:12px;color:var(--gray-600);transition:.15s;}
+.setup-step:hover{border-color:var(--green-light);background:var(--green-pale);}
+.setup-step strong{display:block;font-size:13px;color:var(--gray-800);margin-bottom:2px;}
+.setup-n{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--gray-100);color:var(--gray-600);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;}
+.setup-step.ok{opacity:.7;}
+.setup-step.ok .setup-n{background:var(--green);color:#fff;}
 /* ── Tema Essencial (cores da logo) ── */
 html[data-tenant="essencial"]{
   --green:#b46051;--green-dark:#7d3b30;--green-light:#e3a597;--green-pale:#faeeea;
@@ -947,6 +969,8 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="nav-item" onclick="nav(&#39;empresas&#39;,this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg><span>Empresas
   </span></div>
+  <div class="nav-item" onclick="nav(&#39;estrutura&#39;,this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="5" rx="1"></rect><rect x="2" y="17" width="6" height="5" rx="1"></rect><rect x="16" y="17" width="6" height="5" rx="1"></rect><path d="M12 7v5M5 17v-3h14v3"></path></svg><span>Departamentos e Cargos</span></div>
   <div class="nav-section">Gestão</div>
   <div class="nav-item" onclick="nav(&#39;vagas&#39;,this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><line x1="12" y1="12" x2="12" y2="16"></line><line x1="10" y1="14" x2="14" y2="14"></line></svg><span>Vagas
@@ -1135,6 +1159,32 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 
 <!-- USUÁRIOS -->
+<!-- DEPARTAMENTOS, CARGOS E ESCALAS -->
+<div class="section-page" id="sec-estrutura">
+  <div class="card">
+    <div class="card-header"><div><span class="card-title">🏗️ Departamentos, Cargos e Escalas</span>
+      <div style="font-size:12.5px;color:var(--gray-400);margin-top:3px;">A estrutura da empresa. Estas listas aparecem nos cadastros de Funcionário e de Vaga.</div></div></div>
+    <div class="tabs" id="est-tabs" style="margin-bottom:16px;">
+      <div class="tab active" data-a="dep" onclick="estAba('dep')">🏢 Departamentos</div>
+      <div class="tab" data-a="car" onclick="estAba('car')">💼 Cargos</div>
+      <div class="tab" data-a="esc" onclick="estAba('esc')">🕒 Escalas de trabalho</div>
+    </div>
+    <div id="est-view-dep">
+      <div class="est-bar"><input type="search" id="est-busca-dep" placeholder="Buscar departamento..." oninput="rdEstDeps()"><button class="btn btn-primary" onclick="estNovo('dep')">+ Novo departamento</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Departamento</th><th>Empresa</th><th>Responsável</th><th>Centro de custo</th><th>Vínculos</th><th>Ações</th></tr></thead><tbody id="est-tb-dep"></tbody></table></div>
+    </div>
+    <div id="est-view-car" style="display:none;">
+      <div class="est-bar"><input type="search" id="est-busca-car" placeholder="Buscar cargo ou CBO..." oninput="rdEstCargos()"><button class="btn btn-primary" onclick="estNovo('car')">+ Novo cargo</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Cargo</th><th>CBO</th><th>Departamento</th><th>Salário base</th><th>Funcionários</th><th>Ações</th></tr></thead><tbody id="est-tb-car"></tbody></table></div>
+      <div class="est-dica">💡 Cargos digitados no cadastro de funcionários entram aqui automaticamente (marcados como <em>completar</em>). Complete CBO, salário e atividades para que a vaga e o cadastro sejam preenchidos sozinhos.</div>
+    </div>
+    <div id="est-view-esc" style="display:none;">
+      <div class="est-bar"><span></span><button class="btn btn-primary" onclick="estNovo('esc')">+ Nova escala</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Escala</th><th>Horário</th><th>Cálculo de benefícios</th><th>Funcionários</th><th>Ações</th></tr></thead><tbody id="est-tb-esc"></tbody></table></div>
+    </div>
+  </div>
+</div>
+
 <div class="section-page" id="sec-vagas">
   <!-- KPI banner -->
   <div id="vaga-kpi-bar" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:20px;"></div>
@@ -1357,7 +1407,7 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
         <div class="form-group">
           <label>Unidade</label>
-          <input type="text" id="flash-unidade" placeholder="Ex.: TATUAPÉ">
+          <input type="text" id="flash-unidade" placeholder="Ex.: Matriz">
         </div>
         <div class="form-group" style="min-width:200px;">
           <label>Funcionário (opcional)</label>
@@ -1668,26 +1718,25 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
     <div id="ft2" style="display:none">
       <div class="form-grid">
-        <div class="form-group"><label>Empresa *</label><select id="femp"><option value="">Selecione</option></select></div>
-        <div class="form-group"><label>Departamento</label><select id="fdep"><option value="">Selecione</option></select></div>
-        <div class="form-group"><label>Cargo *</label><input id="fcar" type="text" placeholder="Cargo / Função"></div>
+        <div class="form-group"><label>Empresa *</label><select id="femp" onchange="estFillDepSelect('fdep', this.value)"><option value="">Selecione</option></select></div>
+        <div class="form-group"><label>Departamento</label><div class="est-inline"><select id="fdep"><option value="">Selecione</option></select><button type="button" class="est-plus" title="Cadastrar novo departamento" onclick="estQuickNovo('dep','fdep')">＋</button></div></div>
+        <div class="form-group"><label>Cargo *</label><div class="est-inline"><input id="fcar" type="text" placeholder="Escolha ou digite o cargo" list="dl-cargos" autocomplete="off" onchange="estOnCargoFunc()"><button type="button" class="est-plus" title="Cadastrar novo cargo" onclick="estQuickNovo('car','fcar')">＋</button></div></div>
         <div class="form-group"><label>Salário</label><input id="fsal" type="text" placeholder="R$ 0,00"></div>
         <div class="form-group"><label>Admissão *</label><input id="fadm" type="date"></div>
-        <div class="form-group"><label>Tipo de Contrato</label><select id="ftip"><option>CLT</option><option>PJ</option><option>Estágio</option><option>Temporário</option></select></div>
+        <div class="form-group"><label>Tipo de Contrato</label><select id="ftip"><option>CLT</option><option>PJ</option><option>Estágio</option><option>Temporário</option><option>Aprendiz</option><option>Intermitente</option></select></div>
         <div class="form-group"><label>Gestor Responsável</label><input id="fges" type="text" placeholder="Nome do gestor"></div>
         <div class="form-group"><label>WhatsApp do Gestor</label>
           <div style="display:flex;gap:8px"><input id="fgeswha" type="text" style="flex:1" oninput="mFone(this)" placeholder="(11) 99999-9999">
           <button type="button" class="btn btn-whatsapp btn-sm" onclick="wha(document.getElementById(&#39;fgeswha&#39;).value,&#39;&#39;)">WA</button></div>
         </div>
         <div class="form-group"><label>Status</label><select id="fst"><option>Ativo</option><option>Afastado</option><option>Férias</option><option>Desligado</option></select></div>
-        <div class="form-group"><label>Escala de Trabalho</label>
+        <div class="form-group"><label>Escala de Trabalho</label><div class="est-inline">
           <select id="fescala">
             <option value="">Selecione</option>
-            <option value="55">Seg a Sex (55)</option>
-            <option value="56">Seg a Sab (56)</option>
+            <option value="55">Seg a Sex (5x2)</option>
+            <option value="56">Seg a Sab (6x1)</option>
             <option value="12x36">12x36</option>
-            <option value="Outro">Outro</option>
-          </select>
+          </select><button type="button" class="est-plus" title="Cadastrar nova escala" onclick="estQuickNovo('esc','fescala')">＋</button></div>
         </div>
         <div class="form-group"><label>👕 Tamanho Camiseta</label>
           <select id="ftam-camisa">
@@ -1953,6 +2002,22 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
+<!-- Estrutura: formulário -->
+<div class="modal-bg" id="modal-est-form">
+  <div class="modal" style="max-width:640px;"><div class="modal-header"><span class="modal-title" id="est-form-titulo">Novo</span><button class="modal-close" onclick="closeModal(&#39;modal-est-form&#39;)">×</button></div>
+    <div class="form-grid" id="est-form-campos"></div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal(&#39;modal-est-form&#39;)">Cancelar</button><button class="btn btn-primary" onclick="estSalvar()">💾 Salvar</button></div>
+  </div>
+</div>
+<!-- Estrutura: cadastro rápido (abre por cima dos formulários) -->
+<div class="modal-bg" id="modal-est-quick" style="z-index:1200;">
+  <div class="modal" style="max-width:420px;"><div class="modal-header"><span class="modal-title" id="est-q-titulo">Novo</span><button class="modal-close" onclick="closeModal(&#39;modal-est-quick&#39;)">×</button></div>
+    <div class="form-group"><label>Nome</label><input id="est-q-nome" type="text" onkeydown="if(event.key==='Enter')estQuickSalvar()"></div>
+    <div style="font-size:12px;color:var(--gray-400);margin-top:8px;">Os demais dados podem ser completados depois em <strong>Departamentos e Cargos</strong>.</div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal(&#39;modal-est-quick&#39;)">Cancelar</button><button class="btn btn-primary" onclick="estQuickSalvar()">Adicionar</button></div>
+  </div>
+</div>
+
 <!-- Usuário -->
 <div class="modal-bg" id="modal-usr">
   <div class="modal"><div class="modal-header"><span class="modal-title">Usuário do Sistema</span><button class="modal-close" onclick="closeModal(&#39;modal-usr&#39;)">×</button></div>
@@ -1989,7 +2054,7 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="modal"><div class="modal-header"><span class="modal-title">Exame Médico</span><button class="modal-close" onclick="closeModal(&#39;modal-exm&#39;)">×</button></div>
     <div class="form-grid">
       <div class="form-group form-full"><label>Funcionário *</label><select id="exf"><option value="">Selecione</option></select></div>
-      <div class="form-group"><label>Tipo *</label><select id="ext"><option>Admissional</option><option>Periódico</option><option>Demissional</option><option>Retorno</option></select></div>
+      <div class="form-group"><label>Tipo *</label><select id="ext"><option>Admissional</option><option>Periódico</option><option value="Retorno">Retorno ao Trabalho</option><option>Mudança de Função</option><option>Demissional</option></select></div>
       <div class="form-group"><label>Data Agendada *</label><input id="exd" type="date"></div>
       <div class="form-group"><label>Clínica / Médico</label><input id="excl" type="text" placeholder="Nome da clínica"></div>
       <div class="form-group"><label>Exames Solicitados</label><input id="exex" type="text" placeholder="Hemograma, audiometria..."></div>
@@ -2579,16 +2644,16 @@ document.addEventListener('DOMContentLoaded', function () {
     <div id="vt-dados">
       <div class="form-grid">
         <div class="form-group form-full"><label>Título / Cargo da Vaga *</label>
-          <input id="vg-titulo" type="text" placeholder="Ex.: Fisioterapeuta, Recepcionista...">
+          <div class="est-inline"><input id="vg-titulo" type="text" placeholder="Escolha ou digite o cargo" list="dl-cargos" autocomplete="off" onchange="estOnCargoVaga()"><button type="button" class="est-plus" title="Cadastrar novo cargo" onclick="estQuickNovo('car','vg-titulo')">＋</button></div>
         </div>
         <div class="form-group"><label>Empresa *</label>
           <select id="vg-emp" onchange="onVagaEmpChange()"><option value="">Selecione</option></select>
         </div>
         <div class="form-group"><label>Departamento</label>
-          <select id="vg-dep"><option value="">Selecione</option></select>
+          <div class="est-inline"><select id="vg-dep"><option value="">Selecione</option></select><button type="button" class="est-plus" title="Cadastrar novo departamento" onclick="estQuickNovo('dep','vg-dep')">＋</button></div>
         </div>
         <div class="form-group"><label>Unidade</label>
-          <input id="vg-unidade" type="text" placeholder="Ex.: TATUAPÉ">
+          <input id="vg-unidade" type="text" placeholder="Ex.: Matriz">
         </div>
         <div class="form-group"><label>Carga Horária</label>
           <input id="vg-ch" type="text" placeholder="Ex.: 44h/semana, 30h/semana">
@@ -2597,13 +2662,9 @@ document.addEventListener('DOMContentLoaded', function () {
           <input id="vg-sal" type="text" placeholder="Ex.: 2.500,00 ou A combinar">
         </div>
         <div class="form-group"><label>Escala</label>
-          <select id="vg-escala">
+          <div class="est-inline"><select id="vg-escala">
             <option value="">Selecione</option>
-            <option value="Seg a Sex">Seg a Sex</option>
-            <option value="Seg a Sab">Seg a Sab</option>
-            <option value="Escala 12x36">Escala 12x36</option>
-            <option value="A combinar">A combinar</option>
-          </select>
+          </select><button type="button" class="est-plus" title="Cadastrar nova escala" onclick="estQuickNovo('esc','vg-escala')">＋</button></div>
         </div>
         <div class="form-group"><label>Tipo de Contrato</label>
           <select id="vg-tipo">
@@ -2612,6 +2673,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <option value="Estágio">Estágio</option>
             <option value="Temporário">Temporário</option>
             <option value="Aprendiz">Aprendiz</option>
+            <option value="Intermitente">Intermitente</option>
           </select>
         </div>
         <div class="form-group"><label>Vagas Disponíveis</label>
@@ -3444,6 +3506,7 @@ function openModal(id) {
     document.querySelectorAll('#pg-meses-checks input').forEach(function(c){c.checked=true;});
   }
   if (id === 'modal-vaga') {
+    if (typeof estFillVagaForm === 'function') estFillVagaForm();
     // Só resetar se for nova vaga (editingVagaId é null antes de chamar openModal)
     var isNewVaga = !editingVagaId;
     if (isNewVaga) {
@@ -3461,8 +3524,7 @@ function openModal(id) {
       });
     }
     // Fill dep
-    var depSel = document.getElementById('vg-dep');
-    if (depSel && isNewVaga) depSel.innerHTML = '<option value="">Selecione</option>';
+    if (isNewVaga) estFillDepSelect('vg-dep', '');
     // Reset fields only for new vaga
     if (isNewVaga) {
       ['titulo','unidade','ch','sal','desc','obs','benef-outros'].forEach(function(f){
@@ -3496,7 +3558,8 @@ function checkDriveDocs() {
 function fillSel(selId, dbKey, field) {
   const s = document.getElementById(selId); if (!s) return;
   s.innerHTML = "<option value=''>Selecione</option>";
-  DB.g(dbKey).forEach(r => { const o = document.createElement('option'); o.value = r.id; o.textContent = r[field]; s.appendChild(o); });
+  DB.g(dbKey).slice().sort((a, b) => String(a[field] || '').localeCompare(String(b[field] || ''), 'pt-BR')).forEach(r => { const o = document.createElement('option'); o.value = r.id; o.textContent = r[field]; s.appendChild(o); });
+  if (selId === 'fdep' && typeof estFillFuncForm === 'function') estFillFuncForm();
 }
 function fillFuncSel(selId, multi) {
   const s = document.getElementById(selId); if (!s) return;
@@ -3534,9 +3597,9 @@ function nav(id, el) {
   secEl.classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   el.classList.add('active');
-  const T = { dashboard:'Dashboard', funcionarios:'Funcionários', empresas:'Empresas', vagas:'Vagas', experiencia:'Período de Experiência', ferias:'Férias', exames:'Exames Médicos', beneficios:'Benefícios por Funcionário', documentos:'Gerar Documentos', aniversariantes:'Aniversariantes', politicas:'Políticas & Normas', manual:'Manual do Sistema' , integracao:'Integração', treinamentos:'Treinamentos' };
+  const T = { dashboard:'Dashboard', funcionarios:'Funcionários', empresas:'Empresas', vagas:'Vagas', experiencia:'Período de Experiência', ferias:'Férias', exames:'Exames Médicos', beneficios:'Benefícios por Funcionário', documentos:'Gerar Documentos', aniversariantes:'Aniversariantes', politicas:'Políticas & Normas', manual:'Manual do Sistema' , integracao:'Integração', treinamentos:'Treinamentos' , estrutura:'Departamentos e Cargos' };
   document.getElementById('topbar-title').textContent = T[id] || id;
-  const rd = { dashboard:updDash, funcionarios:rdFunc, empresas:rdEmp, vagas:rdVagas, experiencia:rdExp, ferias:rdFer, exames:rdExm, beneficios:rdBenef, documentos:rdDocs, aniversariantes:rdBday, politicas:rdPol, integracao:rdIntegracao, treinamentos:rdTreinamentosMat };
+  const rd = { dashboard:updDash, funcionarios:rdFunc, empresas:rdEmp, vagas:rdVagas, experiencia:rdExp, ferias:rdFer, exames:rdExm, beneficios:rdBenef, documentos:rdDocs, aniversariantes:rdBday, politicas:rdPol, integracao:rdIntegracao, treinamentos:rdTreinamentosMat, estrutura:rdEstrutura };
   if (rd[id]) rd[id]();
 }
 
@@ -5331,8 +5394,7 @@ function openAvd(fid, dias) {
 
   body.innerHTML =
     '<div style="text-align:center;margin-bottom:16px;">' +
-      '<strong style="font-size:14pt;color:#0b6b70;">ABSOLUTA</strong>' +
-      '<br><span style="font-size:10pt;color:#555;">Especialidades Médicas &amp; Terapêuticas</span>' +
+      '<strong style="font-size:14pt;color:#0b6b70;">' + ((window.RH_IS_ESSENCIAL && window.rhPerfil) ? rhPerfil().razao : 'ABSOLUTA ASSESSORIA EMPRESARIAL') + '</strong>' +
       '<br><strong style="font-size:12pt;">Avaliação de Período de Experiência – ' + dias + ' dias</strong>' +
     '</div>' +
     '<table style="width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:14px;">' +
@@ -8288,6 +8350,7 @@ var FLASH_COLS = {
 var ESCALA_DIAS = { '55':'flash-dias-55', '56':'flash-dias-56' };
 
 function getDiasEscala(escala) {
+  if (typeof escBase === 'function') escala = escBase(escala);
   if (!escala || escala === '55' || escala.toLowerCase().includes('sex')) {
     return parseInt((document.getElementById('flash-dias-55')||{value:22}).value)||22;
   }
@@ -8502,12 +8565,12 @@ function renderFlashTable() {
     var inpDias = document.createElement('input');
     inpDias.type = 'number'; inpDias.min = '1'; inpDias.max = '31';
     inpDias.id = 'dias-'+f.id; // Use escala do cadastro para determinar dias: "55"=Seg-Sex, "56"=Seg-Sab
-    var diasCalc = (f.escala === '56') ? diasUteisComSab : diasUteisPeriodo;
+    var diasCalc = (escBase(f.escala) === '56') ? diasUteisComSab : diasUteisPeriodo;
     inpDias.value = diasCalc || '22';
     inpDias.style.cssText = 'width:52px;border:1.5px solid #1a5c3a;border-radius:5px;padding:4px 5px;font-size:13px;font-weight:700;color:#1a5c3a;font-family:inherit;text-align:center;';
     inpDias.title = 'Dias trabalhados no período';
     // Show escala tag next to dias
-    var escalaTxt = f.escala === '56' ? 'Seg-Sab' : f.escala === '12x36' ? '12x36' : f.escala === '55' || f.escala === '' ? 'Seg-Sex' : (f.escala||'Seg-Sex');
+    var escalaTxt = estEscalaNome(f.escala) || 'Seg-Sex';
     var escalaTag = document.createElement('span');
     escalaTag.textContent = escalaTxt;
     escalaTag.style.cssText = 'font-size:10px;background:#e3f5f3;color:var(--green-dark);border-radius:4px;padding:2px 6px;margin-left:4px;font-weight:600;';
@@ -8639,7 +8702,7 @@ async function gerarFlashXLSX() {
     }
 
     var diasInp = getInp('dias-'+f.id);
-    var diasFallback = (f.escala === '56') ? (diasUteisComSab||26) : (diasUteisPeriodo||22);
+    var diasFallback = (escBase(f.escala) === '56') ? (diasUteisComSab||26) : (diasUteisPeriodo||22);
     var dias = diasInp !== null ? diasInp : diasFallback;
 
     var vtDia  = chkVT    ? (getInp('vt-'+f.id)    !== null ? getInp('vt-'+f.id)    : findBenef(function(t){ return t==='VT – Vale Transporte'||t.toUpperCase().startsWith('VT'); })) : 0;
@@ -9063,7 +9126,7 @@ var BATR_TIPOS = {
 function batrGetDias() {
   var fid = (document.getElementById('batr-func')||{}).value;
   var func = fid ? DB.g('funcionarios').find(function(f){return f.id===fid;}) : null;
-  var escala = func ? (func.escala||'55') : '55';
+  var escala = func ? escBase(func.escala||'55') : '55';
   return escala === '56' ? 26 : 22;
 }
 
@@ -9094,7 +9157,7 @@ function onBatrFuncChange() {
   var dep = deps.find(function(d){return d.id===f.dep;});
   var emp = emps.find(function(e){return e.id===f.emp;});
   infoEl.innerHTML = '<strong>'+f.n+'</strong> | '+
-    (f.car||'—')+' | Escala: '+(f.escala==='56'?'Seg–Sab (26 dias)':'Seg–Sex (22 dias)')+' | '+
+    (f.car||'—')+' | Escala: '+(estEscalaNome(f.escala)||'Seg a Sex')+' ('+(escBase(f.escala)==='56'?'26':'22')+' dias) | '+
     (emp?emp.razao:'—')+'<br>'+
     '<small style="opacity:.7;">CPF: '+f.cpf+'</small>';
   infoEl.style.display = 'block';
@@ -9390,11 +9453,7 @@ function onVagaEmpChange() {
   var empId = (document.getElementById('vg-emp')||{}).value||'';
   var depSel = document.getElementById('vg-dep');
   if (!depSel) return;
-  depSel.innerHTML = '<option value="">Selecione</option>';
-  if (!empId) return;
-  DB.g('departamentos').filter(function(d){return !d.emp||d.emp===empId;}).forEach(function(d){
-    var o=document.createElement('option'); o.value=d.id; o.textContent=d.nome; depSel.appendChild(o);
-  });
+  estFillDepSelect('vg-dep', empId);
 }
 
 // ── Candidatos ────────────────────────────────────────────────
@@ -9817,7 +9876,7 @@ function gerarAssinaturaEmpresa(empresa, sigMonicaParam, sigBrunoParam) {
   var nomeEmp = isEq ? 'ABSOLUTA ASSESSORIA EMPRESARIAL'
                      : 'Longhi Serviços de Terceirização a Empresas Ltda';
   var cnpjEmp = isEq ? 'CNPJ: 33.420.655/0001-78' : 'CNPJ: 54.188.772/0001-28';
-  var endEmp  = isEq ? 'Rua Dr Costa Júnior, 365 – Perdizes – SP'
+  var endEmp  = isEq ? 'Rua Dr. Nilton Silva, 364 – Vila Santa Teresa – São Paulo – SP – CEP 03564-020'
                      : 'Rua Dr Germaine Burchard, 324 – Perdizes – SP';
 
   var sigMonica = sigMonicaParam || null;
@@ -12980,7 +13039,8 @@ var DOC_MODELO_EMPRESA = {
   resp:   { razao: 'ABSOLUTA ASSESSORIA EMPRESARIAL', cnpj: '33.420.655/0001-78',
             end: 'Rua Dr. Nilton Silva, 364, Vila Santa Teresa, São Paulo/SP, CEP 03564-020' },
   imagem: { razao: 'ABSOLUTA SOLUÇÕES FINANCEIRAS', cnpj: '33.420.655/0001-78', end: '' },
-  adesao: { razao: 'Equilibryum Reabilitação e Consultoria em Saúde Ltda', cnpj: '', end: '' },
+  adesao: { razao: 'ABSOLUTA ASSESSORIA EMPRESARIAL', cnpj: '33.420.655/0001-78',
+            end: 'Rua Dr. Nilton Silva, 364, Vila Santa Teresa, São Paulo/SP, CEP 03564-020' },
   pol01:  { razao: 'ABSOLUTA ASSESSORIA EMPRESARIAL', cnpj: '33.420.655/0001-78',
             end: 'Rua Dr. Nilton Silva, 364, Vila Santa Teresa, São Paulo/SP, CEP 03564-020' }
 };
@@ -14005,6 +14065,7 @@ function _frValor(f, k, emps, deps) {
     case 'idade': return _frIdade(f.nas);
     case 'tempo': return _frTempo(f.adm);
     case 'st': return f.st || 'Ativo';
+    case 'escala': return typeof estEscalaNome === 'function' ? estEscalaNome(f.escala) : (f.escala || '');
     case 'tams': return [f.tamCamisa, f.tamCalca, f.tamCalcado, f.tamJaleco].map(function (x) { return x || '-'; }).join(' / ');
     default: return f[k] == null ? '' : f[k];
   }
@@ -14119,6 +14180,327 @@ function exportarRelFunc() {
   toast('📊 Relatório exportado para Excel!');
 }
 
+// ════════════════════════════════════════════════════════════
+// ESTRUTURA — Departamentos, Cargos e Escalas de trabalho
+// Alimenta os formulários de Funcionário e Vaga (listas coerentes).
+// Dados: 'departamentos', 'cargos', 'escalas' (sincronizados com o Drive).
+// ════════════════════════════════════════════════════════════
+// valor = o que fica gravado no funcionário (códigos antigos mantidos: 55/56/12x36 usados no cálculo de benefícios)
+var EST_ESCALAS_PADRAO = [
+  { nome: 'Seg a Sex (5x2)', valor: '55', base: '55', horario: '' },
+  { nome: 'Seg a Sab (6x1)', valor: '56', base: '56', horario: '' },
+  { nome: '12x36', valor: '12x36', base: '12x36', horario: '' }
+];
+var EST_BASES = { '55': 'Como Seg a Sex (22 dias/mês)', '56': 'Como Seg a Sab (26 dias/mês)', '12x36': 'Como 12x36' };
+function _estBaseGuess(t) { t = _estNorm(t); return /12x36/.test(t) ? '12x36' : (/sab|6x1|56/.test(t) ? '56' : '55'); }
+// Base de dias usada nos benefícios (VT/VR) para qualquer escala cadastrada
+function escBase(valor) {
+  if (!valor || valor === '55' || valor === '56' || valor === '12x36') return valor || '55';
+  var e = DB.g('escalas').find(function (x) { return x.valor === valor || x.nome === valor; });
+  return (e && e.base) || _estBaseGuess(valor);
+}
+function estEscalaNome(valor) {
+  if (!valor) return '';
+  var e = estEscalas().find(function (x) { return x.valor === valor; });
+  return e ? e.nome : (valor === 'Outro' ? 'Outro' : valor);
+}
+var _estEdit = { tipo: null, id: null };
+var _estAba = 'dep';
+
+function _estNome(a, b) { return (a || '').localeCompare(b || '', 'pt-BR', { sensitivity: 'base' }); }
+function _estNorm(s) { return String(s || '').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+function estDeps() { return DB.g('departamentos').slice().sort(function (a, b) { return _estNome(a.nome, b.nome); }); }
+function estCargos() { return DB.g('cargos').filter(function (c) { return !c.oculto; }).slice().sort(function (a, b) { return _estNome(a.nome, b.nome); }); }
+function estEscalas() {
+  var l = DB.g('escalas');
+  if (!l.length) return EST_ESCALAS_PADRAO.map(function (e, i) { return Object.assign({ id: 'esc' + i }, e); });
+  return l.map(function (e) { return e.valor ? e : Object.assign({}, e, { valor: e.nome }); }).sort(function (a, b) { return _estNome(a.nome, b.nome); });
+}
+function estCargoPorNome(nome) { var n = _estNorm(nome); return DB.g('cargos').find(function (c) { return !c.oculto && _estNorm(c.nome) === n; }) || null; }
+
+// Cargos digitados nos funcionários/vagas entram no cadastro automaticamente
+function estSyncCargos() {
+  var cargos = DB.g('cargos'), nomes = {};
+  cargos.forEach(function (c) { nomes[_estNorm(c.nome)] = 1; });
+  var novos = [];
+  DB.g('funcionarios').forEach(function (f) {
+    var n = (f.car || '').trim(); if (!n || nomes[_estNorm(n)]) return;
+    nomes[_estNorm(n)] = 1; novos.push({ id: uid(), nome: n, dep: f.dep || '', auto: 1 });
+  });
+  if (novos.length) DB.s('cargos', cargos.concat(novos));
+  return novos.length;
+}
+// A lista de escalas é criada na 1ª vez com as padrão + as já usadas
+function estSyncEscalas() {
+  var l = DB.g('escalas'), vals = {};
+  var base = l.length ? l : EST_ESCALAS_PADRAO.map(function (e) { return Object.assign({ id: uid() }, e); });
+  base.forEach(function (e) { vals[e.valor || e.nome] = 1; });
+  var add = [];
+  DB.g('funcionarios').forEach(function (r) {
+    var n = (r.escala || '').trim(); if (!n || vals[n]) return; vals[n] = 1; add.push({ id: uid(), nome: n, valor: n, base: _estBaseGuess(n) });
+  });
+  if (!l.length || add.length) DB.s('escalas', base.concat(add));
+}
+
+// ── Preenche listas dos formulários ──
+function _estOpts(sel, itens, vazio, atual) {
+  if (!sel) return;
+  var has = false;
+  sel.innerHTML = '<option value="">' + (vazio || 'Selecione') + '</option>' + itens.map(function (i) {
+    if (i.v === atual) has = true;
+    return '<option value="' + _mtEsc(i.v) + '">' + _mtEsc(i.t) + '</option>';
+  }).join('') + (atual && !has ? '<option value="' + _mtEsc(atual) + '">' + _mtEsc(atual) + '</option>' : '');
+  if (atual != null) sel.value = atual;
+}
+function _estDatalist(id, valores) {
+  var dl = document.getElementById(id);
+  if (!dl) { dl = document.createElement('datalist'); dl.id = id; document.body.appendChild(dl); }
+  dl.innerHTML = valores.map(function (x) { return '<option value="' + _mtEsc(x) + '">'; }).join('');
+}
+function estFillFuncForm() {
+  estSyncCargos(); estSyncEscalas();
+  var esc = document.getElementById('fescala');
+  if (esc) _estOpts(esc, estEscalas().map(function (e) { return { v: e.valor, t: e.nome }; }), 'Selecione', esc.value);
+  _estDatalist('dl-cargos', estCargos().map(function (c) { return c.nome; }));
+  _estDatalist('dl-gestores', DB.g('funcionarios').filter(function (f) { return f.st !== 'Desligado'; }).map(function (f) { return f.n; }).sort(_estNome));
+  var car = document.getElementById('fcar'); if (car) { car.setAttribute('list', 'dl-cargos'); car.setAttribute('autocomplete', 'off'); }
+  var ges = document.getElementById('fges'); if (ges) { ges.setAttribute('list', 'dl-gestores'); ges.setAttribute('autocomplete', 'off'); }
+}
+function estFillDepSelect(selId, empId) {
+  var s = document.getElementById(selId); if (!s) return;
+  var atual = s.value;
+  var deps = estDeps().filter(function (d) { return !empId || !d.emp || d.emp === empId; });
+  _estOpts(s, deps.map(function (d) { return { v: d.id, t: d.nome }; }), 'Selecione');
+  if (atual && Array.prototype.some.call(s.options, function (o) { return o.value === atual; })) s.value = atual;
+}
+function estFillVagaForm() {
+  estSyncEscalas();
+  // na vaga fica gravado o nome da escala
+  var esc = document.getElementById('vg-escala');
+  if (esc) _estOpts(esc, estEscalas().map(function (e) { return { v: e.nome, t: e.nome }; }), 'Selecione', esc.value);
+  _estDatalist('dl-cargos', estCargos().map(function (c) { return c.nome; }));
+  var t = document.getElementById('vg-titulo'); if (t) { t.setAttribute('list', 'dl-cargos'); t.setAttribute('autocomplete', 'off'); }
+}
+// Ao escolher o cargo, completa o que estiver vazio
+function estOnCargoFunc() {
+  var c = estCargoPorNome(v('fcar')); if (!c) return;
+  var sal = document.getElementById('fsal'); if (sal && !sal.value && c.sal) sal.value = c.sal;
+  var dep = document.getElementById('fdep');
+  if (dep && !dep.value && c.dep && Array.prototype.some.call(dep.options, function (o) { return o.value === c.dep; })) dep.value = c.dep;
+  var esc = document.getElementById('fescala'); if (esc && !esc.value && c.escala) esc.value = c.escala;
+}
+function estOnCargoVaga() {
+  var c = estCargoPorNome(v('vg-titulo')); if (!c) return;
+  var set = function (id, val) { var el = document.getElementById(id); if (el && !el.value && val) el.value = val; };
+  set('vg-sal', c.sal); set('vg-ch', c.ch ? c.ch + 'h/semana' : ''); set('vg-desc', [c.desc, c.req ? 'Requisitos: ' + c.req : ''].filter(Boolean).join('\n'));
+  var dep = document.getElementById('vg-dep');
+  if (dep && !dep.value && c.dep && Array.prototype.some.call(dep.options, function (o) { return o.value === c.dep; })) dep.value = c.dep;
+  var esc = document.getElementById('vg-escala'); if (esc && !esc.value && c.escala) esc.value = estEscalaNome(c.escala);
+}
+
+// ── Cadastro rápido (a partir dos formulários) ──
+var _estQuick = null;
+function estQuickNovo(tipo, alvo) {
+  _estQuick = { tipo: tipo, alvo: alvo };
+  document.getElementById('est-q-titulo').textContent = tipo === 'dep' ? '🏢 Novo departamento' : tipo === 'car' ? '💼 Novo cargo' : '🕒 Nova escala';
+  document.getElementById('est-q-nome').value = '';
+  document.getElementById('est-q-nome').placeholder = tipo === 'dep' ? 'Ex.: Atendimento' : tipo === 'car' ? 'Ex.: Recepcionista' : 'Ex.: 5x2 – 08h às 17h';
+  document.getElementById('modal-est-quick').classList.add('open');
+  document.getElementById('est-q-nome').focus();
+}
+function estQuickSalvar() {
+  var nome = v('est-q-nome').trim(); if (!nome) { alert('Informe o nome.'); return; }
+  var q = _estQuick, key = q.tipo === 'dep' ? 'departamentos' : q.tipo === 'car' ? 'cargos' : 'escalas';
+  if (q.tipo === 'esc' && !DB.g('escalas').length) estSyncEscalas();
+  var list = DB.g(key).filter(function (x) { return !(x.oculto && _estNorm(x.nome) === _estNorm(nome)); }), existe = list.find(function (x) { return _estNorm(x.nome) === _estNorm(nome); });
+  var rec = existe;
+  if (!rec) {
+    rec = { id: uid(), nome: nome };
+    if (q.tipo === 'esc') { rec.valor = nome; rec.base = _estBaseGuess(nome); }
+    if (q.tipo === 'dep') { var emp = v(q.alvo === 'vg-dep' ? 'vg-emp' : 'femp'); if (emp) rec.emp = emp; }
+    if (q.tipo === 'car') { var dp = v(q.alvo === 'vg-titulo' ? 'vg-dep' : 'fdep'); if (dp) rec.dep = dp; }
+    list.push(rec); DB.s(key, list);
+  }
+  closeModal('modal-est-quick');
+  if (q.tipo === 'dep') {
+    estFillDepSelect(q.alvo, v(q.alvo === 'vg-dep' ? 'vg-emp' : 'femp'));
+    var s = document.getElementById(q.alvo); if (s) s.value = rec.id;
+  } else if (q.tipo === 'car') {
+    _estDatalist('dl-cargos', estCargos().map(function (c) { return c.nome; }));
+    var el = document.getElementById(q.alvo); if (el) el.value = rec.nome;
+  } else {
+    if (q.alvo === 'vg-escala') estFillVagaForm(); else estFillFuncForm();
+    var e2 = document.getElementById(q.alvo); if (e2) e2.value = q.alvo === 'vg-escala' ? rec.nome : (rec.valor || rec.nome);
+  }
+  toast((existe ? 'Já existia: ' : 'Cadastrado: ') + rec.nome);
+}
+
+// ── Tela Departamentos e Cargos ──
+function rdEstrutura() {
+  estSyncCargos(); estSyncEscalas();
+  estAba(_estAba);
+}
+function estAba(aba, btn) {
+  _estAba = aba;
+  document.querySelectorAll('#est-tabs .tab').forEach(function (t) { t.classList.toggle('active', t.getAttribute('data-a') === aba); });
+  ['dep', 'car', 'esc'].forEach(function (a) { var el = document.getElementById('est-view-' + a); if (el) el.style.display = a === aba ? '' : 'none'; });
+  if (aba === 'dep') rdEstDeps(); else if (aba === 'car') rdEstCargos(); else rdEstEscalas();
+}
+function _estContFunc(campo, valor) {
+  return DB.g('funcionarios').filter(function (f) { return f.st !== 'Desligado' && (campo === 'car' ? _estNorm(f.car) === _estNorm(valor) : f[campo] === valor); }).length;
+}
+function _estBusca(id) { return _estNorm(v(id)); }
+function rdEstDeps() {
+  var tb = document.getElementById('est-tb-dep'); if (!tb) return;
+  var emps = {}; DB.g('empresas').forEach(function (e) { emps[e.id] = e; });
+  var funcs = {}; DB.g('funcionarios').forEach(function (f) { funcs[f.id] = f; });
+  var q = _estBusca('est-busca-dep');
+  var list = estDeps().filter(function (d) { return !q || _estNorm(d.nome + ' ' + (d.cc || '')).indexOf(q) !== -1; });
+  if (!list.length) { tb.innerHTML = '<tr><td colspan="6" class="est-vazio">' + (DB.g('departamentos').length ? 'Nada encontrado.' : 'Nenhum departamento cadastrado. Clique em <strong>+ Novo departamento</strong> para começar.') + '</td></tr>'; return; }
+  tb.innerHTML = list.map(function (d) {
+    var n = _estContFunc('dep', d.id), resp = funcs[d.resp];
+    var ncar = DB.g('cargos').filter(function (c) { return c.dep === d.id; }).length;
+    return '<tr><td><strong>' + _mtEsc(d.nome) + '</strong>' + (d.desc ? '<div class="est-sub">' + _mtEsc(d.desc) + '</div>' : '') + '</td>' +
+      '<td>' + (d.emp && emps[d.emp] ? _mtEsc(emps[d.emp].razao) : '<span class="est-sub">Todas</span>') + '</td>' +
+      '<td>' + (resp ? _mtEsc(resp.n) : (d.respTxt ? _mtEsc(d.respTxt) : '—')) + '</td>' +
+      '<td>' + _mtEsc(d.cc || '—') + '</td>' +
+      '<td><span class="est-pill" title="Funcionários ativos">👥 ' + n + '</span> <span class="est-pill" title="Cargos vinculados">💼 ' + ncar + '</span></td>' +
+      '<td style="white-space:nowrap;"><button class="btn-icon" title="Editar" onclick="estEditar(\'dep\',\'' + d.id + '\')">✏️</button> ' +
+      '<button class="btn-icon danger" title="Excluir" onclick="estExcluir(\'dep\',\'' + d.id + '\')">🗑</button></td></tr>';
+  }).join('');
+}
+function rdEstCargos() {
+  var tb = document.getElementById('est-tb-car'); if (!tb) return;
+  var deps = {}; DB.g('departamentos').forEach(function (d) { deps[d.id] = d; });
+  var q = _estBusca('est-busca-car');
+  var list = estCargos().filter(function (c) { return !q || _estNorm(c.nome + ' ' + (c.cbo || '')).indexOf(q) !== -1; });
+  if (!list.length) { tb.innerHTML = '<tr><td colspan="6" class="est-vazio">' + (DB.g('cargos').length ? 'Nada encontrado.' : 'Nenhum cargo cadastrado. Clique em <strong>+ Novo cargo</strong>.') + '</td></tr>'; return; }
+  tb.innerHTML = list.map(function (c) {
+    var n = _estContFunc('car', c.nome);
+    return '<tr><td><strong>' + _mtEsc(c.nome) + '</strong>' + (c.auto && !c.cbo && !c.sal ? ' <span class="badge badge-gray" title="Criado a partir de um funcionário. Complete os dados.">completar</span>' : '') +
+      (c.desc ? '<div class="est-sub">' + _mtEsc(c.desc.length > 90 ? c.desc.slice(0, 90) + '…' : c.desc) + '</div>' : '') + '</td>' +
+      '<td>' + _mtEsc(c.cbo || '—') + '</td>' +
+      '<td>' + (c.dep && deps[c.dep] ? _mtEsc(deps[c.dep].nome) : '—') + '</td>' +
+      '<td>' + (c.sal ? Number(c.sal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : '—') + (c.ch ? '<div class="est-sub">' + _mtEsc(c.ch) + 'h/sem</div>' : '') + '</td>' +
+      '<td><span class="est-pill" title="Funcionários ativos neste cargo">👥 ' + n + '</span></td>' +
+      '<td style="white-space:nowrap;"><button class="btn-icon" title="Editar" onclick="estEditar(\'car\',\'' + c.id + '\')">✏️</button> ' +
+      '<button class="btn-icon danger" title="Excluir" onclick="estExcluir(\'car\',\'' + c.id + '\')">🗑</button></td></tr>';
+  }).join('');
+}
+function rdEstEscalas() {
+  var tb = document.getElementById('est-tb-esc'); if (!tb) return;
+  var list = estEscalas();
+  tb.innerHTML = list.map(function (e) {
+    var n = DB.g('funcionarios').filter(function (f) { return f.st !== 'Desligado' && f.escala === e.valor; }).length;
+    return '<tr><td><strong>' + _mtEsc(e.nome) + '</strong>' + (e.desc ? '<div class="est-sub">' + _mtEsc(e.desc) + '</div>' : '') + '</td>' +
+      '<td>' + _mtEsc(e.horario || '—') + '</td>' +
+      '<td>' + _mtEsc(EST_BASES[e.base || escBase(e.valor)] || '—') + '</td>' +
+      '<td><span class="est-pill">👥 ' + n + '</span></td>' +
+      '<td style="white-space:nowrap;"><button class="btn-icon" title="Editar" onclick="estEditar(\'esc\',\'' + e.id + '\')">✏️</button> ' +
+      '<button class="btn-icon danger" title="Excluir" onclick="estExcluir(\'esc\',\'' + e.id + '\')">🗑</button></td></tr>';
+  }).join('');
+}
+
+// ── Formulário (novo/editar) ──
+var EST_FORM = {
+  dep: { key: 'departamentos', titulo: 'departamento', campos: [
+    { id: 'nome', label: 'Nome do departamento *', full: 1, ph: 'Ex.: Atendimento, Financeiro, Administrativo' },
+    { id: 'emp', label: 'Empresa', type: 'emp' },
+    { id: 'resp', label: 'Responsável (gestor)', type: 'func' },
+    { id: 'cc', label: 'Centro de custo', ph: 'Opcional' },
+    { id: 'desc', label: 'Descrição', full: 1, type: 'textarea', ph: 'O que este departamento faz' }] },
+  car: { key: 'cargos', titulo: 'cargo', campos: [
+    { id: 'nome', label: 'Nome do cargo *', full: 1, ph: 'Ex.: Recepcionista' },
+    { id: 'cbo', label: 'CBO', ph: 'Ex.: 4221-05' },
+    { id: 'dep', label: 'Departamento', type: 'dep' },
+    { id: 'sal', label: 'Salário base (R$)', type: 'number' },
+    { id: 'ch', label: 'Carga horária semanal (h)', type: 'number' },
+    { id: 'escala', label: 'Escala padrão', type: 'esc' },
+    { id: 'desc', label: 'Atividades do cargo', full: 1, type: 'textarea', ph: 'Principais atribuições — usadas também na abertura de vagas' },
+    { id: 'req', label: 'Requisitos', full: 1, type: 'textarea', ph: 'Escolaridade, experiência, cursos…' }] },
+  esc: { key: 'escalas', titulo: 'escala', campos: [
+    { id: 'nome', label: 'Nome da escala *', full: 1, ph: 'Ex.: Seg a Sex (5x2)' },
+    { id: 'horario', label: 'Horário', ph: 'Ex.: 08h às 17h, 1h de intervalo' },
+    { id: 'base', label: 'Dias por mês (cálculo de VT/VR)', type: 'base' },
+    { id: 'desc', label: 'Observações', full: 1, type: 'textarea' }] }
+};
+function estNovo(tipo) { _estAbrirForm(tipo, null); }
+function estEditar(tipo, id) { _estAbrirForm(tipo, id); }
+function _estAbrirForm(tipo, id) {
+  var F = EST_FORM[tipo];
+  if (tipo === 'esc' && !DB.g('escalas').length) estSyncEscalas();
+  var r = id ? (DB.g(F.key).find(function (x) { return x.id === id; }) || {}) : {};
+  _estEdit = { tipo: tipo, id: id };
+  document.getElementById('est-form-titulo').textContent = (id ? '✏️ Editar ' : '➕ Novo ') + F.titulo.replace('escala', 'escala');
+  if (tipo === 'esc' && !id) document.getElementById('est-form-titulo').textContent = '➕ Nova escala';
+  document.getElementById('est-form-campos').innerHTML = F.campos.map(function (c) {
+    var val = r[c.id] == null ? '' : r[c.id], inp;
+    if (c.type === 'textarea') inp = '<textarea id="estf-' + c.id + '" rows="3" placeholder="' + _mtEsc(c.ph || '') + '">' + _mtEsc(val) + '</textarea>';
+    else if (c.type === 'emp') inp = '<select id="estf-' + c.id + '"><option value="">Todas as empresas</option>' + DB.g('empresas').map(function (e) { return '<option value="' + e.id + '"' + (e.id === val ? ' selected' : '') + '>' + _mtEsc(e.razao) + '</option>'; }).join('') + '</select>';
+    else if (c.type === 'func') inp = '<select id="estf-' + c.id + '"><option value="">—</option>' + DB.g('funcionarios').filter(function (f) { return f.st !== 'Desligado' || f.id === val; }).sort(function (a, b) { return _estNome(a.n, b.n); }).map(function (f) { return '<option value="' + f.id + '"' + (f.id === val ? ' selected' : '') + '>' + _mtEsc(f.n) + '</option>'; }).join('') + '</select>';
+    else if (c.type === 'dep') inp = '<select id="estf-' + c.id + '"><option value="">—</option>' + estDeps().map(function (d) { return '<option value="' + d.id + '"' + (d.id === val ? ' selected' : '') + '>' + _mtEsc(d.nome) + '</option>'; }).join('') + '</select>';
+    else if (c.type === 'esc') inp = '<select id="estf-' + c.id + '"><option value="">—</option>' + estEscalas().map(function (e) { return '<option value="' + _mtEsc(e.valor) + '"' + (e.valor === val ? ' selected' : '') + '>' + _mtEsc(e.nome) + '</option>'; }).join('') + '</select>';
+    else if (c.type === 'base') inp = '<select id="estf-' + c.id + '">' + Object.keys(EST_BASES).map(function (k) { return '<option value="' + k + '"' + ((val || '55') === k ? ' selected' : '') + '>' + EST_BASES[k] + '</option>'; }).join('') + '</select>';
+    else inp = '<input id="estf-' + c.id + '" type="' + (c.type || 'text') + '" value="' + _mtEsc(val) + '" placeholder="' + _mtEsc(c.ph || '') + '"' + (c.type === 'number' ? ' step="0.01" min="0"' : '') + '>';
+    return '<div class="form-group' + (c.full ? ' form-full' : '') + '"><label>' + c.label + '</label>' + inp + '</div>';
+  }).join('');
+  document.getElementById('modal-est-form').classList.add('open');
+  document.getElementById('estf-nome').focus();
+}
+function estSalvar() {
+  var t = _estEdit.tipo, F = EST_FORM[t], dados = {};
+  F.campos.forEach(function (c) { var el = document.getElementById('estf-' + c.id); dados[c.id] = el ? el.value.trim() : ''; });
+  if (!dados.nome) { alert('Informe o nome.'); return; }
+  var list = DB.g(F.key);
+  list = list.filter(function (x) { return !(x.oculto && _estNorm(x.nome) === _estNorm(dados.nome)); });
+  var dup = list.find(function (x) { return x.id !== _estEdit.id && _estNorm(x.nome) === _estNorm(dados.nome); });
+  if (dup) { alert('Já existe um ' + F.titulo + ' com esse nome.'); return; }
+  if (_estEdit.id) {
+    var i = list.findIndex(function (x) { return x.id === _estEdit.id; }), antigo = list[i];
+    list[i] = Object.assign({}, antigo, dados); delete list[i].auto;
+    DB.s(F.key, list);
+    // Renomear cargo/escala atualiza os funcionários (e vagas) que usam o nome antigo
+    if (t === 'esc' && !list[i].valor) list[i].valor = antigo.valor || antigo.nome;
+    if (t === 'esc') DB.s(F.key, list);
+    if (t === 'car' && antigo && antigo.nome !== dados.nome) {
+      var campo = 'car', nf = 0;
+      var funcs = DB.g('funcionarios').map(function (f) { if (_estNorm(f[campo]) === _estNorm(antigo.nome)) { nf++; return Object.assign({}, f, (function () { var o = {}; o[campo] = dados.nome; return o; })()); } return f; });
+      if (nf) DB.s('funcionarios', funcs);
+      if (nf) toast(nf + ' funcionário(s) atualizados com o novo nome.');
+    }
+  } else {
+    var novo = Object.assign({ id: uid() }, dados);
+    if (t === 'esc') novo.valor = dados.nome;
+    list.push(novo); DB.s(F.key, list);
+  }
+  closeModal('modal-est-form'); estAba(t);
+  toast((F.titulo.charAt(0).toUpperCase() + F.titulo.slice(1)) + ' salvo!');
+}
+function estExcluir(tipo, id) {
+  var F = EST_FORM[tipo];
+  if (tipo === 'esc' && !DB.g('escalas').length) estSyncEscalas();
+  var list = DB.g(F.key), r = list.find(function (x) { return x.id === id; }); if (!r) return;
+  var n = tipo === 'dep' ? DB.g('funcionarios').filter(function (f) { return f.dep === id; }).length
+        : tipo === 'car' ? DB.g('funcionarios').filter(function (f) { return _estNorm(f.car) === _estNorm(r.nome); }).length
+        : DB.g('funcionarios').filter(function (f) { return f.escala === (r.valor || r.nome); }).length;
+  var msg = 'Excluir "' + r.nome + '"?';
+  if (n) msg += '\n\n' + n + ' funcionário(s) usam este ' + F.titulo + '.' + (tipo === 'dep' ? ' Eles ficarão sem departamento.' : ' O nome continua no cadastro deles, mas sai da lista de opções.');
+  if (!confirm(msg)) return;
+  DB.s(F.key, list.filter(function (x) { return x.id !== id; }));
+  if (tipo === 'dep') {
+    if (n) DB.s('funcionarios', DB.g('funcionarios').map(function (f) { return f.dep === id ? Object.assign({}, f, { dep: '' }) : f; }));
+    var cs = DB.g('cargos'), mud = false; cs = cs.map(function (c) { if (c.dep === id) { mud = true; return Object.assign({}, c, { dep: '' }); } return c; }); if (mud) DB.s('cargos', cs);
+  }
+  if (tipo === 'car') { _estIgnorarCargo(r.nome); }
+  estAba(tipo); toast('Excluído.');
+}
+// Cargo excluído não volta sozinho pela sincronização automática
+function _estIgnorarCargo(nome) {
+  var cargos = DB.g('cargos');
+  var usados = DB.g('funcionarios').some(function (f) { return _estNorm(f.car) === _estNorm(nome); });
+  if (usados) { cargos.push({ id: uid(), nome: nome, oculto: 1 }); DB.s('cargos', cargos); }
+}
+
 function rdIntegracao() { rdMt('integracao'); }
 function rdTreinamentosMat() { rdMt('treinamentos'); }
 
@@ -14172,243 +14554,99 @@ function gerarFichaPresenca() {
 }
 
 function abrirManual() {
-  var manualHTML = `<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manual do Sistema RH</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#222;}
-.topo{background:linear-gradient(135deg,#0b6b70,#0f8b92);color:#fff;padding:28px 40px;display:flex;justify-content:space-between;align-items:center;}
-.topo h1{font-size:22px;font-weight:800;}
-.topo p{font-size:13px;opacity:.8;margin-top:4px;}
+  var emp = (window.RH_TENANT && RH_TENANT.nome) || 'Absoluta';
+  var S = function (id, titulo, corpo) { return '<div class="sec" id="' + id + '"><h2>' + titulo + '</h2>' + corpo + '</div>'; };
+  var secoes = [
+    ['s1', '1. Primeiros passos', `
+      <p>O sistema atende duas empresas — <strong>Absoluta</strong> e <strong>Essencial</strong> — e cada uma tem os seus próprios dados, cores e pasta no Google Drive.</p>
+      <ol>
+        <li><strong>Escolha a empresa</strong> na tela de entrada. Para mudar, use <em>⇄ Trocar empresa</em> no topo.</li>
+        <li><strong>Conecte o Google Drive</strong> (na primeira vez, informe o Client ID). A conta fica lembrada neste computador.</li>
+        <li>No <strong>Dashboard</strong>, siga o quadro <em>🚀 Primeiros passos</em>: empresa → departamentos → cargos → funcionários.</li>
+      </ol>
+      <div class="tip">💡 Os números do Dashboard são clicáveis e levam direto para a tela correspondente.</div>`],
+    ['s2', '2. Empresas', `
+      <p>Menu <strong>Cadastros › Empresas</strong>. Use <em>+ Nova</em> para cadastrar e ✏️ para editar.</p>
+      <ul>
+        <li><strong>Documentos da empresa:</strong> escolha o tipo (Cartão CNPJ, Contrato Social, Alvará, Certidões, AVCB…), informe a validade se houver e clique em <em>📎 Anexar</em>.</li>
+        <li>Documentos a 30 dias do vencimento ficam <span style="color:#e65100;font-weight:700">amarelos</span>; vencidos, <span style="color:#c62828;font-weight:700">vermelhos</span> — e aparecem nos alertas do Dashboard.</li>
+        <li>Na Essencial, o botão <em>⚙️ Dados da empresa</em> (topo) define a razão social, CNPJ e endereço usados nos documentos gerados.</li>
+      </ul>`],
+    ['s3', '3. Departamentos, Cargos e Escalas', `
+      <p>Menu <strong>Cadastros › Departamentos e Cargos</strong>. É aqui que se monta a estrutura da empresa — as listas dos formulários de Funcionário e Vaga vêm daqui.</p>
+      <table><tr><th>Aba</th><th>O que cadastrar</th></tr>
+        <tr><td>🏢 Departamentos</td><td>Nome, empresa, responsável (gestor), centro de custo e descrição.</td></tr>
+        <tr><td>💼 Cargos</td><td>Nome, CBO, departamento, salário base, carga horária, escala padrão, atividades e requisitos.</td></tr>
+        <tr><td>🕒 Escalas</td><td>As escalas de trabalho (ex.: Seg a Sex 5x2, 12x36) com o horário.</td></tr></table>
+      <div class="ok">✅ Ao escolher um cargo no cadastro do funcionário, o sistema preenche salário, departamento e escala (se estiverem vazios). Na vaga, preenche também atividades e requisitos.</div>
+      <div class="tip">💡 Também dá para criar um departamento, cargo ou escala sem sair do formulário, pelo botão <strong>＋</strong> ao lado do campo. Renomear um cargo ou escala atualiza os funcionários que o usam.</div>`],
+    ['s4', '4. Funcionários', `
+      <p>Menu <strong>Cadastros › Funcionários</strong>, com três abas:</p>
+      <ul>
+        <li><strong>👥 Cadastro:</strong> lista por status (Ativos, Afastados, Férias, Desligados), busca e ordenação. <em>+ Novo Funcionário</em> abre o formulário (dados pessoais, contrato, uniforme, foto e documentos).</li>
+        <li><strong>📊 Relatório:</strong> marque os status, filtre por empresa/departamento, escolha a ordem (A→Z) e as colunas, e clique em <em>📥 Exportar para Excel</em>.</li>
+        <li><strong>🎂 Aniversariantes:</strong> do mês, da semana, próximos 30 dias ou de qualquer mês, com o template para divulgação.</li>
+      </ul>`],
+    ['s5', '5. Vagas', `
+      <p>Menu <strong>Gestão › Vagas</strong>. Cadastre a vaga escolhendo empresa, departamento e cargo (os dados do cargo completam a vaga). Nas abas da vaga, registre candidatos e aprovados.</p>`],
+    ['s6', '6. Período de Experiência', `
+      <table><tr><th>Período</th><th>Regra</th><th>Exemplo (admissão 01/08)</th></tr>
+        <tr><td>45 dias</td><td>Admissão (dia 1) + 44 dias</td><td>01/08 a 14/09</td></tr>
+        <tr><td>90 dias</td><td>Fim dos 45 + 45 dias</td><td>15/09 a 29/10</td></tr></table>
+      <p>Cada aba mostra só quem está naquele período. Marque o <em>envio ao gestor</em> e gere o formulário de avaliação pelo botão 📄 da linha.</p>`],
+    ['s7', '7. Férias e Exames Médicos', `
+      <ul><li><strong>Férias:</strong> programe o período aquisitivo, início e dias — o retorno é calculado. Férias que começam em até 7 dias aparecem no Dashboard.</li>
+      <li><strong>Exames Médicos:</strong> admissional, periódico, retorno, mudança de função e demissional, com resultado.</li></ul>`],
+    ['s8', '8. Benefícios', `
+      <p>Atribua VT, VR, VA, combustível, assiduidade e demais benefícios a cada funcionário, registre as compras/recargas e gere o <strong>arquivo Flash</strong> por período.</p>`],
+    ['s9', '9. Integração e Treinamentos', `
+      <p>Menus <strong>Gestão › Integração</strong> e <strong>Gestão › Treinamentos</strong>. Cadastre e anexe os materiais de apresentação — PDF, imagem, Word, PowerPoint ou vídeo (clique em <em>📎 Anexar</em> ou arraste os arquivos para o card).</p>
+      <div class="tip">💡 PDF, imagem e vídeo abrem dentro do sistema; Word e PowerPoint pelo botão Baixar.</div>`],
+    ['s10', '10. Gerar Documentos e Políticas', `
+      <ul><li><strong>Gerar Documentos:</strong> Termo de Responsabilidade (FOR01), Autorização de Imagem e Voz (FOR02), Termo de Adesão – Saúde e Vacinação e Ficha de Presença. A janela traz os dados do colaborador e da empresa para conferir antes de gerar.</li>
+      <li><strong>Políticas & Normas:</strong> modelo oficial POL01 – Política de Prêmio Assiduidade (com Termo de Ciência) e as políticas que você cadastrar.</li></ul>`],
+    ['s11', '11. Salvamento e Google Drive', `
+      <ul>
+        <li>Tudo é salvo automaticamente no Drive em cerca de 1 segundo; a cada 15 segundos o sistema busca o que foi alterado em outros computadores.</li>
+        <li>Indicador no topo: <strong>☁️ Sincronizado</strong> (ok), <strong>☁️ Salvando…</strong> (enviando) ou <strong>⚠️ Sem conexão</strong> (as alterações ficam guardadas e são enviadas depois).</li>
+        <li>Cada empresa tem a sua pasta: <em>RH Absoluta</em> e <em>RH Essencial</em>, com as subpastas Funcionários, Empresas, Integração, Treinamentos, Políticas e Normas, Benefícios, Vagas e Campanhas. O botão <strong>📂 Pasta</strong> abre a pasta da empresa atual.</li>
+      </ul>
+      <div class="warn">⚠️ Se o Google pedir código de verificação num computador novo, marque <strong>"Não perguntar novamente neste computador"</strong>. Se pedir login toda semana, publique o app em <em>Google Cloud › Tela de consentimento OAuth › Publicar app</em>.</div>`],
+    ['s12', '12. Como atualizar o sistema', `
+      <ol><li>No GitHub, abra o repositório do sistema e clique em <em>Add file › Upload files</em>.</li>
+      <li>Envie o novo <strong>index.html</strong> (substitui o anterior) e confirme em <em>Commit changes</em>.</li>
+      <li>Em 1–2 minutos o site é atualizado. Os dados não são afetados — ficam no Drive e no navegador.</li></ol>`]
+  ];
+  var html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual do Sistema de RH – ${emp}</title><style>
+*{box-sizing:border-box;margin:0;padding:0;}body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#222;}
+.topo{background:linear-gradient(135deg,#0b6b70,#0f8b92);color:#fff;padding:28px 40px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+.topo h1{font-size:22px;font-weight:800;}.topo p{font-size:13px;opacity:.85;margin-top:4px;}
 .btn-print{background:#fff;color:#0b6b70;border:none;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
-.btn-print:hover{opacity:.9;}
-.container{max-width:860px;margin:32px auto;padding:0 20px 60px;}
+.container{max-width:880px;margin:32px auto;padding:0 20px 60px;}
 .indice{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08);padding:24px 28px;margin-bottom:28px;}
 .indice h2{font-size:15px;font-weight:700;color:#0b6b70;margin-bottom:14px;}
-.indice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.indice-grid a{color:#0f8b92;font-size:13px;text-decoration:none;padding:4px 0;}
-.indice-grid a:hover{text-decoration:underline;}
-.sec{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08);padding:28px 32px;margin-bottom:20px;}
-.sec h2{font-size:16px;font-weight:800;color:#fff;background:#0b6b70;padding:10px 16px;border-radius:8px;margin-bottom:18px;}
-.sec h3{font-size:13.5px;font-weight:700;color:#0b6b70;margin:16px 0 8px;}
-.sec p,.sec li{font-size:13px;color:#444;line-height:1.8;margin-bottom:8px;}
-.sec ol,.sec ul{padding-left:20px;margin-bottom:10px;}
-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0;}
-th{background:#0b6b70;color:#fff;padding:9px 14px;text-align:left;font-weight:700;}
+.indice-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;}.indice-grid a{color:#0f8b92;font-size:13px;text-decoration:none;padding:3px 0;}
+.sec{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08);padding:26px 30px;margin-bottom:20px;}
+.sec h2{font-size:16px;font-weight:800;color:#fff;background:#0b6b70;padding:10px 16px;border-radius:8px;margin-bottom:16px;}
+.sec p,.sec li{font-size:13.5px;color:#444;line-height:1.8;margin-bottom:6px;}.sec ol,.sec ul{padding-left:22px;margin-bottom:10px;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0;}th{background:#0b6b70;color:#fff;padding:9px 14px;text-align:left;}
 td{padding:8px 14px;border-bottom:1px solid #eee;vertical-align:top;}
-tr:nth-child(even) td{background:#f7fbf9;}
-.code{background:#1a2a22;color:#7ee8a2;padding:10px 16px;border-radius:8px;font-family:monospace;font-size:12px;margin:8px 0 14px;word-break:break-all;}
-.tip{background:#e3f2fd;border:1px solid #90caf9;border-radius:7px;padding:10px 14px;font-size:12.5px;color:#1565c0;margin:10px 0;}
-.warn{background:#fff3e0;border:1px solid #ffb74d;border-radius:7px;padding:10px 14px;font-size:12.5px;color:#e65100;margin:10px 0;}
-.ok{background:#e3f5f3;border:1px solid #a5d6a7;border-radius:7px;padding:10px 14px;font-size:12.5px;color:#0b6b70;margin:10px 0;}
-@media print{
-  body{background:#fff;}
-  .topo{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .btn-print,.indice{display:none;}
-  .sec{box-shadow:none;border:1px solid #eee;page-break-inside:avoid;margin-bottom:12px;}
-  th{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .sec h2{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-}
-</style>
-</head>
-<body>
-
-<div class="topo">
-  <div>
-    <h1>📘 Manual do Sistema de RH</h1>
-    <p>ABSOLUTA – Guia completo de uso e atualização · Versão 2.0</p>
-  </div>
-  <button class="btn-print" onclick="window.print()">🖨️ Exportar PDF</button>
-</div>
-
-<div class="container">
-
-  <div class="indice">
-    <h2>📋 Índice</h2>
-    <div class="indice-grid">
-      <a href="#s1">1. Primeiros Passos</a>
-      <a href="#s2">2. Cadastro de Funcionários</a>
-      <a href="#s3">3. Benefícios</a>
-      <a href="#s4">4. Gerar Arquivo Flash</a>
-      <a href="#s5">5. Documentos</a>
-      <a href="#s6">6. Treinamentos</a>
-      <a href="#s7">7. Relatórios</a>
-      <a href="#s8">8. Formulário de Admissão</a>
-      <a href="#s9">9. Como Atualizar o Sistema</a>
-      <a href="#s10">10. Dicas e Boas Práticas</a>
-    </div>
-  </div>
-
-  <div id="s1" class="sec">
-    <h2>1. Primeiros Passos</h2>
-    <h3>1.1 Acessar o Sistema</h3>
-    <p>O sistema é acessado pelo navegador, no endereço onde você publicou o arquivo (ex.: GitHub Pages).</p>
-    <div class="tip">💡 Use sempre o Chrome ou Edge para melhor compatibilidade. Abra em aba anônima (Ctrl+Shift+N) após atualizações.</div>
-    <h3>1.2 Conectar ao Google Drive</h3>
-    <p>Na primeira vez, o sistema exibe a tela de conexão. Clique em <strong>☁️ Conectar ao Google Drive</strong>, faça login com a conta Google do RH e autorize o acesso. Os dados ficam salvos automaticamente no Drive.</p>
-    <h3>1.3 Configurar Empresas</h3>
-    <p>Antes de cadastrar funcionários, acesse <strong>Empresas</strong> e cadastre todas as unidades com razão social, CNPJ e endereço. Essas informações aparecem automaticamente em todos os documentos gerados.</p>
-    <h3>1.4 Configurar Departamentos</h3>
-    <p>Em <strong>Empresas → Departamentos</strong>, cadastre os setores. Isso permite filtrar relatórios e benefícios por departamento.</p>
-  </div>
-
-  <div id="s2" class="sec">
-    <h2>2. Cadastro de Funcionários</h2>
-    <h3>2.1 Novo Funcionário</h3>
-    <p>Clique em <strong>+ Novo Funcionário</strong>. Preencha os campos obrigatórios (nome, CPF, admissão, empresa, cargo) e clique em <strong>Salvar</strong>.</p>
-    <h3>2.2 Campos Importantes</h3>
-    <table><tr><th>Campo</th><th>Descrição</th></tr>
-    <tr><td>Escala de Trabalho</td><td>Define o cálculo de dias no Flash: Seg-Sex (55), Seg-Sab (56), Sab. Alternados, 12x36</td></tr>
-    <tr><td>Status</td><td>Ativo, Afastado, Férias ou Desligado. Desligados não aparecem em benefícios</td></tr>
-    <tr><td>Salário</td><td>Usado em documentos como Carta de Retenção ao INSS</td></tr>
-    </table>
-    <h3>2.3 Documentos</h3>
-    <p>Na aba <strong>Documentos</strong>, anexe os arquivos por categoria. Com Drive conectado, são salvos em <em>RH Absoluta / [Nome do Funcionário]</em>. Clique em <strong>👁️ Visualizar</strong> para abrir o documento direto no sistema.</p>
-    <h3>2.4 Importar do Formulário de Admissão</h3>
-    <p>Clique em <strong>📊 Importar do Sheets</strong>, cole o ID da planilha de admissões, selecione o candidato e importe. Todos os dados preenchem automaticamente.</p>
-    <h3>2.5 Foto e Crachá</h3>
-    <p>Na aba <strong>Foto</strong>, faça upload da foto. Clique em <strong>🪪 Gerar Crachá</strong> para gerar e imprimir.</p>
-  </div>
-
-  <div id="s3" class="sec">
-    <h2>3. Benefícios</h2>
-    <h3>3.1 Atribuir Benefícios</h3>
-    <p>Acesse <strong>Benefícios → Por Funcionário</strong>. Filtre por empresa, localize o funcionário e clique em <strong>✏️ Editar</strong>. Informe os valores e clique em <strong>Salvar Todos os Benefícios</strong>.</p>
-    <h3>3.2 Ajuste em Massa</h3>
-    <p>Selecione funcionários com os checkboxes e clique em <strong>⚡ Ajuste em Massa</strong>. Informe os novos valores e aplique de uma vez em todos os selecionados.</p>
-    <h3>3.3 Reajuste Anual</h3>
-    <p>Clique em <strong>📈 Reajuste Anual</strong>, selecione a empresa, informe os novos valores de VT, VR, VA etc. O sistema atualiza todos os funcionários ativos.</p>
-    <h3>3.4 Tipos de Cálculo</h3>
-    <table><tr><th>Tipo</th><th>Como funciona</th></tr>
-    <tr><td>Por dia</td><td>Valor × dias úteis do período (VT e VR)</td></tr>
-    <tr><td>Mensal fixo</td><td>Valor fixo independente de dias (VA, Odonto, Médico)</td></tr>
-    <tr><td>Mensal</td><td>Variável (Assiduidade, Bônus)</td></tr>
-    </table>
-  </div>
-
-  <div id="s4" class="sec">
-    <h2>4. Gerar Arquivo Flash</h2>
-    <h3>4.1 Passo a Passo</h3>
-    <ol>
-      <li>Acesse <strong>Benefícios → Gerar Arquivo Flash</strong></li>
-      <li>Selecione a <strong>empresa</strong> e a <strong>unidade</strong></li>
-      <li>Informe o <strong>período</strong> (De / Até)</li>
-      <li>Os dias úteis são calculados automaticamente por escala, com feriados de SP descontados</li>
-      <li>Confira e ajuste os valores se necessário</li>
-      <li>Clique em <strong>📄 Gerar XLSX Flash</strong></li>
-    </ol>
-    <h3>4.2 Escalas</h3>
-    <table><tr><th>Escala</th><th>Dias calculados</th></tr>
-    <tr><td>Seg a Sex (55)</td><td>Dias úteis seg-sex excluindo feriados</td></tr>
-    <tr><td>Seg a Sab (56)</td><td>Dias úteis seg-sab excluindo domingos e feriados</td></tr>
-    <tr><td>Sab. Alternados</td><td>Dias úteis + metade dos sábados do período</td></tr>
-    <tr><td>12x36 / Outro</td><td>Dias úteis padrão, editável manualmente</td></tr>
-    </table>
-    <h3>4.3 Histórico Flash</h3>
-    <p>Cada arquivo gerado é salvo automaticamente em <strong>Histórico Flash</strong>. Re-exporte meses anteriores ou gere um relatório consolidado de todos os períodos clicando em <strong>📊 Exportar Consolidado</strong>.</p>
-    <div class="tip">💡 A primeira coluna da planilha traz o CNPJ da empresa, seguido dos dados do funcionário.</div>
-  </div>
-
-  <div id="s5" class="sec">
-    <h2>5. Documentos</h2>
-    <p>Acesse <strong>Gerar Documentos</strong>, selecione o funcionário e clique no documento desejado:</p>
-    <table><tr><th>Documento</th><th>Descrição</th></tr>
-    <tr><td>🧥 Recibo de Uniforme</td><td>Lista itens entregues com assinatura — 1 página</td></tr>
-    <tr><td>📄 Carta de Retenção ao INSS</td><td>Declaração previdenciária IN 100/2003</td></tr>
-    <tr><td>📋 Termo Aditivo</td><td>Alteração de horário — campos de horário editáveis no modal</td></tr>
-    <tr><td>📷 Autorização de Uso de Imagem</td><td>Termo de autorização para uso de imagem e voz</td></tr>
-    </table>
-    <p>Todos os documentos puxam nome, CPF, cargo, admissão e empresa automaticamente. A assinatura digital do RH é inserida antes da impressão.</p>
-  </div>
-
-  <div id="s6" class="sec">
-    <h2>6. Treinamentos</h2>
-    <p>Em <strong>Treinamentos</strong>, cadastre com título, data, instrutor, carga horária e participantes. Use os checkboxes com busca por nome para selecionar participantes.</p>
-    <p>Clique em <strong>🗒️ Lista de Presença</strong> para gerar e imprimir com linhas de assinatura. O modal permite incluir ou remover participantes antes de imprimir.</p>
-  </div>
-
-  <div id="s7" class="sec">
-    <h2>7. Relatórios</h2>
-    <h3>7.1 Relatório de Funcionários</h3>
-    <p>Em <strong>Relatórios</strong>, use os filtros de empresa, departamento, status e período. Clique em <strong>📄 Gerar Excel</strong> para exportar com todos os dados cadastrais e benefícios em colunas separadas, com valores em R$.</p>
-    <h3>7.2 Relatório Geral de Benefícios</h3>
-    <p>Na aba <strong>Relatório Geral</strong> em Benefícios, filtre por empresa e clique em <strong>📥 Exportar Excel</strong>. Cada funcionário em uma linha com todos os benefícios em colunas.</p>
-  </div>
-
-  <div id="s8" class="sec">
-    <h2>8. Formulário de Admissão</h2>
-    <p>Link do formulário para candidatos (configure o seu formulário de admissão e cole o endereço aqui):</p>
-    <div class="code">[endereço do seu formulário de admissão]</div>
-    <h3>Fluxo completo:</h3>
-    <ol>
-      <li>Envie o link ao candidato aprovado pelo WhatsApp</li>
-      <li>O candidato preenche dados, documentos, dependentes, VT e formação acadêmica</li>
-      <li>Dados vão automaticamente para a planilha Google Sheets e pasta no Drive</li>
-      <li>No sistema: <strong>Funcionários → 📊 Importar do Sheets</strong></li>
-      <li>Cole o ID da planilha, selecione o candidato e importe</li>
-      <li>Complete empresa, cargo e salário, e salve</li>
-    </ol>
-    <div class="warn">⚠️ A planilha precisa estar compartilhada como "Qualquer pessoa com o link pode ver" para a importação funcionar.</div>
-  </div>
-
-  <div id="s9" class="sec">
-    <h2>9. Como Atualizar o Sistema</h2>
-    <div class="warn">⚠️ Sempre faça backup antes de atualizar! Baixe o index.html atual do GitHub antes de substituir.</div>
-    <h3>Passo a Passo</h3>
-    <ol>
-      <li>Acesse o repositório do sistema no GitHub</li>
-      <li>Clique em <strong>index.html → Cru (Raw)</strong> → salve como backup</li>
-      <li>Receba o novo <strong>index.html</strong> do desenvolvedor</li>
-      <li>No repositório, clique no ícone de upload e envie o novo arquivo</li>
-      <li>Confirme com <strong>Commit changes</strong></li>
-      <li>Aguarde 2-3 minutos e acesse em <strong>aba anônima</strong> (Ctrl+Shift+N)</li>
-    </ol>
-    <h3>O que acontece com os dados ao atualizar?</h3>
-    <table><tr><th>Item</th><th>Situação</th></tr>
-    <tr><td>Funcionários cadastrados</td><td>✅ Preservados — ficam no Google Drive</td></tr>
-    <tr><td>Benefícios e histórico Flash</td><td>✅ Preservados — sincronizados no Drive</td></tr>
-    <tr><td>Configurações (Client ID)</td><td>✅ Preservadas — salvas no navegador</td></tr>
-    <tr><td>Código e funcionalidades</td><td>🔄 Atualizado com novas melhorias</td></tr>
-    </table>
-    <div class="ok">✅ Seus dados nunca são apagados por uma atualização do sistema.</div>
-    <h3>Não abre após atualizar?</h3>
-    <ol>
-      <li>Abra em <strong>aba anônima</strong> (Ctrl+Shift+N)</li>
-      <li>Se ainda não funcionar: <strong>Ctrl+Shift+R</strong> para forçar recarga</li>
-      <li>Verifique se o arquivo foi salvo exatamente como <strong>index.html</strong></li>
-    </ol>
-  </div>
-
-  <div id="s10" class="sec">
-    <h2>10. Dicas e Boas Práticas</h2>
-    <table><tr><th>Situação</th><th>Solução</th></tr>
-    <tr><td>Sistema não carrega dados</td><td>Clique em "Sincronizar / Iniciar" para reconectar ao Drive</td></tr>
-    <tr><td>Funcionário desligado aparece</td><td>Verifique se o status está como "Desligado" no cadastro</td></tr>
-    <tr><td>Flash com dias errados</td><td>Confira a escala de trabalho no cadastro do funcionário</td></tr>
-    <tr><td>Documento sem dados do funcionário</td><td>Selecione o funcionário antes de gerar o documento</td></tr>
-    <tr><td>Planilha não importa candidato</td><td>Compartilhe a planilha como "Qualquer pessoa com o link"</td></tr>
-    <tr><td>Usar em outro computador</td><td>Basta acessar o link e conectar ao Drive com a mesma conta</td></tr>
-    <tr><td>Múltiplos usuários simultâneos</td><td>Cada usuário conecta com sua conta Google — os dados são compartilhados via Drive</td></tr>
-    <tr><td>Backup dos dados</td><td>Os dados ficam no Google Drive. Sincronize sempre antes de sair</td></tr>
-    </table>
-    <div class="ok" style="margin-top:20px;">
-      <strong>Sistema desenvolvido com Claude (Anthropic)</strong><br>
-      Para melhorias e novas funcionalidades, descreva o que precisa no chat com o assistente.<br>
-      <strong>Repositório:</strong> o repositório configurado para este sistema no GitHub
-    </div>
-  </div>
-
-</div>
-</body>
-</html>`;
-
+.tip,.warn,.ok{border-radius:7px;padding:10px 14px;font-size:13px;margin:10px 0;line-height:1.6;}
+.tip{background:#e3f2fd;border:1px solid #90caf9;color:#1565c0;}.warn{background:#fff3e0;border:1px solid #ffb74d;color:#e65100;}.ok{background:#e3f5f3;border:1px solid #a5d6a7;color:#0b6b70;}
+@media (max-width:640px){.indice-grid{grid-template-columns:1fr;}.topo{padding:20px;}}
+@media print{body{background:#fff;}.btn-print,.indice{display:none;}.sec{box-shadow:none;border:1px solid #eee;page-break-inside:avoid;}
+.topo,th,.sec h2{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
+</style></head><body>
+<div class="topo"><div><h1>📘 Manual do Sistema de RH</h1><p>${emp} · Guia de uso · Versão 3.0</p></div>
+<button class="btn-print" onclick="window.print()">🖨️ Exportar PDF</button></div>
+<div class="container"><div class="indice"><h2>📋 Índice</h2><div class="indice-grid">
+${secoes.map(function (x) { return '<a href="#' + x[0] + '">' + x[1] + '</a>'; }).join('')}
+</div></div>
+${secoes.map(function (x) { return S(x[0], x[1], x[2]); }).join('')}
+</div></body></html>`;
   var w = window.open('', '_blank');
-  w.document.write(manualHTML);
-  w.document.close();
+  if (w) { w.document.write(html); w.document.close(); }
 }
 </script>
 <script>
@@ -14423,7 +14661,7 @@ tr:nth-child(even) td{background:#f7fbf9;}
   var RT = window.RT = {
     LIST: ['funcionarios','departamentos','empresas','usuarios','ferias','exames','epi','uni-mov','uni-itens','uniformes','vagas',
            'pagamentos','treinamentos','campanhas','politicas','benef-atrib','benef-compras','flash-hist','pendencias',
-           'mat-trein','cronograma-trein','integracoes'],
+           'mat-trein','cronograma-trein','integracoes','cargos','escalas'],
     OBJ: ['uni-est','perfil_empresa'],
     ids: {}, mtime: {}, base: {}, busy: false, again: false, timer: null, poll: null, started: false,
     lastOk: 0, erro: '', renewArmed: false, folderCache: {}
@@ -14611,7 +14849,7 @@ tr:nth-child(even) td{background:#f7fbf9;}
     var modalAberto = document.querySelector('.modal-bg.open');
     var rd = { funcionarios: 'rdFuncAtual', empresas: 'rdEmp', vagas: 'rdVagas', experiencia: 'rdExp', ferias: 'rdFer', exames: 'rdExm',
                beneficios: 'rdBenef', aniversariantes: 'rdBday', politicas: 'rdPol', integracao: 'rdIntegracao', treinamentos: 'rdTreinamentosMat',
-               dashboard: 'updDash' };
+               dashboard: 'updDash', estrutura: 'rdEstrutura' };
     var fn = rd[id];
     if (fn && typeof window[fn] === 'function' && !(modalAberto && id === 'funcionarios')) { try { window[fn](); } catch (e) {} }
     if (typeof toast === 'function') toast('🔄 Dados atualizados de outro computador');
@@ -14818,6 +15056,75 @@ tr:nth-child(even) td{background:#f7fbf9;}
       }
     }
   };
+})();
+</script>
+<script>
+// ════════════════ DASHBOARD: atalhos, alertas extras e primeiros passos ════════════════
+(function () {
+  var _upd = window.updDash;
+  if (typeof _upd !== 'function') return;
+  function irPara(sec, extra) {
+    var ni = Array.prototype.find.call(document.querySelectorAll('.nav-item'), function (n) { return (n.getAttribute('onclick') || '').indexOf("'" + sec + "'") !== -1; });
+    if (ni) ni.click();
+    if (extra) setTimeout(extra, 60);
+  }
+  window.rhIrPara = irPara;
+  window.updDash = function () {
+    _upd.apply(this, arguments);
+    try { _extras(); } catch (e) { console.warn(e); }
+  };
+  function _extras() {
+    try { if (typeof estSyncCargos === 'function') estSyncCargos(); } catch (e) {}
+    var hoje = typeof _expHoje === 'function' ? _expHoje() : td();
+    // Cartões clicáveis
+    var mapa = { 's-func': ['funcionarios', function () { if (typeof funcView === 'function') funcView('cadastro'); }], 's-exp': ['experiencia'], 's-fer': ['ferias'], 's-ex': ['exames'] };
+    Object.keys(mapa).forEach(function (id) {
+      var el = document.getElementById(id), card = el && el.closest('.stat-card');
+      if (card && !card.dataset.link) { card.dataset.link = 1; card.style.cursor = 'pointer'; card.title = 'Abrir'; card.onclick = function () { irPara(mapa[id][0], mapa[id][1]); }; }
+    });
+    // Alertas extras
+    var extras = [];
+    var funcs = DB.g('funcionarios').filter(function (f) { return f.st !== 'Desligado'; });
+    var mm = hoje.slice(5);
+    funcs.forEach(function (f) { if (f.nas && f.nas.slice(5) === mm) extras.push('<div class="alert alert-success">🎂 Hoje é aniversário de <strong>' + _mtEsc(f.n) + '</strong>!</div>'); });
+    DB.g('ferias').forEach(function (r) {
+      if (r.st !== 'Agendada' || !r.ini) return; var d = _expDif(hoje, r.ini);
+      if (d >= 0 && d <= 7) { var f = funcs.find(function (x) { return x.id === r.fid; }); extras.push('<div class="alert alert-info">🏖 Férias de <strong>' + _mtEsc(f ? f.n : '?') + '</strong> começam ' + (d ? 'em ' + d + ' dia(s)' : 'hoje') + ' (' + fd(r.ini) + ').</div>'); }
+    });
+    DB.g('empresas').forEach(function (e) {
+      (e.mats || []).forEach(function (m) {
+        if (!m.validade) return; var d = _expDif(hoje, m.validade);
+        if (d <= 30) extras.push('<div class="alert ' + (d < 0 ? 'alert-danger' : 'alert-warning') + '">📂 ' + _mtEsc(m.cat || 'Documento') + ' de <strong>' + _mtEsc(e.razao) + '</strong> ' + (d < 0 ? 'venceu em ' : 'vence em ') + fd(m.validade) + '.</div>');
+      });
+    });
+    var semDep = funcs.filter(function (f) { return !f.dep; }).length;
+    if (semDep && DB.g('departamentos').length) extras.push('<div class="alert alert-info" style="cursor:pointer;" onclick="rhIrPara(\'funcionarios\')">🏢 ' + semDep + ' funcionário(s) ativo(s) sem departamento definido.</div>');
+    var al = document.getElementById('alertas');
+    if (al && extras.length) {
+      var vazio = al.textContent.indexOf('Nenhum alerta') !== -1;
+      al.innerHTML = extras.join('') + (vazio ? '' : al.innerHTML);
+    }
+    // Primeiros passos
+    var sec = document.getElementById('sec-dashboard'); if (!sec) return;
+    var box = document.getElementById('dash-setup');
+    var fechado = localStorage.getItem('eq_setup_fechado') === '1';
+    var passos = [
+      { ok: DB.g('empresas').length > 0, t: 'Cadastre a empresa', d: 'Razão social, CNPJ, endereço e documentos.', go: "rhIrPara('empresas')" },
+      { ok: DB.g('departamentos').length > 0, t: 'Crie os departamentos', d: 'Ex.: Atendimento, Administrativo, Financeiro.', go: "rhIrPara('estrutura',function(){estAba('dep')})" },
+      { ok: DB.g('cargos').filter(function (c) { return !c.oculto; }).length > 0, t: 'Cadastre os cargos', d: 'Com CBO, salário base e atividades.', go: "rhIrPara('estrutura',function(){estAba('car')})" },
+      { ok: DB.g('funcionarios').length > 0, t: 'Cadastre os funcionários', d: 'Escolhendo empresa, departamento, cargo e escala.', go: "rhIrPara('funcionarios')" },
+      { ok: typeof driveReady !== 'undefined' && driveReady, t: 'Conecte o Google Drive', d: 'Para salvar e sincronizar entre computadores.', go: "syncManual()" }
+    ];
+    var feitos = passos.filter(function (p) { return p.ok; }).length;
+    if (fechado || feitos === passos.length) { if (box) box.remove(); return; }
+    if (!box) { box = document.createElement('div'); box.id = 'dash-setup'; box.className = 'card'; sec.insertBefore(box, sec.firstChild); }
+    box.innerHTML = '<div class="card-header" style="margin-bottom:12px;"><span class="card-title">🚀 Primeiros passos · ' + feitos + ' de ' + passos.length + '</span>' +
+      '<button class="btn btn-outline btn-sm" onclick="localStorage.setItem(\'eq_setup_fechado\',\'1\');document.getElementById(\'dash-setup\').remove()">Ocultar</button></div>' +
+      '<div class="setup-bar"><span style="width:' + Math.round(feitos / passos.length * 100) + '%"></span></div>' +
+      '<div class="setup-grid">' + passos.map(function (p, i) {
+        return '<div class="setup-step' + (p.ok ? ' ok' : '') + '" onclick="' + p.go + '"><div class="setup-n">' + (p.ok ? '✓' : i + 1) + '</div><div><strong>' + p.t + '</strong><div>' + p.d + '</div></div></div>';
+      }).join('') + '</div>';
+  }
 })();
 </script>
 </body>
