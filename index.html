@@ -1045,7 +1045,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="card-header">
       <span class="card-title">👥 Funcionários</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-        <button class="btn btn-outline btn-sm" onclick="abrirImportSheets()" style="display:inline-flex;align-items:center;gap:5px;">&#128202; Importar do Sheets</button>
+
         <button class="btn btn-primary" onclick="openModal(&#39;modal-func&#39;)">+ Novo Funcionário</button>
       </div>
     </div>
@@ -5270,11 +5270,23 @@ function exportUniCSV() {
 // ── Datas do contrato de experiência ──────────────────────────
 // 1º período (45 dias): admissão (dia 1) até admissão + 44 dias
 // 2º período (90 dias): dia seguinte ao fim do 1º (admissão + 45) até + 45 dias (admissão + 89)
+// Aceita AAAA-MM-DD, AAAA-MM-DDThh:mm, DD/MM/AAAA e DD-MM-AAAA
+function _expISO(s) {
+  s = String(s == null ? '' : s).trim(); if (!s) return '';
+  var m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(s);
+  if (m) return m[1] + '-' + m[2].padStart(2, '0') + '-' + m[3].padStart(2, '0');
+  m = /^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/.exec(s);
+  if (m) return m[3] + '-' + m[2].padStart(2, '0') + '-' + m[1].padStart(2, '0');
+  var d = new Date(s); if (!isNaN(d)) return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  return '';
+}
 function _expAddDias(iso, n) {
+  iso = _expISO(iso);
   var p = iso.split('-'); var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
   d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10);
 }
 function _expDif(a, b) {
+  a = _expISO(a); b = _expISO(b); if (!a || !b) return NaN;
   var pa = a.split('-'), pb = b.split('-');
   return Math.round((Date.UTC(+pb[0], +pb[1] - 1, +pb[2]) - Date.UTC(+pa[0], +pa[1] - 1, +pa[2])) / 86400000);
 }
@@ -5283,6 +5295,7 @@ function _expHoje() {
   return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0');
 }
 function expPeriodos(adm) {
+  adm = _expISO(adm);
   var fim45 = _expAddDias(adm, 44);
   var ini90 = _expAddDias(fim45, 1);
   var fim90 = _expAddDias(fim45, 45);
@@ -5349,7 +5362,7 @@ function rdExpTab(funcs, dias, tbId) {
 
     return '<tr>' +
       '<td><strong>' + f.n + '</strong>' + (info ? '<div style="font-size:11px;color:var(--gray-400);">' + info + '</div>' : '') + gestor + '</td>' +
-      '<td>' + fd(f.adm) + '</td>' +
+      '<td>' + fd(_expISO(f.adm)) + '</td>' +
       '<td style="white-space:nowrap;">' + fd(L.per.ini) + ' a ' + fd(L.per.fim) + '</td>' +
       '<td><strong>' + fd(L.per.fim) + '</strong></td>' +
       '<td>' + diasInfo + '</td>' +
@@ -5455,8 +5468,15 @@ function envWha() { const num = v('whan'), msg = v('whamsg'); if (!num) { alert(
 function updDash() {
   const funcs = DB.g('funcionarios'); const hoje = td();
   document.getElementById('s-func').textContent = funcs.filter(f => f.st === 'Ativo').length;
-  let exp = 0; funcs.forEach(f => { if (f.adm && f.st !== 'Desligado') { var _dc = _expDif(f.adm, _expHoje()); if (_dc >= 0 && _dc <= 89) exp++; } });
+  let exp = 0, e45 = 0, e90 = 0, venc7 = 0; funcs.forEach(f => {
+    if (!f.adm || f.st === 'Desligado') return;
+    var _dc = _expDif(f.adm, _expHoje()); if (isNaN(_dc) || _dc < 0 || _dc > 89) return;
+    exp++; if (_dc <= 44) e45++; else e90++;
+    var _fim = _dc <= 44 ? 44 : 89; if (_fim - _dc <= 7) venc7++;
+  });
   document.getElementById('s-exp').textContent = exp;
+  var _lbl = document.getElementById('s-exp').parentNode.querySelector('.stat-label');
+  if (_lbl) _lbl.innerHTML = 'Em Experiência' + (exp ? '<div style="font-size:11px;opacity:.75;margin-top:2px;">45 dias: ' + e45 + ' · 90 dias: ' + e90 + (venc7 ? ' · <strong>' + venc7 + ' vence' + (venc7 > 1 ? 'm' : '') + ' em 7d</strong>' : '') + '</div>' : '');
   document.getElementById('s-fer').textContent = DB.g('ferias').filter(r => r.st === 'Em andamento').length;
   document.getElementById('s-ex').textContent = DB.g('exames').filter(function(e){ return !e.res; }).length;
   if(typeof updExmAlerts === 'function') updExmAlerts();
@@ -15073,7 +15093,20 @@ ${secoes.map(function (x) { return S(x[0], x[1], x[2]); }).join('')}
     _upd.apply(this, arguments);
     try { _extras(); } catch (e) { console.warn(e); }
   };
+  // Datas fora do padrão (ex.: 15/08/2026) são convertidas para o formato do sistema
+  function _normalizarDatas() {
+    if (typeof _expISO !== 'function') return false;
+    var l = DB.g('funcionarios'), mud = false;
+    l.forEach(function (f) {
+      ['adm', 'nas'].forEach(function (k) {
+        if (f[k] && !/^\d{4}-\d{2}-\d{2}$/.test(f[k])) { var iso = _expISO(f[k]); if (iso) { f[k] = iso; mud = true; } }
+      });
+    });
+    if (mud) { DB.s('funcionarios', l); return true; }
+    return false;
+  }
   function _extras() {
+    try { if (_normalizarDatas()) { _upd(); } } catch (e) {}
     try { if (typeof estSyncCargos === 'function') estSyncCargos(); } catch (e) {}
     var hoje = typeof _expHoje === 'function' ? _expHoje() : td();
     // Cartões clicáveis
