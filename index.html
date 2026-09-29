@@ -723,6 +723,7 @@ input#client-id-inp:focus{border-color:var(--green);outline:none;}
 .uni-del{background:#ffebee;color:#c62828;border:1px solid #ffcdd2;border-radius:5px;padding:6px;cursor:pointer;}
 @media (max-width:640px){.uni-row{grid-template-columns:1fr 1fr;}.uni-row.uni-head{display:none;}}
 /* ── Tema Essencial (cores da logo) ── */
+html[data-tenant="essencial"] #sync-overlay{background:rgba(70,32,24,.92);}
 html[data-tenant="essencial"]{
   --green:#b46051;--green-dark:#7d3b30;--green-light:#e3a597;--green-pale:#faeeea;
   --gray-50:#fbf7f5;--gray-100:#f3eae6;--gray-200:#e7d6cf;--gray-400:#a8918a;
@@ -3072,7 +3073,10 @@ document.addEventListener('DOMContentLoaded', function () {
 // ============================================================
 // CONFIGURAÇÃO GOOGLE
 // ============================================================
-let CLIENT_ID = '';
+// Código de acesso (Client ID do Google Cloud) já embutido: ninguém precisa digitar
+const CLIENT_ID_PADRAO = '704641874797-9birlc4pvanm92458apvlbj3g7lrkiv7.apps.googleusercontent.com';
+let CLIENT_ID = CLIENT_ID_PADRAO;
+try { if (!localStorage.getItem('eq_client_id')) localStorage.setItem('eq_client_id', CLIENT_ID_PADRAO); } catch (e) {}
 const SCOPES = 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets.readonly';
 let driveReady = false;
 let driveToken = null;
@@ -9808,6 +9812,7 @@ function showSyncOverlay() {
   document.getElementById('sync-done').style.display = 'none';
 
   if (CLIENT_ID) {
+    var _wz = document.getElementById('setup-wizard'); if (_wz) _wz.style.display = 'none';
     // CID known — show connect button immediately, no waiting
     document.getElementById('sync-msg').textContent = 'Clique para entrar com sua conta Google.';
     document.getElementById('sync-actions').style.display = 'flex';
@@ -15128,7 +15133,7 @@ ${secoes.map(function (x) { return S(x[0], x[1], x[2]); }).join('')}
 
   // Entrada automática: token válido → entra direto; conta conhecida → um clique, sem senha
   window.rhAutoStart = async function () {
-    var cid = localStorage.getItem('eq_client_id'); if (cid) CLIENT_ID = cid;
+    var cid = localStorage.getItem('eq_client_id') || CLIENT_ID_PADRAO; CLIENT_ID = cid;
     var tok = localStorage.getItem('eq_drive_token');
     var t = parseInt(localStorage.getItem('eq_drive_token_time') || '0', 10);
     if (cid && tok && Date.now() - t < 55 * 60000) {
