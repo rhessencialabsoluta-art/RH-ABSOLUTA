@@ -14260,23 +14260,26 @@ var _estAba = 'dep';
 
 function _estNome(a, b) { return (a || '').localeCompare(b || '', 'pt-BR', { sensitivity: 'base' }); }
 function _estNorm(s) { return String(s || '').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
-function estDeps() { return DB.g('departamentos').slice().sort(function (a, b) { return _estNome(a.nome, b.nome); }); }
-function estCargos() { return DB.g('cargos').filter(function (c) { return !c.oculto; }).slice().sort(function (a, b) { return _estNome(a.nome, b.nome); }); }
+function estDeps() { return _estUnicos(DB.g('departamentos')).slice().sort(function (a, b) { return _estNome(a.nome, b.nome); }); }
+function estCargos() { return _estUnicos(DB.g('cargos').filter(function (c) { return !c.oculto; })).slice().sort(function (a, b) { return _estNome(a.nome, b.nome); }); }
 function estEscalas() {
   var l = DB.g('escalas');
   if (!l.length) return EST_ESCALAS_PADRAO.map(function (e, i) { return Object.assign({ id: 'esc' + i }, e); });
+  var vv = {}; l = l.filter(function (e) { var k = e.valor || e.nome; if (vv[k]) return false; vv[k] = 1; return true; });
   return l.map(function (e) { return e.valor ? e : Object.assign({}, e, { valor: e.nome }); }).sort(function (a, b) { return _estNome(a.nome, b.nome); });
 }
 function estCargoPorNome(nome) { var n = _estNorm(nome); return DB.g('cargos').find(function (c) { return !c.oculto && _estNorm(c.nome) === n; }) || null; }
 
 // Cargos digitados nos funcionários/vagas entram no cadastro automaticamente
+function _estSlug(t) { return _estNorm(t).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'x'; }
+function _estUnicos(l) { var vis = {}; return l.filter(function (x) { var k = _estNorm(x.nome); if (vis[k]) return false; vis[k] = 1; return true; }); }
 function estSyncCargos() {
   var cargos = DB.g('cargos'), nomes = {};
   cargos.forEach(function (c) { nomes[_estNorm(c.nome)] = 1; });
   var novos = [];
   DB.g('funcionarios').forEach(function (f) {
     var n = (f.car || '').trim(); if (!n || nomes[_estNorm(n)]) return;
-    nomes[_estNorm(n)] = 1; novos.push({ id: uid(), nome: n, dep: f.dep || '', auto: 1 });
+    nomes[_estNorm(n)] = 1; novos.push({ id: 'car-' + _estSlug(n), nome: n, dep: f.dep || '', auto: 1 });
   });
   if (novos.length) DB.s('cargos', cargos.concat(novos));
   return novos.length;
@@ -14284,11 +14287,11 @@ function estSyncCargos() {
 // A lista de escalas é criada na 1ª vez com as padrão + as já usadas
 function estSyncEscalas() {
   var l = DB.g('escalas'), vals = {};
-  var base = l.length ? l : EST_ESCALAS_PADRAO.map(function (e) { return Object.assign({ id: uid() }, e); });
+  var base = l.length ? l : EST_ESCALAS_PADRAO.map(function (e) { return Object.assign({ id: 'esc-' + e.valor }, e); });
   base.forEach(function (e) { vals[e.valor || e.nome] = 1; });
   var add = [];
   DB.g('funcionarios').forEach(function (r) {
-    var n = (r.escala || '').trim(); if (!n || vals[n]) return; vals[n] = 1; add.push({ id: uid(), nome: n, valor: n, base: _estBaseGuess(n) });
+    var n = (r.escala || '').trim(); if (!n || vals[n]) return; vals[n] = 1; add.push({ id: 'esc-' + _estSlug(n), nome: n, valor: n, base: _estBaseGuess(n) });
   });
   if (!l.length || add.length) DB.s('escalas', base.concat(add));
 }
@@ -14761,7 +14764,23 @@ ${secoes.map(function (x) { return S(x[0], x[1], x[2]); }).join('')}
   }
   RT.getTomb = getTomb;
   var _s = DB.s, _so = DB.so;
-  DB.s = function (k, v) { var antes = synced(k) ? rawGet(k) : null; _s(k, v); if (synced(k)) { registrarExclusoes(k, antes, v); mark(k); schedule(900); } };
+  // Cada registro alterado recebe _ts (horário da alteração): na mescla, vence a edição mais recente
+  function carimbar(antes, depois) {
+    if (!Array.isArray(depois)) return;
+    var A = {}; (Array.isArray(antes) ? antes : []).forEach(function (x) { if (x && x.id != null) A[x.id] = x; });
+    var agora = Date.now();
+    depois.forEach(function (x) {
+      if (!x || typeof x !== 'object' || x.id == null) return;
+      var a = A[x.id];
+      if (!a) { if (!x._ts) x._ts = agora; return; }
+      var ta = a._ts, tx = x._ts; delete a._ts; delete x._ts;
+      var igual = JSON.stringify(a) === JSON.stringify(x);
+      if (ta) a._ts = ta;
+      x._ts = igual ? (tx || ta) : agora;
+      if (!x._ts) delete x._ts;
+    });
+  }
+  DB.s = function (k, v) { var antes = synced(k) ? rawGet(k) : null; if (synced(k)) carimbar(antes, v); _s(k, v); if (synced(k)) { registrarExclusoes(k, antes, v); mark(k); schedule(900); } };
   DB.so = function (k, v) { _so(k, v); if (synced(k)) { mark(k); schedule(900); } };
 
   // ── mescla de 3 vias: base (último sincronizado), local e remoto ──
@@ -14778,7 +14797,12 @@ ${secoes.map(function (x) { return S(x[0], x[1], x[2]); }).join('')}
       function pick(id) {
         if (tomb[id]) return null;                            // excluído em algum computador
         var b = B[id], l = L[id], r = R[id];
-        if (l && r) return (b && same(l, b)) ? r : l;          // local não mudou → vale o remoto
+        if (l && r) {
+          if (same(l, r)) return r;
+          var lt = l._ts || 0, rt = r._ts || 0;
+          if (lt !== rt) return lt > rt ? l : r;             // vence a alteração mais recente
+          return (b && same(l, b)) ? r : l;                  // sem horário: local não mudou → vale o remoto
+        }
         return l || r || null;                                // existe só de um lado → mantém
       }
       remote.forEach(function (x) { seen[x.id] = 1; var v = pick(x.id); if (v) out.push(v); });
@@ -14996,11 +15020,31 @@ ${secoes.map(function (x) { return S(x[0], x[1], x[2]); }).join('')}
     RT.folderCache[ck] = id; return id;
   }
   window.findOrCreateFolder = async function (name, parentId) { return pasta(String(name), parentId || 'root'); };
+  // Pasta da empresa: aceita a pasta do próprio Drive OU uma pasta compartilhada por outra conta.
+  // Se houver mais de uma, usa a que já tem dados do sistema (a mais atualizada).
+  async function pastaEmpresa(nome) {
+    var url = 'https://www.googleapis.com/drive/v3/files?pageSize=50&fields=files(id,name,ownedByMe,modifiedTime)&includeItemsFromAllDrives=true&supportsAllDrives=true&q=' +
+      encodeURIComponent("name='" + q(nome) + "' and mimeType='application/vnd.google-apps.folder' and trashed=false");
+    var lista = ((await (await authFetch(url)).json()).files) || [];
+    if (!lista.length) return pasta(nome, 'root');
+    if (lista.length === 1) return lista[0].id;
+    var melhor = null;
+    for (var i = 0; i < lista.length; i++) {
+      var f = lista[i];
+      var u2 = 'https://www.googleapis.com/drive/v3/files?pageSize=1&orderBy=modifiedTime desc&fields=files(id,modifiedTime)&q=' +
+        encodeURIComponent("'" + f.id + "' in parents and name contains 'eq_' and trashed=false");
+      var d = ((await (await authFetch(u2)).json()).files) || [];
+      var nota = { id: f.id, dados: d.length ? 1 : 0, quando: d.length ? d[0].modifiedTime : '', comp: f.ownedByMe ? 0 : 1 };
+      if (!melhor || nota.dados > melhor.dados || (nota.dados === melhor.dados && (nota.quando > melhor.quando || (nota.quando === melhor.quando && nota.comp > melhor.comp)))) melhor = nota;
+    }
+    return melhor.id;
+  }
+  RT.pastaEmpresa = pastaEmpresa;
 
   window.ensureRHFolder = async function () {
     try {
       var nome = (window.RH_TENANT && RH_TENANT.drive) || 'RH Absoluta';
-      rhFolderId = await pasta(nome, 'root');
+      rhFolderId = await pastaEmpresa(nome);
       RT.folderCache = { }; RT.folderCache['root/' + nome] = rhFolderId;
       // estrutura padrão dentro da pasta da empresa
       CATEGORIAS.forEach(function (c) { pasta(c, rhFolderId).catch(function () {}); });
@@ -15153,7 +15197,7 @@ ${secoes.map(function (x) { return S(x[0], x[1], x[2]); }).join('')}
   }
   function _extras() {
     try { if (_normalizarDatas()) { _upd(); } } catch (e) {}
-    try { if (typeof estSyncCargos === 'function') estSyncCargos(); } catch (e) {}
+    try { if (typeof estSyncCargos === 'function') estSyncCargos(); if (typeof estSyncEscalas === 'function') estSyncEscalas(); } catch (e) {}
     var hoje = typeof _expHoje === 'function' ? _expHoje() : td();
     // Cartões clicáveis
     var mapa = { 's-func': ['funcionarios', function () { if (typeof funcView === 'function') funcView('cadastro'); }], 's-exp': ['experiencia'], 's-fer': ['ferias'], 's-ex': ['exames'] };
