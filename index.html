@@ -679,6 +679,18 @@ input#client-id-inp:focus{border-color:var(--green);outline:none;}
 .mt-prog-bar span{display:block;height:100%;background:var(--green);transition:width .2s;}
 .mt-prog-pct{font-size:11px;color:var(--gray-600);}
 
+/* ── Relatório de funcionários ── */
+.fr-filtros{display:grid;grid-template-columns:minmax(260px,1fr) 2fr;gap:14px;background:var(--gray-50);border-radius:var(--radius-sm);padding:14px;}
+@media (max-width:900px){.fr-filtros{grid-template-columns:1fr;}}
+.fr-label{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px;}
+.fr-status{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;}
+.fr-status label{display:flex;align-items:center;gap:6px;cursor:pointer;}
+.fr-filtros select,.fr-filtros input[type=search]{padding:8px 10px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-family:inherit;font-size:13px;background:#fff;width:100%;}
+.fr-colunas{margin-top:10px;font-size:13px;}
+.fr-colunas summary{cursor:pointer;color:var(--green-dark);font-weight:600;padding:4px 0;}
+#fr-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:4px 12px;padding:8px 2px;}
+.fr-col{display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer;}
+#fr-tabela td,#fr-tabela th{white-space:nowrap;}
 /* ── Tema Essencial (cores da logo) ── */
 html[data-tenant="essencial"]{
   --green:#b46051;--green-dark:#7d3b30;--green-light:#e3a597;--green-pale:#faeeea;
@@ -958,10 +970,6 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="nav-item" onclick="nav(&#39;documentos&#39;,this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg><span>Gerar Documentos
   </span></div>
-  <div class="nav-section">Relatórios</div>
-  <div class="nav-item" onclick="nav(&#39;aniversariantes&#39;,this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span>Aniversariantes
-  </span></div>
   <div class="nav-section">Organização</div>
   <div class="nav-item" onclick="nav(&#39;politicas&#39;,this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>Políticas &amp; Normas
@@ -1018,6 +1026,12 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
     </div>
 
+    <div class="tabs" id="func-main-tabs" style="margin-bottom:16px;">
+      <div class="tab active" data-v="cadastro" onclick="funcView('cadastro',this)">👥 Cadastro</div>
+      <div class="tab" data-v="relatorio" onclick="funcView('relatorio',this)">📊 Relatório</div>
+      <div class="tab" data-v="aniv" onclick="funcView('aniv',this)">🎂 Aniversariantes</div>
+    </div>
+    <div id="func-view-cadastro">
     <!-- Estatísticas rápidas -->
     <div class="stats-grid" id="func-stats" style="margin-bottom:16px;"></div>
 
@@ -1052,6 +1066,60 @@ document.addEventListener('DOMContentLoaded', function () {
       <thead><tr><th>Nome</th><th>CPF</th><th>Cargo</th><th>Departamento</th><th>Empresa</th><th>Salário</th><th>Admissão</th><th>Status</th><th>Ações</th></tr></thead>
       <tbody id="tb-func"></tbody>
     </table></div>
+    </div>
+    <div id="func-view-relatorio" style="display:none;">
+      <div class="fr-filtros">
+        <div class="fr-grupo"><div class="fr-label">Status</div>
+          <div id="fr-status" class="fr-status">
+            <label><input type="checkbox" value="Ativo" checked onchange="rdFuncRelTabela()"> 🟢 Ativos</label>
+            <label><input type="checkbox" value="Afastado" onchange="rdFuncRelTabela()"> 🟡 Afastados</label>
+            <label><input type="checkbox" value="Férias" onchange="rdFuncRelTabela()"> 🏖️ Férias</label>
+            <label><input type="checkbox" value="Desligado" onchange="rdFuncRelTabela()"> 🔴 Desligados</label>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
+            <button class="btn btn-outline btn-sm" onclick="frStatusRapido(['Ativo','Afastado','Férias','Desligado'])">Todos</button>
+            <button class="btn btn-outline btn-sm" onclick="frStatusRapido(['Ativo','Afastado','Férias'])">Em atividade</button>
+          </div>
+        </div>
+        <div class="fr-grupo"><div class="fr-label">Filtros</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <select id="fr-emp" onchange="rdFuncRelTabela()"></select>
+            <select id="fr-dep" onchange="rdFuncRelTabela()"></select>
+            <input id="fr-busca" type="search" placeholder="Nome, CPF ou cargo" oninput="rdFuncRelTabela()">
+            <select id="fr-ord" onchange="rdFuncRelTabela()">
+              <option value="az">Ordem alfabética (A → Z)</option>
+              <option value="za">Ordem alfabética (Z → A)</option>
+              <option value="adm">Admissão (mais antigos)</option>
+              <option value="adm_desc">Admissão (mais recentes)</option>
+              <option value="dep">Departamento</option>
+              <option value="car">Cargo</option>
+              <option value="st">Status</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <details class="fr-colunas"><summary>Colunas do relatório</summary><div id="fr-cols"></div></details>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 10px;">
+        <div id="fr-resumo" style="font-size:13px;color:var(--gray-600);"></div>
+        <button class="btn btn-primary" style="margin-left:auto;" onclick="exportarRelFunc()">📥 Exportar para Excel</button>
+      </div>
+      <div class="table-wrap"><table id="fr-tabela"></table></div>
+    </div>
+    <div id="func-view-aniv" style="display:none;">
+<div class="card-header"><span class="card-title" style="font-size:15px;">🎂 Aniversariantes</span>
+      <div style="display:flex;gap:8px;">
+        <select id="bday-filter" onchange="rdBday()" style="padding:7px 12px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-size:13px;font-family:inherit;">
+          <option value="mes">Este mês</option>
+          <option value="semana">Esta semana</option>
+          <option value="prox30">Próximos 30 dias</option>
+          <option value="todos">Todos os meses</option>
+          <optgroup label="Mês específico"><option value="m1">Janeiro</option><option value="m2">Fevereiro</option><option value="m3">Março</option><option value="m4">Abril</option><option value="m5">Maio</option><option value="m6">Junho</option><option value="m7">Julho</option><option value="m8">Agosto</option><option value="m9">Setembro</option><option value="m10">Outubro</option><option value="m11">Novembro</option><option value="m12">Dezembro</option></optgroup>
+        </select>
+      </div>
+    </div>
+    <div id="bday-list"></div>
+  
+    </div>
   </div>
 </div>
 
@@ -1507,21 +1575,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 <!-- PAGAMENTOS RH -->
-<div class="section-page" id="sec-aniversariantes">
-  <div class="card">
-    <div class="card-header"><span class="card-title">🎂 Aniversariantes</span>
-      <div style="display:flex;gap:8px;">
-        <select id="bday-filter" onchange="rdBday()" style="padding:7px 12px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-size:13px;font-family:inherit;">
-          <option value="mes">Este mês</option>
-          <option value="semana">Esta semana</option>
-          <option value="todos">Todos os meses</option>
-        </select>
-      </div>
-    </div>
-    <div id="bday-list"></div>
-  </div>
-</div>
-
 <!-- TREINAMENTOS -->
 <!-- INTEGRAÇÃO -->
 <div class="section-page" id="sec-integracao"><div id="mt-root-integracao"></div></div>
@@ -3474,6 +3527,7 @@ function exTab(id, btn) {
 // NAV
 // ============================================================
 function nav(id, el) {
+  if (id === 'aniversariantes') { var ni = Array.prototype.find.call(document.querySelectorAll('.nav-item'), function (n) { return /nav\('funcionarios'/.test(n.getAttribute('onclick') || ''); }); nav('funcionarios', ni || el); funcView('aniv'); return; }
   document.querySelectorAll('.section-page').forEach(s => s.classList.remove('active'));
   var secEl = document.getElementById('sec-' + id);
   if (!secEl) { console.warn('Section not found: sec-' + id); return; }
@@ -6642,12 +6696,19 @@ function hideReconnectButton() {
 function rdBday() {
   var filter = (document.getElementById('bday-filter') || {value:'mes'}).value;
   var hoje = new Date(); var hm = hoje.getMonth()+1; var hd = hoje.getDate();
+  if (/^m\d+$/.test(filter)) { hm = parseInt(filter.slice(1), 10); filter = 'mes'; }
   var funcs = DB.g('funcionarios').filter(function(f){ return f.nas && f.st !== 'Desligado'; });
   var lista = funcs.map(function(f){
     var parts = f.nas.split('-').map(Number);
     return Object.assign({}, f, {bm: parts[1], bd: parts[2]});
   });
   if (filter === 'mes') lista = lista.filter(function(f){ return f.bm === hm; });
+  else if (filter === 'prox30') {
+    var h0 = new Date(hoje.getFullYear(), hoje.getMonth(), hd);
+    lista.forEach(function(f){ var dt = new Date(hoje.getFullYear(), f.bm-1, f.bd); if (dt < h0) dt.setFullYear(dt.getFullYear()+1); f._dias = Math.round((dt - h0) / 86400000); });
+    lista = lista.filter(function(f){ return f._dias <= 30; });
+    lista.sort(function(a,b){ return a._dias - b._dias; });
+  }
   else if (filter === 'semana') {
     var ini = new Date(hoje); ini.setDate(hd - hoje.getDay());
     var fim = new Date(ini); fim.setDate(ini.getDate()+6);
@@ -6656,7 +6717,7 @@ function rdBday() {
       return dt >= ini && dt <= fim;
     });
   }
-  lista.sort(function(a,b){ return a.bm !== b.bm ? a.bm-b.bm : a.bd-b.bd; });
+  if (filter !== 'prox30') lista.sort(function(a,b){ return a.bm !== b.bm ? a.bm-b.bm : a.bd-b.bd; });
 
   var el = document.getElementById('bday-list');
   if (!lista.length) {
@@ -13872,6 +13933,192 @@ function rdEmp() {
   }).join('');
 }
 
+// ════════════════ FUNCIONÁRIOS: abas Cadastro / Relatório / Aniversariantes ════════════════
+function rdFuncAtual() {
+  try { rdFunc(); } catch (e) {}
+  var r = document.getElementById('func-view-relatorio'), a = document.getElementById('func-view-aniv');
+  if (r && r.style.display !== 'none') rdFuncRelTabela();
+  if (a && a.style.display !== 'none' && typeof rdBday === 'function') rdBday();
+}
+function funcView(view, btn) {
+  ['cadastro', 'relatorio', 'aniv'].forEach(function (v) {
+    var el = document.getElementById('func-view-' + v); if (el) el.style.display = v === view ? '' : 'none';
+  });
+  document.querySelectorAll('#func-main-tabs .tab').forEach(function (t) { t.classList.toggle('active', t.getAttribute('data-v') === view); });
+  if (view === 'relatorio') rdFuncRel();
+  if (view === 'aniv' && typeof rdBday === 'function') rdBday();
+  if (view === 'cadastro' && typeof rdFunc === 'function') rdFunc();
+}
+
+var FR_COLS = [
+  { k: 'n',     t: 'Nome',               on: 1, w: 34 },
+  { k: 'cpf',   t: 'CPF',                on: 1, w: 16 },
+  { k: 'rg',    t: 'RG',                 on: 0, w: 14 },
+  { k: 'nas',   t: 'Nascimento',         on: 1, w: 12, d: 1 },
+  { k: 'idade', t: 'Idade',              on: 0, w: 7 },
+  { k: 'sex',   t: 'Sexo',               on: 0, w: 10 },
+  { k: 'ec',    t: 'Estado civil',       on: 0, w: 12 },
+  { k: 'tel',   t: 'Telefone',           on: 1, w: 16 },
+  { k: 'email', t: 'E-mail',             on: 0, w: 28 },
+  { k: 'end',   t: 'Endereço',           on: 0, w: 40 },
+  { k: 'cep',   t: 'CEP',                on: 0, w: 10 },
+  { k: 'pis',   t: 'PIS/PASEP',          on: 0, w: 14 },
+  { k: 'ctps',  t: 'CTPS',               on: 0, w: 14 },
+  { k: 'emp',   t: 'Empresa',            on: 1, w: 30 },
+  { k: 'dep',   t: 'Departamento',       on: 1, w: 18 },
+  { k: 'car',   t: 'Cargo',              on: 1, w: 22 },
+  { k: 'sal',   t: 'Salário',            on: 0, w: 13, money: 1 },
+  { k: 'adm',   t: 'Admissão',           on: 1, w: 12, d: 1 },
+  { k: 'tempo', t: 'Tempo de casa',      on: 0, w: 14 },
+  { k: 'tip',   t: 'Contrato',           on: 0, w: 11 },
+  { k: 'ges',   t: 'Gestor',             on: 0, w: 20 },
+  { k: 'escala',t: 'Escala',             on: 0, w: 14 },
+  { k: 'st',    t: 'Status',             on: 1, w: 11 },
+  { k: 'tams',  t: 'Uniforme (cam/cal/calç/jal)', on: 0, w: 22 }
+];
+var _frCols = null;
+function _frColsOn() {
+  if (!_frCols) { try { _frCols = JSON.parse(localStorage.getItem('eq_rel_func_cols') || 'null'); } catch (e) {} }
+  if (!_frCols) _frCols = FR_COLS.filter(function (c) { return c.on; }).map(function (c) { return c.k; });
+  return _frCols;
+}
+function frToggleCol(k, on) {
+  var a = _frColsOn().filter(function (x) { return x !== k; });
+  if (on) a.push(k);
+  _frCols = FR_COLS.map(function (c) { return c.k; }).filter(function (x) { return a.indexOf(x) !== -1; });
+  try { localStorage.setItem('eq_rel_func_cols', JSON.stringify(_frCols)); } catch (e) {}
+  rdFuncRelTabela();
+}
+function _frIdade(nas) {
+  if (!nas) return ''; var h = new Date(), p = nas.split('-').map(Number);
+  var a = h.getFullYear() - p[0]; if (h.getMonth() + 1 < p[1] || (h.getMonth() + 1 === p[1] && h.getDate() < p[2])) a--; return a;
+}
+function _frTempo(adm, fim) {
+  if (!adm) return ''; var d = _expDif(adm, fim || (typeof _expHoje === 'function' ? _expHoje() : td()));
+  if (d < 0) return ''; var anos = Math.floor(d / 365.25), meses = Math.floor((d - anos * 365.25) / 30.44);
+  return (anos ? anos + ' ano' + (anos > 1 ? 's' : '') : '') + (anos && meses ? ' e ' : '') + (meses ? meses + ' ' + (meses > 1 ? 'meses' : 'mês') : '') || 'menos de 1 mês';
+}
+function _frValor(f, k, emps, deps) {
+  switch (k) {
+    case 'emp': var e = emps[f.emp]; return e ? e.razao : '';
+    case 'dep': var d = deps[f.dep]; return d ? d.nome : '';
+    case 'idade': return _frIdade(f.nas);
+    case 'tempo': return _frTempo(f.adm);
+    case 'st': return f.st || 'Ativo';
+    case 'tams': return [f.tamCamisa, f.tamCalca, f.tamCalcado, f.tamJaleco].map(function (x) { return x || '-'; }).join(' / ');
+    default: return f[k] == null ? '' : f[k];
+  }
+}
+function _frFiltrados() {
+  var sts = Array.prototype.map.call(document.querySelectorAll('#fr-status input:checked'), function (i) { return i.value; });
+  var emp = v('fr-emp'), dep = v('fr-dep'), busca = (v('fr-busca') || '').toLowerCase().trim();
+  var ord = v('fr-ord') || 'az';
+  var emps = {}, deps = {};
+  DB.g('empresas').forEach(function (e) { emps[e.id] = e; });
+  DB.g('departamentos').forEach(function (d) { deps[d.id] = d; });
+  var list = DB.g('funcionarios').filter(function (f) {
+    var st = f.st || 'Ativo';
+    if (sts.length && sts.indexOf(st) === -1) return false;
+    if (emp && f.emp !== emp) return false;
+    if (dep && f.dep !== dep) return false;
+    if (busca && [f.n, f.cpf, f.car].join(' ').toLowerCase().indexOf(busca) === -1) return false;
+    return true;
+  });
+  var nome = function (a, b) { return (a.n || '').localeCompare(b.n || '', 'pt-BR', { sensitivity: 'base' }); };
+  var cmp = {
+    az: nome,
+    za: function (a, b) { return -nome(a, b); },
+    adm: function (a, b) { return (a.adm || '9').localeCompare(b.adm || '9') || nome(a, b); },
+    adm_desc: function (a, b) { return (b.adm || '').localeCompare(a.adm || '') || nome(a, b); },
+    dep: function (a, b) { return String(_frValor(a, 'dep', emps, deps)).localeCompare(String(_frValor(b, 'dep', emps, deps)), 'pt-BR') || nome(a, b); },
+    car: function (a, b) { return (a.car || '').localeCompare(b.car || '', 'pt-BR') || nome(a, b); },
+    st: function (a, b) { return (a.st || 'Ativo').localeCompare(b.st || 'Ativo') || nome(a, b); }
+  }[ord] || nome;
+  list.sort(cmp);
+  return { list: list, emps: emps, deps: deps };
+}
+function rdFuncRel() {
+  var se = document.getElementById('fr-emp'), sd = document.getElementById('fr-dep');
+  if (se) { var cur = se.value; se.innerHTML = '<option value="">Todas as empresas</option>' + DB.g('empresas').map(function (e) { return '<option value="' + e.id + '">' + _mtEsc(e.razao) + '</option>'; }).join(''); se.value = cur; }
+  if (sd) { var cd = sd.value; sd.innerHTML = '<option value="">Todos os departamentos</option>' + DB.g('departamentos').map(function (d) { return '<option value="' + d.id + '">' + _mtEsc(d.nome) + '</option>'; }).join(''); sd.value = cd; }
+  var on = _frColsOn(), box = document.getElementById('fr-cols');
+  if (box) box.innerHTML = FR_COLS.map(function (c) {
+    return '<label class="fr-col"><input type="checkbox" ' + (on.indexOf(c.k) !== -1 ? 'checked' : '') + ' onchange="frToggleCol(\'' + c.k + '\',this.checked)"> ' + c.t + '</label>';
+  }).join('');
+  rdFuncRelTabela();
+}
+function rdFuncRelTabela() {
+  var R = _frFiltrados(), on = _frColsOn(), cols = FR_COLS.filter(function (c) { return on.indexOf(c.k) !== -1; });
+  var tb = document.getElementById('fr-tabela'); if (!tb) return;
+  var cont = {}; R.list.forEach(function (f) { var s = f.st || 'Ativo'; cont[s] = (cont[s] || 0) + 1; });
+  document.getElementById('fr-resumo').innerHTML = '<strong>' + R.list.length + '</strong> funcionário' + (R.list.length === 1 ? '' : 's') +
+    Object.keys(cont).sort().map(function (s) { return ' · ' + s + ': ' + cont[s]; }).join('');
+  if (!R.list.length) { tb.innerHTML = '<tr><td style="text-align:center;padding:30px;color:var(--gray-400)">Nenhum funcionário com esses filtros.</td></tr>'; return; }
+  var stCor = { 'Ativo': 'badge-green', 'Afastado': 'badge-yellow', 'Férias': 'badge-blue', 'Desligado': 'badge-red' };
+  tb.innerHTML = '<thead><tr><th>#</th>' + cols.map(function (c) { return '<th>' + c.t + '</th>'; }).join('') + '</tr></thead><tbody>' +
+    R.list.map(function (f, i) {
+      return '<tr><td style="color:var(--gray-400);">' + (i + 1) + '</td>' + cols.map(function (c) {
+        var val = _frValor(f, c.k, R.emps, R.deps);
+        if (c.d) val = val ? fd(val) : '';
+        if (c.money) val = val ? Number(val).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : '';
+        if (c.k === 'st') return '<td><span class="badge ' + (stCor[val] || 'badge-gray') + '">' + _mtEsc(val) + '</span></td>';
+        return '<td' + (c.k === 'n' ? ' style="font-weight:600;"' : '') + '>' + _mtEsc(val) + '</td>';
+      }).join('') + '</tr>';
+    }).join('') + '</tbody>';
+}
+function frStatusRapido(lista) {
+  document.querySelectorAll('#fr-status input').forEach(function (i) { i.checked = lista.indexOf(i.value) !== -1; });
+  rdFuncRelTabela();
+}
+function exportarRelFunc() {
+  var R = _frFiltrados(), on = _frColsOn(), cols = FR_COLS.filter(function (c) { return on.indexOf(c.k) !== -1; });
+  if (!R.list.length) { alert('Nenhum funcionário para exportar com esses filtros.'); return; }
+  var empresa = (window.RH_TENANT && RH_TENANT.nome) || 'RH';
+  var hoje = typeof _expHoje === 'function' ? _expHoje() : td();
+  var sts = Array.prototype.map.call(document.querySelectorAll('#fr-status input:checked'), function (i) { return i.value; });
+  var nomeArq = 'Relatorio_Funcionarios_' + empresa + '_' + (sts.length && sts.length < 4 ? sts.join('-') + '_' : '') + hoje.split('-').reverse().join('-');
+  function toDate(iso) { if (!iso) return ''; var p = iso.split('-').map(Number); return { serial: (Date.UTC(p[0], p[1] - 1, p[2]) - Date.UTC(1899, 11, 30)) / 86400000, iso: iso }; }
+  var linhas = R.list.map(function (f) {
+    return cols.map(function (c) {
+      var val = _frValor(f, c.k, R.emps, R.deps);
+      if (c.d) return toDate(val);
+      if (c.money) return val === '' ? '' : Number(val);
+      return val;
+    });
+  });
+  if (typeof XLSX === 'undefined') {           // sem internet para a biblioteca: CSV que o Excel abre
+    var csv = [cols.map(function (c) { return c.t; })].concat(linhas.map(function (l) {
+      return l.map(function (x) { return x && x.iso ? x.iso.split('-').reverse().join('/') : x; });
+    })).map(function (r) { return r.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(';'); }).join('\r\n');
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = nomeArq + '.csv'; a.click(); toast('Relatório exportado (CSV)'); return;
+  }
+  var ws = XLSX.utils.aoa_to_sheet([cols.map(function (c) { return c.t; })].concat(linhas.map(function (l) { return l.map(function (x) { return x && x.serial != null ? x.serial : x; }); })));
+  var range = XLSX.utils.decode_range(ws['!ref']);
+  cols.forEach(function (c, ci) {
+    for (var r = 1; r <= range.e.r; r++) {
+      var cell = ws[XLSX.utils.encode_cell({ r: r, c: ci })]; if (!cell) continue;
+      if (c.d && cell.t === 'n') cell.z = 'dd/mm/yyyy';
+      if (c.money && cell.t === 'n') cell.z = '"R$" #,##0.00';
+    }
+  });
+  ws['!cols'] = cols.map(function (c) { return { wch: c.w }; });
+  ws['!autofilter'] = { ref: ws['!ref'] };
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Funcionários');
+  // Resumo
+  var cont = {}; R.list.forEach(function (f) { var s = f.st || 'Ativo'; cont[s] = (cont[s] || 0) + 1; });
+  var res = [['Relatório de Funcionários — ' + empresa], ['Gerado em', toDate(hoje).serial],
+             ['Filtro de status', sts.length ? sts.join(', ') : 'Todos'], [],
+             ['Status', 'Quantidade']].concat(Object.keys(cont).sort().map(function (s) { return [s, cont[s]]; })).concat([['Total', R.list.length]]);
+  var ws2 = XLSX.utils.aoa_to_sheet(res);
+  if (ws2.B2) ws2.B2.z = 'dd/mm/yyyy';
+  ws2['!cols'] = [{ wch: 22 }, { wch: 30 }];
+  XLSX.utils.book_append_sheet(wb, ws2, 'Resumo');
+  XLSX.writeFile(wb, nomeArq + '.xlsx');
+  toast('📊 Relatório exportado para Excel!');
+}
+
 function rdIntegracao() { rdMt('integracao'); }
 function rdTreinamentosMat() { rdMt('treinamentos'); }
 
@@ -14362,7 +14609,7 @@ tr:nth-child(even) td{background:#f7fbf9;}
     var aberta = document.querySelector('.section-page.active'); if (!aberta) return;
     var id = aberta.id.replace('sec-', '');
     var modalAberto = document.querySelector('.modal-bg.open');
-    var rd = { funcionarios: 'rdFunc', empresas: 'rdEmp', vagas: 'rdVagas', experiencia: 'rdExp', ferias: 'rdFer', exames: 'rdExm',
+    var rd = { funcionarios: 'rdFuncAtual', empresas: 'rdEmp', vagas: 'rdVagas', experiencia: 'rdExp', ferias: 'rdFer', exames: 'rdExm',
                beneficios: 'rdBenef', aniversariantes: 'rdBday', politicas: 'rdPol', integracao: 'rdIntegracao', treinamentos: 'rdTreinamentosMat',
                dashboard: 'updDash' };
     var fn = rd[id];
